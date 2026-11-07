@@ -16,7 +16,7 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
 
     <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50 px-4 py-3 sm:py-4">
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50 px-3 sm:px-6 py-2.5 sm:py-3">
         <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-xl sm:text-2xl shadow-lg shadow-indigo-500/20">
@@ -34,11 +34,11 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-4xl mx-auto px-4 py-6 sm:py-10 flex-1 w-full flex flex-col justify-center">
+    <main class="max-w-4xl mx-auto px-3 sm:px-6 pt-4 sm:pt-6 pb-12 flex-1 w-full flex flex-col">
 
         <!-- VIEW 1: GRADE SELECTION (INITIAL SCREEN) -->
         <div id="view-grade-selection" class="block">
-            <div class="text-center mb-8">
+            <div class="text-center mb-5 sm:mb-6">
                 <h2 class="text-2xl sm:text-3xl font-black text-white mb-2">اختر الصف الدراسي</h2>
                 <p class="text-slate-400 text-xs sm:text-sm">انقر على الصف لعرض الدروس والمحتوى التفاعلي</p>
             </div>
@@ -86,10 +86,16 @@
                         <p class="text-xs text-slate-400">دروس مادة العلوم</p>
                     </div>
                 </div>
-                <button onclick="backToGrades()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-bold text-slate-300 border border-slate-700 transition">
-                    <span>←</span>
-                    <span>تغيير الصف</span>
-                </button>
+                <div class="flex items-center gap-2">
+                    <a href="https://abodahmaj.notion.site/3f71e923eb7b817a80ede87f2561f702" target="_blank" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs sm:text-sm font-bold transition active:scale-95 shadow">
+                        <span>📑</span>
+                        <span>مساحة الصف على نوشن</span>
+                    </a>
+                    <button onclick="backToGrades()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-bold text-slate-300 border border-slate-700 transition active:scale-95">
+                        <span>←</span>
+                        <span>تغيير الصف</span>
+                    </button>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
@@ -120,10 +126,16 @@
                         <p class="text-xs text-slate-400">دروس مادة العلوم</p>
                     </div>
                 </div>
-                <button onclick="backToGrades()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-bold text-slate-300 border border-slate-700 transition">
-                    <span>←</span>
-                    <span>تغيير الصف</span>
-                </button>
+                <div class="flex items-center gap-2">
+                    <a href="https://abodahmaj.notion.site/3f71e923eb7b81328bc7f9441dbf69b7" target="_blank" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 text-xs sm:text-sm font-bold transition active:scale-95 shadow">
+                        <span>📑</span>
+                        <span>مساحة الصف على نوشن</span>
+                    </a>
+                    <button onclick="backToGrades()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-bold text-slate-300 border border-slate-700 transition active:scale-95">
+                        <span>←</span>
+                        <span>تغيير الصف</span>
+                    </button>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
