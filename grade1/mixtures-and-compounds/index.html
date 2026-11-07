@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>العناصر والمركبات والمخاليط — المحطة التعليمية التفاعلية</title>
+    <title>العناصر والمركبات والمخاليط — الصف الأول المتوسط</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -43,7 +43,7 @@
             </a>
             <div class="text-center truncate px-2">
                 <h1 class="text-sm sm:text-base font-extrabold text-white truncate">🔖 العناصر والمركبات والمخاليط</h1>
-                <p class="text-[10px] sm:text-xs text-slate-400 truncate">الصف الأول المتوسط • الوحدة الثانية • الفصل الرابع (ص ١٠٢ – ١١١)</p>
+                <p class="text-[10px] sm:text-xs text-slate-400 truncate">الصف الأول المتوسط</p>
             </div>
             <div class="text-[10px] sm:text-xs bg-slate-800/90 text-amber-400 font-bold px-2.5 py-1.5 rounded-lg border border-slate-700/80 whitespace-nowrap">
                 أ. علي جبريل
@@ -51,25 +51,29 @@
         </div>
     </header>
 
-    <!-- Navigation Tabs (Mobile-First Sticky Row) -->
+    <!-- Navigation Tabs (RTL: Starts from Right with Summary) -->
     <nav class="bg-slate-900/60 border-b border-slate-800/80 px-2 py-2 sticky top-[57px] z-40 backdrop-blur">
         <div class="max-w-4xl mx-auto grid grid-cols-4 gap-1.5 sm:gap-2">
-            <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn active flex flex-col sm:flex-row items-center justify-center gap-1 py-2 sm:py-2.5 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
-                <span class="text-base sm:text-lg">📝</span>
-                <span>الاختبار</span>
-                <span class="hidden sm:inline-block bg-white/20 text-[10px] px-1.5 py-0.5 rounded-full">19</span>
+            <!-- 1. الملخص (Rightmost / First) -->
+            <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn active flex flex-col sm:flex-row items-center justify-center gap-1 py-2 sm:py-2.5 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
+                <span class="text-base sm:text-lg">📄</span>
+                <span>الملخص</span>
             </button>
-            <button onclick="switchTab('lab')" id="tab-btn-lab" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-2 sm:py-2.5 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
-                <span class="text-base sm:text-lg">🧪</span>
-                <span>المختبر</span>
-            </button>
+            <!-- 2. الخريطة -->
             <button onclick="switchTab('map')" id="tab-btn-map" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-2 sm:py-2.5 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
                 <span class="text-base sm:text-lg">🗺️</span>
                 <span>الخريطة</span>
             </button>
-            <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-2 sm:py-2.5 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
-                <span class="text-base sm:text-lg">📄</span>
-                <span>الملخص</span>
+            <!-- 3. المختبر -->
+            <button onclick="switchTab('lab')" id="tab-btn-lab" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-2 sm:py-2.5 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
+                <span class="text-base sm:text-lg">🧪</span>
+                <span>المختبر</span>
+            </button>
+            <!-- 4. الاختبار (Leftmost / Last) -->
+            <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-2 sm:py-2.5 px-1 rounded-xl text-xs sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
+                <span class="text-base sm:text-lg">📝</span>
+                <span>الاختبار</span>
+                <span class="hidden sm:inline-block bg-white/20 text-[10px] px-1.5 py-0.5 rounded-full">19</span>
             </button>
         </div>
     </nav>
@@ -77,8 +81,65 @@
     <!-- Main Content Area -->
     <main class="max-w-4xl w-full mx-auto p-3 sm:p-5 flex-1">
 
-        <!-- TAB 1: INTERACTIVE SELF-QUIZ -->
-        <section id="section-quiz" class="tab-content block">
+        <!-- TAB 1: SUMMARY PDF (ACTIVE INITIALLY) -->
+        <section id="section-summary" class="tab-content block">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-5 shadow-xl">
+                <div class="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-800">
+                    <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                        <span>📄</span>
+                        <span>الملخص السبوري</span>
+                    </h2>
+                    <a href="summary.pdf" download="mixtures_compounds_summary.pdf" class="text-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center justify-center gap-1.5">
+                        <span>⬇️</span>
+                        <span>تحميل الملخص (PDF)</span>
+                    </a>
+                </div>
+                <div class="w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950">
+                    <iframe src="summary.pdf" class="w-full h-[650px] sm:h-[780px] border-0" title="الملخص السبوري"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: MIND MAP -->
+        <section id="section-map" class="tab-content hidden">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-5 shadow-xl">
+                <div class="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-800">
+                    <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                        <span>🗺️</span>
+                        <span>الخريطة الذهنية</span>
+                    </h2>
+                    <a href="mindmap.png" download="mixtures_compounds_mindmap.png" class="text-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center justify-center gap-1.5">
+                        <span>⬇️</span>
+                        <span>تحميل الخريطة</span>
+                    </a>
+                </div>
+                <div class="overflow-auto max-h-[780px] rounded-xl border border-slate-800 bg-slate-950 p-1 flex justify-center">
+                    <img src="mindmap.png" alt="الخريطة الذهنية" class="w-full h-auto rounded-lg shadow-lg">
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: VIRTUAL LAB -->
+        <section id="section-lab" class="tab-content hidden">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 shadow-xl">
+                <div class="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-800">
+                    <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                        <span>🧪</span>
+                        <span>المختبر الافتراضي</span>
+                    </h2>
+                    <a href="lab.html" target="_blank" class="text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center justify-center gap-1.5">
+                        <span>⛶</span>
+                        <span>فتح في نافذة كاملة</span>
+                    </a>
+                </div>
+                <div class="w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950">
+                    <iframe src="lab.html" class="w-full h-[650px] sm:h-[780px] border-0" title="المختبر الافتراضي"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: INTERACTIVE SELF-QUIZ -->
+        <section id="section-quiz" class="tab-content hidden">
             <!-- Quiz Container -->
             <div id="quiz-box" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl relative overflow-hidden">
                 <!-- Top Quiz Stats -->
@@ -118,7 +179,7 @@
                 <div id="explanation-box" class="hidden p-4 rounded-xl bg-slate-950/80 border-r-4 border-emerald-500 text-xs sm:text-sm text-slate-300 leading-relaxed mb-5 shadow-inner">
                     <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5 text-sm">
                         <span>💡</span>
-                        <span>التفسير العلمي المعتمد:</span>
+                        <span>التفسير العلمي:</span>
                     </div>
                     <p id="explanation-text" class="text-slate-300"></p>
                 </div>
@@ -135,10 +196,8 @@
                 <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-500 to-yellow-400 flex items-center justify-center text-4xl shadow-lg shadow-amber-500/20 mb-4 animate-bounce">
                     🏆
                 </div>
-                <h2 class="text-2xl font-black text-white mb-2">اكتمل الاختبار الذاتي بنجاح!</h2>
-                <p id="eval-message" class="text-slate-300 text-sm sm:text-base mb-6 max-w-md mx-auto">
-                    تهانينا على إتمام التدريب، استمر في ترسيخ مفاهيمك العلمية!
-                </p>
+                <h2 class="text-2xl font-black text-white mb-2">اكتمل الاختبار بنجاح!</h2>
+                <p id="eval-message" class="text-slate-300 text-sm sm:text-base mb-6 max-w-md mx-auto"></p>
 
                 <!-- Score Dashboard -->
                 <div class="grid grid-cols-3 gap-2 sm:gap-4 max-w-sm mx-auto mb-8">
@@ -147,11 +206,11 @@
                         <div class="text-xl sm:text-2xl font-black text-amber-400" id="final-percent">0%</div>
                     </div>
                     <div class="bg-slate-800/80 border border-slate-700/60 p-3 rounded-xl">
-                        <div class="text-xs text-slate-400 mb-1">الإجابات الصحيحة</div>
+                        <div class="text-xs text-slate-400 mb-1">الصحيحة</div>
                         <div class="text-xl sm:text-2xl font-black text-emerald-400" id="final-correct">0</div>
                     </div>
                     <div class="bg-slate-800/80 border border-slate-700/60 p-3 rounded-xl">
-                        <div class="text-xs text-slate-400 mb-1">الأسئلة الكلية</div>
+                        <div class="text-xs text-slate-400 mb-1">الأسئلة</div>
                         <div class="text-xl sm:text-2xl font-black text-slate-200" id="final-total">0</div>
                     </div>
                 </div>
@@ -160,78 +219,12 @@
                 <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
                     <button onclick="restartQuiz()" class="w-full py-3.5 px-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
                         <span>🔄</span>
-                        <span>إعادة الاختبار للتثبيت</span>
+                        <span>إعادة الاختبار</span>
                     </button>
                     <button onclick="switchTab('map')" class="w-full py-3.5 px-6 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl border border-slate-700 transition flex items-center justify-center gap-2">
                         <span>🗺️</span>
-                        <span>مراجعة الخريطة الذهنية</span>
+                        <span>الخريطة الذهنية</span>
                     </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 2: VIRTUAL LAB -->
-        <section id="section-lab" class="tab-content hidden">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 shadow-xl">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-800">
-                    <div>
-                        <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                            <span>🧪</span>
-                            <span>المختبر الافتراضي التفاعلي</span>
-                        </h2>
-                        <p class="text-xs text-slate-400">محاكاة فيزيائية دقيقة ومحسّنة للمس على أجهزة الآيباد والبروجكتر</p>
-                    </div>
-                    <a href="lab.html" target="_blank" class="w-full sm:w-auto text-center px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center justify-center gap-1.5">
-                        <span>⛶</span>
-                        <span>فتح في نافذة مستقلة كاملة</span>
-                    </a>
-                </div>
-                <div class="w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950">
-                    <iframe src="lab.html" class="w-full h-[620px] sm:h-[750px] border-0" title="المختبر الافتراضي"></iframe>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 3: MIND MAP -->
-        <section id="section-map" class="tab-content hidden">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-5 shadow-xl">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
-                    <div>
-                        <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                            <span>🗺️</span>
-                            <span>الخريطة الذهنية البصرية فائقة الدقة</span>
-                        </h2>
-                        <p class="text-xs text-slate-400">ملصق مفاهيمي شامل بدقة 2400 × 1450 بكسل خالية من أي تشابك نصوص</p>
-                    </div>
-                    <a href="mindmap.png" download="mixtures_compounds_mindmap.png" class="w-full sm:w-auto text-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center justify-center gap-1.5">
-                        <span>⬇️</span>
-                        <span>تحميل البوستر فائق الدقة (PNG)</span>
-                    </a>
-                </div>
-                <div class="overflow-auto max-h-[750px] rounded-xl border border-slate-800 bg-slate-950 p-1 flex justify-center">
-                    <img src="mindmap.png" alt="الخريطة الذهنية" class="w-full h-auto rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 origin-top">
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 4: SUMMARY PDF -->
-        <section id="section-summary" class="tab-content hidden">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-5 shadow-xl">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
-                    <div>
-                        <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                            <span>📄</span>
-                            <span>الملخص السبوري المعتمد (PDF)</span>
-                        </h2>
-                        <p class="text-xs text-slate-400">إخراج احترافي بخط Sakkal Majalla والتمييز اللوني للأسئلة والإجابات</p>
-                    </div>
-                    <a href="summary.pdf" download="mixtures_compounds_summary.pdf" class="w-full sm:w-auto text-center px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center justify-center gap-1.5">
-                        <span>⬇️</span>
-                        <span>تحميل نسخة الطباعة (PDF)</span>
-                    </a>
-                </div>
-                <div class="w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950">
-                    <iframe src="summary.pdf" class="w-full h-[620px] sm:h-[750px] border-0" title="الملخص السبوري"></iframe>
                 </div>
             </div>
         </section>
@@ -243,7 +236,7 @@
         حقيبة العلوم التعليمية • إعداد: <span class="font-bold text-slate-400">علي جبريل</span> — مجمع الثقافة التعليمي
     </footer>
 
-    <!-- Interactive Quiz Logic -->
+    <!-- Interactive Quiz & Tab Logic -->
     <script>
         const questions = [{"id": 1, "type": "mcq", "question": "عدد العناصر الموجودة في الطبيعة من أصل 118 عنصراً معروفاً هو:", "options": ["92 عنصراً", "100 عنصر", "118 عنصراً", "82 عنصراً"], "answer": 0, "explanation": "توجد 92 عنصراً حراً أو متحداً في الطبيعة، وبقية العناصر مصنعة نووياً عبر مسرعات الجسيمات."}, {"id": 2, "type": "mcq", "question": "تتساوى العناصر الموجودة في الدورة الواحدة في الجدول الدوري في:", "options": ["عدد البروتونات", "عدد مستويات الطاقة المشغولة بالإلكترونات", "الخصائص الكيميائية", "الكتلة الذرية"], "answer": 1, "explanation": "عناصر الدورة الواحدة (الصفوف الأفقية) تتساوى جميعاً في عدد مستويات الطاقة المشغولة بالإلكترونات."}, {"id": 3, "type": "mcq", "question": "تتشابه عناصر المجموعة الواحدة في الجدول الدوري بسبب:", "options": ["تماثل أعدادها الكتلية", "تشابه تركيب إلكترونات المستوى الخارجي وسلوكها الكيميائي", "وجودها في الحالة الغازية", "تماثل كتلها الذرية"], "answer": 1, "explanation": "المجموعة الواحدة (الأعمدة الرأسية) تمتلك نفس عدد إلكترونات التكافؤ في مستواها الخارجي، مما يمنحها سلوكاً كيميائياً متماثلاً."}, {"id": 4, "type": "mcq", "question": "النظائر ذرات للعنصر نفسه تختلف في عدد:", "options": ["البروتونات", "الإلكترونات", "النيوترونات", "مستويات الطاقة"], "answer": 2, "explanation": "النظائر تتطابق تماماً في عدد البروتونات (العدد الذري) ولكنها تختلف في عدد النيوترونات داخل النواة."}, {"id": 5, "type": "mcq", "question": "إذا كانت ذرة تحوي 17 بروتوناً و 18 نيوتروناً، فإن عددها الكتلي يساوي:", "options": ["17", "18", "35", "1"], "answer": 2, "explanation": "العدد الكتلي = عدد البروتونات (17) + عدد النيوترونات (18) = 35."}, {"id": 6, "type": "mcq", "question": "تتميز الفلزات بجميع الخصائص الآتية ما عدا أنها:", "options": ["لامعة وذات بريق", "قابلة للسحب والطرق", "رديئة التوصيل للحرارة والكهرباء", "معظمها صلبة في حرارة الغرفة"], "answer": 2, "explanation": "الفلزات موصلة ممتازة للحرارة والكهرباء، بينما رداءة التوصيل هي صفة مميزة للافلزات."}, {"id": 7, "type": "mcq", "question": "العنصر الفلزي الوحيد الذي يوجد في الحالة السائلة في درجة حرارة الغرفة هو:", "options": ["البروم", "الزئبق", "الحديد", "الذهب"], "answer": 1, "explanation": "الزئبق (Hg) هو الفلز الوحيد السائل في حرارة الغرفة (بينما البروم لافلز سائل)."}, {"id": 8, "type": "mcq", "question": "أكثر العناصر وزناً وانتشاراً في كتلة جسم الإنسان هو:", "options": ["الكربون", "الهيدروجين", "الأكسجين (65%)", "النيتروجين"], "answer": 2, "explanation": "الأكسجين يشكل نحو 65% من كتلة جسم الإنسان لدخوله في تركيب الماء والجزيئات الحيوية."}, {"id": 9, "type": "mcq", "question": "المركب الكيميائي يتكون دائماً من العناصر بنسب:", "options": ["عشوائية متغيرة", "كتلية ثابتة ومحددة", "حجمية متساوية دائماً", "تتغير بحسب طريقة التحضير"], "answer": 1, "explanation": "المركب محكوم بقانون النسب الثابتة؛ مثل الماء الذي يتكون دائماً من هيدروجين وأكسجين بنسبة كتلية محددة."}, {"id": 10, "type": "mcq", "question": "أي المخاليط الآتية يعد مخلوطاً متجانساً (محلوطاً)؟", "options": ["طبق السلطة", "عصير التفاح الصافي الرائق", "عينة الدم", "حساء الخضار"], "answer": 1, "explanation": "عصير التفاح الصافي تمتزج مكوناته بانتظام تام على المستوى المجهري ولا يمكن تمييز أجزائه بالعين."}, {"id": 11, "type": "tf", "question": "يمكن فصل مكونات المركب الكيميائي بطرائق فيزيائية بسيطة كالترشيح والتقطير.", "options": ["صواب ✅", "خطأ ❌"], "answer": 1, "explanation": "خطأ؛ المركب يتفكك فقط بتفاعلات كيميائية، بينما المخلوط هو الذي يُفصل بالطرائق الفيزيائية كالترشيح والتقطير."}, {"id": 12, "type": "tf", "question": "العدد الذري هو عدد البروتونات في نواة الذرة وهو هوية ثابتة تميز كل عنصر.", "options": ["صواب ✅", "خطأ ❌"], "answer": 0, "explanation": "صواب؛ لكل عنصر عدد ذري فريد خاص به لا يشاركه فيه أي عنصر آخر في الكون."}, {"id": 13, "type": "tf", "question": "تشكل اللافلزات معظم عناصر الجدول الدوري وتقع في الجانب الأيسر منه.", "options": ["صواب ✅", "خطأ ❌"], "answer": 1, "explanation": "خطأ؛ الفلزات هي التي تشكل غالبية عناصر الجدول الدوري وتقع في الجانب الأيسر والوسط."}, {"id": 14, "type": "tf", "question": "الهواء الجوي مخلوط متجانس من غازات النيتروجين والأكسجين وغازات أخرى.", "options": ["صواب ✅", "خطأ ❌"], "answer": 0, "explanation": "صواب؛ الهواء محلول غازي تمتزج مكوناته بانتظام وتناسق تام."}, {"id": 15, "type": "tf", "question": "تتغير هوية المخلوط وماهيته الأساسية بمجرد إضافة كمية إضافية من أحد مكوناته.", "options": ["صواب ✅", "خطأ ❌"], "answer": 1, "explanation": "خطأ؛ المواد المكونة للمخلوط تحتفظ بخواصها الأصلية وهويتها مهما تغيرت نسب خلطها."}, {"id": 16, "type": "tf", "question": "تستخدم مسرعات الجسيمات لتحضير عناصر اصطناعية جديدة عبر التفاعلات النووية.", "options": ["صواب ✅", "خطأ ❌"], "answer": 0, "explanation": "صواب؛ تُصدم الجسيمات بسرعة تقارب سرعة الضوء لدمج الأنوية وتكوين عناصر جديدة."}, {"id": 17, "type": "mcq", "question": "مسألة نافس: خلط طالب برادة حديد مع مسحوق كبريت فانجذب الحديد للمغناطيس. ثم سخن الخليط بقوة على اللهب فتكونت مادة سوداء جديدة لم تنجذب نهائياً للمغناطيس! ما التفسير؟", "options": ["في الحالتين تشكل مخلوط فيزيائي فقط", "في الأولى تشكل مخلوط فيزيائي احتفظ بخواصه، وفي الثانية حدث تفاعل كيميائي كون مركباً جديداً (كبريتيد الحديد)", "فقد الحديد شحنته بالحرارة فقط", "تبخر الكبريت وذاب الحديد"], "answer": 1, "explanation": "في الأولى خليط فيزيائي احتفظت فيه المواد بخصائصها، أما التسخين فأحدث تفاعلاً كيميائياً أنتج مركباً جديداً بخصائص جديدة تماماً."}, {"id": 18, "type": "mcq", "question": "مسألة نافس: لعنصر الليثيوم نظيران: ليثيوم-6 (7.5%) وليثيوم-7 (92.5%). لماذا تقترب الكتلة الذرية لليثيوم (6.94) من الرقم 7؟", "options": ["لأن ليثيوم-7 يحوي إلكترونات أكثر", "لأن نسبة تواجد النظير ليثيوم-7 في الطبيعة هي النسبة الغالبة الساحقة (92.5%)", "لأن النيوترونات أثقل في ليثيوم-6", "بفعل الجاذبية الأرضية"], "answer": 1, "explanation": "الكتلة الذرية متوسط حسابي موزون لنسب وجود النظائر في الطبيعة، وتطغى نسبة ليثيوم-7 (92.5%) على الناتج."}, {"id": 19, "type": "mcq", "question": "مسألة نافس: ما التقنية الفيزيائية الأكثر اعتماداً لتحلية مياه البحر على نطاق واسع لمدن كاملة؟", "options": ["التقطير بالتسخين والتكثيف والتناضح العكسي", "الترشيح البسيط بالأوراق", "المغناطيسية الفائقة", "الترويق والترسيب فقط"], "answer": 0, "explanation": "التقطير يفصل الماء العذب بتبخيره عن الأملاح ثم تكثيفه، والتناضح العكسي يدفع الماء عبر أغشية دقيقة تحجز الأملاح."}];
         let currentIdx = 0;
@@ -268,7 +261,7 @@
             
             let badgeText = "اختيار من متعدد";
             if (q.type === 'tf') badgeText = "صواب / خطأ";
-            else if (q.question.includes('نافس')) badgeText = "معايير نافس الوطنية";
+            else if (q.question.includes('نافس')) badgeText = "مسألة نافس";
             document.getElementById('q-type-badge').innerText = badgeText;
             
             document.getElementById('score-val').innerText = score;
@@ -277,7 +270,6 @@
             
             document.getElementById('q-text').innerText = q.question;
             
-            // Build options
             const list = document.getElementById('options-list');
             list.innerHTML = '';
             
@@ -314,23 +306,21 @@
                 score++;
                 document.getElementById('score-val').innerText = score;
                 buttons[selectedIdx].classList.add('correct');
-                buttons[selectedIdx].querySelector('.opt-icon').innerText = '✅ إجابة صحيحة';
+                buttons[selectedIdx].querySelector('.opt-icon').innerText = '✅ صحيح';
             } else {
                 buttons[selectedIdx].classList.add('wrong');
-                buttons[selectedIdx].querySelector('.opt-icon').innerText = '❌ إجابة خاطئة';
+                buttons[selectedIdx].querySelector('.opt-icon').innerText = '❌ خطأ';
                 buttons[q.answer].classList.add('correct');
                 buttons[q.answer].querySelector('.opt-icon').innerText = '✅ الإجابة الصحيحة';
             }
             
-            // Show explanation
             document.getElementById('explanation-text').innerText = q.explanation;
             document.getElementById('explanation-box').classList.remove('hidden');
             
-            // Show next button
             const nextBtn = document.getElementById('next-btn');
             nextBtn.classList.remove('hidden');
             if (currentIdx === questions.length - 1) {
-                nextBtn.querySelector('span:first-child').innerText = 'عرض النتيجة النهائية 🏆';
+                nextBtn.querySelector('span:first-child').innerText = 'عرض النتيجة 🏆';
             } else {
                 nextBtn.querySelector('span:first-child').innerText = 'السؤال التالي ←';
             }
@@ -356,10 +346,10 @@
             document.getElementById('final-total').innerText = questions.length;
             
             let msg = "";
-            if (pct >= 90) msg = "🏆 عالم علوم عبقري! استيعاب استثنائي وإتقان كامل لنواتج التعلم ومفاهيم الدرس.";
-            else if (pct >= 75) msg = "⭐ بطل متميز! أداء رائع وفهم عميق لمعظم مهارات ومعارف الدرس.";
-            else if (pct >= 50) msg = "👍 بداية طيبة! ننصحك بمراجعة الخريطة الذهنية ثم إعادة التحدي لرفع درجاتك.";
-            else msg = "🌱 لا تيأس! تصفح الملخص السبوري والخريطة الذهنية ثم خض الاختبار مجدداً لتثبيت المفاهيم.";
+            if (pct >= 90) msg = "🏆 رائع جداً! استيعاب ممتاز لكافة مفاهيم الدرس.";
+            else if (pct >= 75) msg = "⭐ أداء مميز وفهم عميق للدرس.";
+            else if (pct >= 50) msg = "👍 بداية جيدة، راجع الخريطة الذهنية وأعد الاختبار لرفع درجاتك.";
+            else msg = "🌱 راجع الملخص السبوري والخريطة الذهنية ثم أعد المحاولة.";
             
             document.getElementById('eval-message').innerText = msg;
         }
@@ -372,7 +362,6 @@
             loadQuestion(0);
         }
 
-        // Initialize quiz on page load
         window.onload = function() {
             loadQuestion(0);
         };
