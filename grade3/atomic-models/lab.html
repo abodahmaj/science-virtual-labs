@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>المختبر الافتراضي العلمي — تجربة رذرفورد ونماذج الذرة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800;900&display=swap');
+    body {
+      font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .touch-btn {
+      min-height: 54px;
+      min-width: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas {
+      background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col select-none text-base md:text-lg">
+  
+  <!-- Large Screen / Projector & iPad Header -->
+  <header class="bg-slate-900 border-b-2 border-slate-800 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center text-3xl shadow-inner">
+        ⚛️
+      </div>
+      <div>
+        <h1 class="text-2xl md:text-3xl font-black text-amber-400 tracking-wide flex items-center gap-3">
+          المختبر الافتراضي الذكي: نماذج الذرة
+          <span class="text-xs md:text-sm font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40 px-3 py-1 rounded-full">عرض البروجكتر والآيباد</span>
+        </h1>
+        <p class="text-xs md:text-sm text-slate-400 mt-1 font-medium">العلوم — الصف الثالث المتوسط • الفصل الخامس: تركيب الذرة • إعداد: علي جبريل (مجمع الثقافة التعليمي)</p>
+      </div>
+    </div>
+    
+    <!-- Top Mode Switchers -->
+    <div class="flex items-center gap-2">
+      <button onclick="switchTab('rutherford')" id="tab-rutherford" class="touch-btn px-6 py-3 rounded-xl font-black text-lg bg-amber-600 text-white shadow-lg transition">
+        🥇 تجربة رذرفورد
+      </button>
+      <button onclick="switchTab('crookes')" id="tab-crookes" class="touch-btn px-6 py-3 rounded-xl font-bold text-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        ⚡ أنبوب كروكس (CRT)
+      </button>
+      <button onclick="switchTab('quiz')" id="tab-quiz" class="touch-btn px-6 py-3 rounded-xl font-bold text-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        🚀 تحدي نافس
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 p-4 md:p-6 max-w-[1600px] mx-auto w-full flex flex-col gap-5">
+    
+    <!-- TAB 1: RUTHERFORD ATOMIC SIMULATION -->
+    <div id="view-rutherford" class="flex-1 flex flex-col gap-4">
+      
+      <!-- Interactive Control Panel (Large Touch Elements for iPad & Projector) -->
+      <div class="bg-slate-900/90 border-2 border-slate-800 p-5 rounded-2xl shadow-xl flex flex-wrap items-center justify-between gap-5">
+        
+        <!-- Model Selection Dropdown -->
+        <div class="flex items-center gap-3">
+          <label class="text-base md:text-lg font-bold text-slate-300 whitespace-nowrap">النموذج الفيزيائي:</label>
+          <select id="model-select" onchange="changeModel(this.value)" class="touch-btn bg-slate-800 text-amber-300 border-2 border-amber-500/60 rounded-xl px-4 py-2 font-black text-base md:text-lg focus:outline-none shadow">
+            <option value="rutherford">🥇 نموذج رذرفورد النووي (نواة فائقة الكثافة + فراغ هائل)</option>
+            <option value="thomson">🧁 نموذج طومسون (كرة الصلصال المصمتة دون فراغ)</option>
+          </select>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-3">
+          <button id="btn-fire" onclick="toggleFiring()" class="touch-btn px-6 py-3 rounded-xl font-black text-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg transition">
+            ⏸ إيقاف / تشغيل المدفع
+          </button>
+          <button onclick="resetRutherford()" class="touch-btn px-5 py-3 rounded-xl font-bold text-base bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+            🔄 تصفير الإحصائيات
+          </button>
+        </div>
+
+        <!-- Real-time Accurate Scientific Counters -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+          <div class="bg-slate-950 px-4 py-2 rounded-xl border border-slate-800">
+            <div class="text-xs font-bold text-slate-400">إجمالي الجسيمات</div>
+            <div id="stat-total" class="text-2xl font-black text-white mt-0.5">0</div>
+          </div>
+          <div class="bg-emerald-950/50 px-4 py-2 rounded-xl border-2 border-emerald-500/50">
+            <div class="text-xs font-bold text-emerald-400">نافذة على استقامتها</div>
+            <div id="stat-straight" class="text-2xl font-black text-emerald-300 mt-0.5">0 (100%)</div>
+          </div>
+          <div class="bg-amber-950/50 px-4 py-2 rounded-xl border-2 border-amber-500/50">
+            <div class="text-xs font-bold text-amber-400">منحرفة (تنافر كهربي)</div>
+            <div id="stat-deflected" class="text-2xl font-black text-amber-300 mt-0.5">0 (0%)</div>
+          </div>
+          <div class="bg-rose-950/50 px-4 py-2 rounded-xl border-2 border-rose-500/50">
+            <div class="text-xs font-bold text-rose-400">مرتدة (اصطدام بالنواة)</div>
+            <div id="stat-back" class="text-2xl font-black text-rose-300 mt-0.5">0 (0%)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas Area for Classroom Projection -->
+      <div class="relative bg-slate-900 rounded-3xl border-2 border-slate-800 overflow-hidden flex-1 min-h-[540px] shadow-2xl flex items-center justify-center">
+        <canvas id="rutherfordCanvas" width="1300" height="580" class="w-full h-full block"></canvas>
+        
+        <!-- Legend Overlay (Large & Legible) -->
+        <div class="absolute bottom-4 right-4 bg-slate-950/90 backdrop-blur-md p-4 rounded-2xl border-2 border-slate-800 text-sm md:text-base text-slate-200 flex flex-col gap-2.5 shadow-2xl">
+          <div class="font-bold text-amber-400 border-b border-slate-800 pb-1">🔍 مفتاح الرسم البصري:</div>
+          <div class="flex items-center gap-3"><span class="w-4 h-4 rounded-full bg-amber-400 shadow-sm inline-block"></span> <span>جسيم ألفا (شحنة موجبة +2 وسرعة هائلة)</span></div>
+          <div class="flex items-center gap-3"><span class="w-4 h-4 rounded-full bg-rose-500 shadow-sm inline-block"></span> <span>نواة ذرة الذهب (شديدة الصغر وفائقة الكثافة والكتلة)</span></div>
+          <div class="flex items-center gap-3"><span class="w-4 h-4 rounded-full bg-sky-500/20 border-2 border-sky-400 inline-block"></span> <span>السحابة الإلكترونية (فراغ شاسع تدور فيه الإلكترونات)</span></div>
+        </div>
+
+        <!-- Scientific Real-time Banner -->
+        <div class="absolute top-4 left-4 bg-slate-950/90 backdrop-blur-md p-4 rounded-2xl border-2 border-slate-800 max-w-md shadow-2xl">
+          <div class="text-xs font-extrabold text-amber-400 uppercase tracking-wider mb-1">المبدأ العلمي الفيزيائي:</div>
+          <p id="model-desc" class="text-sm md:text-base text-slate-200 leading-relaxed font-semibold">
+            في نموذج رذرفورد: نفاذ أكثر من 99% على استقامتها يثبت أن الذرة فراغ شاسع، وانحراف القلة ناتج عن تنافر كهربي مع النواة الموجبة، وارتداد 1 من كل 8000 جسيم فقط يثبت اصطدامها المباشر بنواة مركزية صلبة فائقة الكثافة.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CROOKES CATHODE RAY TUBE -->
+    <div id="view-crookes" class="hidden flex-1 flex flex-col gap-4">
+      <div class="bg-slate-900/90 border-2 border-slate-800 p-5 rounded-2xl shadow-xl flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <span class="text-lg font-black text-slate-200">التحكم في أنبوب كروكس:</span>
+          <button id="btn-magnet" onclick="toggleMagnet()" class="touch-btn px-6 py-3 rounded-xl font-black text-base md:text-lg bg-sky-600 hover:bg-sky-500 text-white shadow transition">
+            🧲 تقريب قطب مغناطيسي
+          </button>
+          <button id="btn-stencil" onclick="toggleStencil()" class="touch-btn px-6 py-3 rounded-xl font-black text-base md:text-lg bg-purple-600 hover:bg-purple-500 text-white shadow transition">
+            ✖️ وضع حاجز الاستنسل (الجسم الفلزي X)
+          </button>
+        </div>
+        <div class="text-sm font-bold text-slate-400 bg-slate-950 px-4 py-2 rounded-xl border border-slate-800">
+          انطلاق الأشعة: من المهبط السالب (الكاثود) ⬅️ نحو المصعد الموجب (الأنود)
+        </div>
+      </div>
+
+      <div class="relative bg-slate-900 rounded-3xl border-2 border-slate-800 overflow-hidden flex-1 min-h-[540px] shadow-2xl flex items-center justify-center">
+        <canvas id="crookesCanvas" width="1300" height="580" class="w-full h-full block"></canvas>
+
+        <div class="absolute bottom-4 right-4 bg-slate-950/90 backdrop-blur-md p-5 rounded-2xl border-2 border-slate-800 text-sm md:text-base text-slate-200 max-w-lg shadow-2xl">
+          <p class="font-black text-sky-400 text-lg mb-2">💡 الاستنتاجات العلمية التاريخية لطومسون وكروكس:</p>
+          <p class="mb-1.5">• <b>تكون ظل حاد للحاجز X:</b> برهن أن الأشعة المهبطية تسير في خطوط مستقيمة محاكية قوالب استنسل عمال الطرق.</p>
+          <p>• <b>انحناء الشعاع بالمغناطيس:</b> أثبت قطعياً أنها جسيمات سالبة الشحنة (إلكترونات) وليست ضوءاً؛ لأن الضوء لا يتأثر بالمغناطيس.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: QUIZ & NAFIS CHALLENGE -->
+    <div id="view-quiz" class="hidden flex-1 flex flex-col gap-4">
+      <div class="bg-slate-900 border-2 border-slate-800 p-8 rounded-3xl max-w-4xl mx-auto w-full shadow-2xl">
+        <div class="flex items-center gap-4 mb-6 pb-4 border-b border-slate-800">
+          <div class="w-12 h-12 bg-purple-500/20 border-2 border-purple-400 rounded-xl flex items-center justify-center text-2xl">🚀</div>
+          <div>
+            <h2 class="text-2xl md:text-3xl font-black text-purple-300">تحدي محاكاة نافس الوطني — كيمياء الذرة</h2>
+            <p class="text-sm text-slate-400 mt-0.5">أسئلة معيارية بمستويات التفكير العليا مع التغذية الراجعة والتبريرات الفيزيائية الفورية:</p>
+          </div>
+        </div>
+
+        <div id="quiz-container" class="space-y-6">
+          <!-- Question 1 -->
+          <div class="bg-slate-950/70 p-5 rounded-2xl border-2 border-slate-800">
+            <p class="font-extrabold text-lg text-white mb-4">1. ما المشاهدة المعملية الدقيقة في تجربة رذرفورد التي أثبتت أن معظم حجم الذرة فراغ شاسع؟</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-base">
+              <button onclick="answerQ(1, 'a')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">أ) ارتداد نسبة ضئيلة جداً من الجسيمات للخلف</button>
+              <button onclick="answerQ(1, 'b')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">ب) نفاذ معظم جسيمات ألفا على استقامتها دون أدنى انحراف</button>
+              <button onclick="answerQ(1, 'c')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">ج) انحراف بعض الجسيمات بزوايا كبيرة</button>
+              <button onclick="answerQ(1, 'd')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">د) امتصاص صفيحة الذهب لجميع الجسيمات</button>
+            </div>
+            <div id="fb-1" class="hidden mt-4 p-4 rounded-xl text-base"></div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="bg-slate-950/70 p-5 rounded-2xl border-2 border-slate-800">
+            <p class="font-extrabold text-lg text-white mb-4">2. لماذا انحنى الشعاع في أنبوب كروكس عند تقريب المغناطيس بينما لا ينحني ضوء المصباح العادي؟</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-base">
+              <button onclick="answerQ(2, 'a')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">أ) لأن الأشعة المهبطية سيل من جسيمات مشحونة سالبة والضوء موجات عديمة الشحنة</button>
+              <button onclick="answerQ(2, 'b')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">ب) لأن زجاج الأنبوب يتأثر بالمجال المغناطيسي</button>
+              <button onclick="answerQ(2, 'c')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">ج) لوجود غاز نشط يتفاعل مع المغناطيس</button>
+              <button onclick="answerQ(2, 'd')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">د) لأن سرعة الضوء أكبر من سرعة الإلكترونات</button>
+            </div>
+            <div id="fb-2" class="hidden mt-4 p-4 rounded-xl text-base"></div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="bg-slate-950/70 p-5 rounded-2xl border-2 border-slate-800">
+            <p class="font-extrabold text-lg text-white mb-4">3. ذرة متعادلة كهربائياً تحتوي نواتها على 11 بروتوناً و 12 نيوتروناً؛ كم إلكتروناً يدور في سحابتها؟</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-base">
+              <button onclick="answerQ(3, 'a')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">أ) 12 إلكتروناً سالباً</button>
+              <button onclick="answerQ(3, 'b')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">ب) 23 إلكتروناً سالباً</button>
+              <button onclick="answerQ(3, 'c')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">ج) 11 إلكتروناً سالباً</button>
+              <button onclick="answerQ(3, 'd')" class="touch-btn p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border-2 border-slate-700 text-right transition font-bold">د) إلكترون واحد فقط</button>
+            </div>
+            <div id="fb-3" class="hidden mt-4 p-4 rounded-xl text-base"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Real Footer -->
+  <footer class="bg-slate-900 border-t-2 border-slate-800 py-3 px-8 text-center text-sm text-slate-400 font-bold">
+    معلم المادة: علي جبريل — مجمع الثقافة التعليمي • منصة إعداد دروس العلوم الحديثة للمرحلة المتوسطة
+  </footer>
+
+  <script>
+    // Tab switching
+    function switchTab(tab) {
+      document.getElementById('view-rutherford').classList.add('hidden');
+      document.getElementById('view-crookes').classList.add('hidden');
+      document.getElementById('view-quiz').classList.add('hidden');
+      
+      document.getElementById('tab-rutherford').className = "touch-btn px-6 py-3 rounded-xl font-bold text-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+      document.getElementById('tab-crookes').className = "touch-btn px-6 py-3 rounded-xl font-bold text-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+      document.getElementById('tab-quiz').className = "touch-btn px-6 py-3 rounded-xl font-bold text-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+
+      if (tab === 'rutherford') {
+        document.getElementById('view-rutherford').classList.remove('hidden');
+        document.getElementById('tab-rutherford').className = "touch-btn px-6 py-3 rounded-xl font-black text-lg bg-amber-600 text-white shadow-lg transition";
+      } else if (tab === 'crookes') {
+        document.getElementById('view-crookes').classList.remove('hidden');
+        document.getElementById('tab-crookes').className = "touch-btn px-6 py-3 rounded-xl font-black text-lg bg-sky-600 text-white shadow-lg transition";
+      } else if (tab === 'quiz') {
+        document.getElementById('view-quiz').classList.remove('hidden');
+        document.getElementById('tab-quiz').className = "touch-btn px-6 py-3 rounded-xl font-black text-lg bg-purple-600 text-white shadow-lg transition";
+      }
+    }
+
+    // ----------------------------------------------------
+    // ACCURATE RUTHERFORD SIMULATION ENGINE
+    // ----------------------------------------------------
+    const rCanvas = document.getElementById('rutherfordCanvas');
+    const rCtx = rCanvas.getContext('2d');
+    let isFiring = true;
+    let currentModel = 'rutherford';
+
+    let particles = [];
+    let stats = { total: 0, straight: 0, deflected: 0, back: 0 };
+
+    // Gold Nuclei Grid (Spaced out widely so 99% passes straight through!)
+    // Canvas is 1300 x 580. Gold foil target is at X = 700.
+    // Three widely spaced nuclei at Y = 120, Y = 290, Y = 460.
+    const goldNuclei = [
+      { x: 700, y: 120, r: 7 },
+      { x: 700, y: 290, r: 7 },
+      { x: 700, y: 460, r: 7 }
+    ];
+
+    function changeModel(m) {
+      currentModel = m;
+      const desc = document.getElementById('model-desc');
+      if (m === 'thomson') {
+        desc.textContent = "في نموذج طومسون (كرة الصلصال): الشحنة الموجبة موزعة بانتظام مع الإلكترونات دون وجود نواة صلبة مكثفة، لذا تمر كافة جسيمات ألفا دون أي انحراف يذكر وبلا ارتداد نهائياً!";
+      } else {
+        desc.textContent = "في نموذج رذرفورد: نفاذ أكثر من 99% على استقامتها يثبت أن الذرة فراغ شاسع، وانحراف القلة ناتج عن تنافر كهربي مع النواة الموجبة، وارتداد 1 من كل 8000 جسيم فقط يثبت اصطدامها المباشر بنواة مركزية صلبة فائقة الكثافة.";
+      }
+      resetRutherford();
+    }
+
+    function toggleFiring() {
+      isFiring = !isFiring;
+      const btn = document.getElementById('btn-fire');
+      btn.textContent = isFiring ? "⏸ إيقاف المدفع" : "▶ تشغيل مدفع ألفا";
+      btn.className = isFiring ? "touch-btn px-6 py-3 rounded-xl font-black text-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg transition" : "touch-btn px-6 py-3 rounded-xl font-black text-lg bg-amber-600 hover:bg-amber-500 text-white shadow-lg transition";
+    }
+
+    function resetRutherford() {
+      particles = [];
+      stats = { total: 0, straight: 0, deflected: 0, back: 0 };
+      updateStats();
+    }
+
+    function updateStats() {
+      document.getElementById('stat-total').textContent = stats.total;
+      const pStraight = stats.total > 0 ? ((stats.straight / stats.total) * 100).toFixed(1) : 100;
+      const pDef = stats.total > 0 ? ((stats.deflected / stats.total) * 100).toFixed(2) : 0;
+      const pBack = stats.total > 0 ? ((stats.back / stats.total) * 100).toFixed(2) : 0;
+
+      document.getElementById('stat-straight').textContent = `${stats.straight} (${pStraight}%)`;
+      document.getElementById('stat-deflected').textContent = `${stats.deflected} (${pDef}%)`;
+      document.getElementById('stat-back').textContent = `${stats.back} (${pBack}%)`;
+    }
+
+    class AlphaParticle {
+      constructor() {
+        this.x = 40;
+        // Aim across full vertical height of target
+        this.y = 40 + Math.random() * 500;
+        this.vx = 8.5 + Math.random() * 1.5;
+        this.vy = (Math.random() - 0.5) * 0.15;
+        this.radius = 3.5;
+        this.history = [];
+        this.counted = false;
+        stats.total++;
+      }
+
+      update() {
+        this.history.push({ x: this.x, y: this.y });
+        if (this.history.length > 10) this.history.shift();
+
+        if (currentModel === 'rutherford') {
+          for (let nuc of goldNuclei) {
+            let dx = this.x - nuc.x;
+            let dy = this.y - nuc.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+
+            // Realistic Coulomb interaction range: only significant within 40 pixels!
+            if (dist < 40) {
+              if (dist < 8) {
+                // Direct head-on collision: particle rebounds backward!
+                this.vx = -Math.abs(this.vx) * 0.85;
+                this.vy += (Math.random() - 0.5) * 4.0;
+              } else {
+                // Deflection force inversely proportional to distance squared
+                let force = 450 / (dist * dist + 15);
+                this.vx += (dx / dist) * force;
+                this.vy += (dy / dist) * force;
+              }
+            }
+          }
+        }
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Tally statistics after passing target X=760 or bouncing back X < 650
+        if (!this.counted && (this.x > 760 || (this.vx < 0 && this.x < 660))) {
+          this.counted = true;
+          let angle = Math.abs(Math.atan2(this.vy, this.vx) * (180 / Math.PI));
+          if (this.vx < 0) {
+            stats.back++;
+          } else if (angle > 10) {
+            stats.deflected++;
+          } else {
+            stats.straight++;
+          }
+          updateStats();
+        }
+      }
+
+      draw(ctx) {
+        // Trail
+        ctx.strokeStyle = "rgba(251, 191, 36, 0.45)";
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        for (let i = 0; i < this.history.length; i++) {
+          let pt = this.history[i];
+          if (i === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+
+        // Particle Head
+        ctx.fillStyle = "#F59E0B";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function animateRutherford() {
+      rCtx.clearRect(0, 0, rCanvas.width, rCanvas.height);
+
+      // Alpha Gun Box
+      rCtx.fillStyle = "#1E293B";
+      rCtx.fillRect(10, 200, 60, 180);
+      rCtx.fillStyle = "#D97706";
+      rCtx.fillRect(65, 260, 25, 60);
+      rCtx.fillStyle = "#F8FAFC";
+      rCtx.font = "bold 16px Tajawal, sans-serif";
+      rCtx.fillText("مدفع ألفا", 15, 185);
+
+      // Semi-circular Fluorescent Detection Screen
+      rCtx.strokeStyle = "rgba(148, 163, 184, 0.3)";
+      rCtx.lineWidth = 5;
+      rCtx.beginPath();
+      rCtx.arc(700, 290, 520, -Math.PI * 0.45, Math.PI * 0.45, false);
+      rCtx.stroke();
+      rCtx.fillStyle = "#94A3B8";
+      rCtx.font = "bold 14px Tajawal, sans-serif";
+      rCtx.fillText("شاشة فلورسنتية دائرية للكشف", 1020, 70);
+
+      // Gold Target Foil Boundary
+      rCtx.strokeStyle = "rgba(234, 179, 8, 0.25)";
+      rCtx.lineWidth = 3;
+      rCtx.strokeRect(650, 20, 100, 540);
+      rCtx.fillStyle = "#FEF08A";
+      rCtx.fillText("صفيحة الذهب", 660, 575);
+
+      // Draw Gold Atoms
+      for (let nuc of goldNuclei) {
+        if (currentModel === 'rutherford') {
+          // Vast empty electron cloud
+          rCtx.fillStyle = "rgba(56, 189, 248, 0.07)";
+          rCtx.beginPath();
+          rCtx.arc(nuc.x, nuc.y, 80, 0, Math.PI * 2);
+          rCtx.fill();
+          rCtx.strokeStyle = "rgba(56, 189, 248, 0.3)";
+          rCtx.lineWidth = 1.5;
+          rCtx.stroke();
+
+          // Tiny concentrated dense nucleus
+          rCtx.fillStyle = "#EF4444";
+          rCtx.beginPath();
+          rCtx.arc(nuc.x, nuc.y, nuc.r, 0, Math.PI * 2);
+          rCtx.fill();
+          rCtx.strokeStyle = "#FDE047";
+          rCtx.lineWidth = 2;
+          rCtx.stroke();
+        } else {
+          // Thomson model: solid uniform positive sphere filling the atom
+          rCtx.fillStyle = "rgba(239, 68, 68, 0.35)";
+          rCtx.beginPath();
+          rCtx.arc(nuc.x, nuc.y, 80, 0, Math.PI * 2);
+          rCtx.fill();
+          rCtx.strokeStyle = "rgba(239, 68, 68, 0.7)";
+          rCtx.lineWidth = 2;
+          rCtx.stroke();
+          // Scattered electrons
+          for (let k = 0; k < 8; k++) {
+            let ex = nuc.x + Math.cos(k * 0.78) * 45;
+            let ey = nuc.y + Math.sin(k * 0.78) * 45;
+            rCtx.fillStyle = "#38BDF8";
+            rCtx.beginPath();
+            rCtx.arc(ex, ey, 4, 0, Math.PI * 2);
+            rCtx.fill();
+          }
+        }
+      }
+
+      // Emit new particles smoothly
+      if (isFiring && Math.random() < 0.4) {
+        particles.push(new AlphaParticle());
+      }
+
+      // Update & Draw
+      for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
+        p.update();
+        p.draw(rCtx);
+
+        if (p.x < -20 || p.x > rCanvas.width + 40 || p.y < -40 || p.y > rCanvas.height + 40) {
+          particles.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(animateRutherford);
+    }
+    animateRutherford();
+
+    // ----------------------------------------------------
+    // ACCURATE CROOKES CATHODE RAY SIMULATION
+    // ----------------------------------------------------
+    const cCanvas = document.getElementById('crookesCanvas');
+    const cCtx = cCanvas.getContext('2d');
+    let hasMagnet = false;
+    let hasStencil = false;
+
+    function toggleMagnet() {
+      hasMagnet = !hasMagnet;
+      const btn = document.getElementById('btn-magnet');
+      btn.className = hasMagnet ? "touch-btn px-6 py-3 rounded-xl font-black text-base md:text-lg bg-amber-600 hover:bg-amber-500 text-white shadow-lg transition" : "touch-btn px-6 py-3 rounded-xl font-black text-base md:text-lg bg-sky-600 hover:bg-sky-500 text-white shadow transition";
+    }
+
+    function toggleStencil() {
+      hasStencil = !hasStencil;
+      const btn = document.getElementById('btn-stencil');
+      btn.className = hasStencil ? "touch-btn px-6 py-3 rounded-xl font-black text-base md:text-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg transition" : "touch-btn px-6 py-3 rounded-xl font-black text-base md:text-lg bg-purple-600 hover:bg-purple-500 text-white shadow transition";
+    }
+
+    function animateCrookes() {
+      cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
+
+      // Glass Tube Envelope
+      cCtx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+      cCtx.lineWidth = 4;
+      cCtx.fillStyle = "rgba(15, 23, 42, 0.65)";
+      cCtx.beginPath();
+      cCtx.roundRect(160, 150, 980, 280, [35]);
+      cCtx.fill();
+      cCtx.stroke();
+
+      // Cathode (Negative Electrode on Right)
+      cCtx.fillStyle = "#94A3B8";
+      cCtx.fillRect(1070, 210, 20, 160);
+      cCtx.fillStyle = "#EF4444";
+      cCtx.font = "bold 16px Tajawal, sans-serif";
+      cCtx.fillText("المهبط (الكاثود -)", 1025, 195);
+
+      // Anode (Positive Electrode on Left)
+      cCtx.fillStyle = "#94A3B8";
+      cCtx.fillRect(210, 210, 20, 160);
+      cCtx.fillStyle = "#38BDF8";
+      cCtx.fillText("المصعد (الأنود +)", 190, 195);
+
+      // Cathode Ray Beam (Green Phosphor Glow)
+      cCtx.save();
+      cCtx.strokeStyle = "rgba(34, 197, 94, 0.9)";
+      cCtx.lineWidth = 8;
+      cCtx.shadowColor = "#22C55E";
+      cCtx.shadowBlur = 24;
+
+      let startX = 1070;
+      let startY = 290;
+      let targetX = 210;
+      let targetY = 290;
+
+      if (hasMagnet) {
+        targetY = 190; // Ray curves upward toward magnetic field
+      }
+
+      cCtx.beginPath();
+      cCtx.moveTo(startX, startY);
+
+      if (hasMagnet) {
+        cCtx.quadraticCurveTo(680, 290, targetX, targetY);
+      } else {
+        cCtx.lineTo(targetX, targetY);
+      }
+      cCtx.stroke();
+      cCtx.restore();
+
+      // Stencil Barrier (X shape) in the middle
+      if (hasStencil) {
+        cCtx.strokeStyle = "#F59E0B";
+        cCtx.lineWidth = 9;
+        cCtx.beginPath();
+        cCtx.moveTo(630, 250);
+        cCtx.lineTo(670, 330);
+        cCtx.moveTo(670, 250);
+        cCtx.lineTo(630, 330);
+        cCtx.stroke();
+
+        // Shadow on the Anode Wall
+        cCtx.fillStyle = "rgba(2, 6, 23, 0.95)";
+        cCtx.beginPath();
+        cCtx.roundRect(190, hasMagnet ? 155 : 255, 25, 75, [6]);
+        cCtx.fill();
+        cCtx.fillStyle = "#E2E8F0";
+        cCtx.font = "bold 13px Tajawal, sans-serif";
+        cCtx.fillText("ظل الحاجز X", 170, hasMagnet ? 145 : 245);
+      }
+
+      // Magnet Drawing if Active
+      if (hasMagnet) {
+        // North Pole (Red)
+        cCtx.fillStyle = "#DC2626";
+        cCtx.fillRect(630, 60, 80, 60);
+        cCtx.fillStyle = "#FFFFFF";
+        cCtx.font = "bold 20px Tajawal, sans-serif";
+        cCtx.fillText("N (شمال)", 638, 98);
+
+        // South Pole (Blue)
+        cCtx.fillStyle = "#2563EB";
+        cCtx.fillRect(630, 460, 80, 60);
+        cCtx.fillStyle = "#FFFFFF";
+        cCtx.fillText("S (جنوب)", 642, 498);
+      }
+
+      requestAnimationFrame(animateCrookes);
+    }
+    animateCrookes();
+
+    // ----------------------------------------------------
+    // QUIZ LOGIC
+    // ----------------------------------------------------
+    const quizAnswers = {
+      1: { correct: 'b', rationale: 'نفاذ ما يزيد عن 99% من جسيمات ألفا على استقامتها دون أدنى انحراف برهن قطعياً أن باطن الذرة فراغ شاسع وهائل لا تعترضه أي عوائق صلبة.' },
+      2: { correct: 'a', rationale: 'الضوء موجات كهرومغناطيسية متعادلة لا تتأثر بالمغناطيس الساكن، بينما الأشعة المهبطية سيل من جسيمات دقيقة سالبة الشحنة (إلكترونات) تتأثر بالقوة المغناطيسية فتنحني فوراً.' },
+      3: { correct: 'c', rationale: 'الذرة المتعادلة كهربائياً يتساوى فيها بالضرورة عدد الشحنات الموجبة (11 بروتوناً) مع عدد الشحنات السالبة (11 إلكتروناً).' }
+    };
+
+    function answerQ(qNum, choice) {
+      const q = quizAnswers[qNum];
+      const fb = document.getElementById(`fb-${qNum}`);
+      fb.classList.remove('hidden');
+
+      if (choice === q.correct) {
+        fb.className = "mt-4 p-4 rounded-xl text-base bg-emerald-950/80 border-2 border-emerald-500 text-emerald-200 font-bold";
+        fb.innerHTML = `✅ إجابة صحيحة وممتازة! <br><span class="font-normal text-slate-300 mt-1.5 block">${q.rationale}</span>`;
+      } else {
+        fb.className = "mt-4 p-4 rounded-xl text-base bg-rose-950/80 border-2 border-rose-500 text-rose-200 font-bold";
+        fb.innerHTML = `❌ إجابة غير دقيقة! الإجابة الصحيحة هي (${q.correct.toUpperCase()}). <br><span class="font-normal text-slate-300 mt-1.5 block">${q.rationale}</span>`;
+      }
+    }
+  </script>
+</body>
+</html>

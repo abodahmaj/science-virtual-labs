@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>المختبر الافتراضي العلمي — تصنيف المادة وفصل المخاليط</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      touch-action: manipulation;
+    }
+    .touch-btn {
+      min-height: 54px;
+      min-width: 54px;
+      touch-action: manipulation;
+    }
+    .neon-border-sky {
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+    }
+    .neon-border-emerald {
+      box-shadow: 0 0 25px rgba(52, 211, 153, 0.35);
+    }
+    .neon-border-amber {
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.35);
+    }
+    .neon-border-purple {
+      box-shadow: 0 0 25px rgba(192, 132, 252, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col select-none overflow-x-hidden">
+
+  <!-- Header for iPad & Projector -->
+  <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <span class="flex items-center justify-center w-12 h-12 text-2xl bg-sky-500/20 text-sky-400 rounded-xl border border-sky-500/40">🧪</span>
+      <div>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-emerald-400">
+          المختبر الافتراضي العلمي: تصنيف المادة وفصل المخاليط
+        </h1>
+        <p class="text-sm font-semibold text-slate-400">
+          الصف الأول المتوسط • العلوم | الفصل الرابع • إعداد: علي جبريل (مجمع الثقافة التعليمي)
+        </p>
+      </div>
+    </div>
+    
+    <!-- Navigation Tabs (min 54px high) -->
+    <div class="flex gap-2 bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800">
+      <button id="tab-classify" onclick="switchTab('classify')" class="touch-btn px-5 py-3 rounded-xl font-bold text-base bg-sky-600 text-white transition flex items-center gap-2">
+        <span>🏷️</span> تصنيف المواد
+      </button>
+      <button id="tab-isotopes" onclick="switchTab('isotopes')" class="touch-btn px-5 py-3 rounded-xl font-bold text-base bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-2">
+        <span>⚛️</span> بناء الذرات والنظائر
+      </button>
+      <button id="tab-separate" onclick="switchTab('separate')" class="touch-btn px-5 py-3 rounded-xl font-bold text-base bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-2">
+        <span>⚗️</span> محاكاة فصل المخاليط
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full space-y-6">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: CLASSIFICATION CHALLENGE           -->
+    <!-- ========================================== -->
+    <section id="sec-classify" class="space-y-6">
+      <div class="bg-slate-900 p-6 rounded-3xl border-2 border-sky-500/40 neon-border-sky">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-2xl font-black text-sky-300">🎯 محطة التحدي والتصنيف العلمي للمادة</h2>
+            <p class="text-slate-300 text-base">اقرأ بطاقة المادة المعروضة وصنفها بدقة وفق المفاهيم العلمية المقررة:</p>
+          </div>
+          <span class="px-4 py-2 bg-sky-950 text-sky-400 border border-sky-500/40 rounded-xl text-sm font-bold">
+            محاكاة اختبارات نافس المعيارية
+          </span>
+        </div>
+
+        <!-- Current Item Card (Projector Sized) -->
+        <div class="p-8 my-6 bg-slate-950 border-2 border-sky-500/30 rounded-2xl text-center space-y-3">
+          <span class="text-xs font-bold text-sky-400 uppercase tracking-widest">المادة المستهدفة بالتصنيف:</span>
+          <div id="current-item" class="text-3xl md:text-4xl font-black text-white tracking-wide">
+            جاري التحميل...
+          </div>
+          <div id="item-hint" class="text-base text-slate-400 font-medium"></div>
+        </div>
+
+        <!-- 4 Large Touch Buttons (min 56px height for iPad) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button onclick="checkAnswer('عنصر')" class="touch-btn p-4 rounded-2xl bg-gradient-to-r from-blue-700 to-sky-600 hover:from-blue-600 hover:to-sky-500 text-white font-extrabold text-lg shadow-lg shadow-sky-900/30 active:scale-95 transition">
+            ⚛️ عنصر نقي
+          </button>
+          <button onclick="checkAnswer('مركب')" class="touch-btn p-4 rounded-2xl bg-gradient-to-r from-purple-700 to-indigo-600 hover:from-purple-600 hover:to-indigo-500 text-white font-extrabold text-lg shadow-lg shadow-purple-900/30 active:scale-95 transition">
+            🧪 مركب كيميائي
+          </button>
+          <button onclick="checkAnswer('متجانس')" class="touch-btn p-4 rounded-2xl bg-gradient-to-r from-emerald-700 to-teal-600 hover:from-emerald-600 hover:to-teal-500 text-white font-extrabold text-lg shadow-lg shadow-emerald-900/30 active:scale-95 transition">
+            🍹 مخلوط متجانس (محلول)
+          </button>
+          <button onclick="checkAnswer('غير متجانس')" class="touch-btn p-4 rounded-2xl bg-gradient-to-r from-amber-700 to-yellow-600 hover:from-amber-600 hover:to-yellow-500 text-white font-extrabold text-lg shadow-lg shadow-amber-900/30 active:scale-95 transition">
+            🥗 مخلوط غير متجانس
+          </button>
+        </div>
+
+        <!-- Pedagogical Feedback Box -->
+        <div id="feedback" class="mt-6 min-h-[70px] flex items-center justify-center p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center text-lg font-bold"></div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: ATOM & ISOTOPE BUILDER             -->
+    <!-- ========================================== -->
+    <section id="sec-isotopes" class="hidden space-y-6">
+      <div class="bg-slate-900 p-6 rounded-3xl border-2 border-emerald-500/40 neon-border-emerald">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-2xl font-black text-emerald-300">⚛️ مختبر بناء الذرة وحساب النظائر والأعداد الذرية</h2>
+            <p class="text-slate-300 text-base">أضف البروتونات والنيوترونات لبناء الذرة وملاحظة تغير العدد الذري والكتلي ونظائر العنصر:</p>
+          </div>
+          <button onclick="resetAtom()" class="touch-btn px-5 py-2.5 bg-rose-950 text-rose-300 border border-rose-500/40 rounded-xl font-bold text-sm hover:bg-rose-900 transition">
+            🔄 إعادة الضبط
+          </button>
+        </div>
+
+        <!-- Wide Interactive Canvas for Projector (1300 x 520) -->
+        <div class="relative w-full overflow-hidden rounded-2xl border-2 border-slate-800 bg-[#0B1120] flex flex-col items-center justify-center">
+          <canvas id="atomCanvas" width="1300" height="520" class="w-full max-w-full h-auto cursor-crosshair"></canvas>
+          <div class="absolute top-4 right-4 bg-slate-900/90 border border-slate-700 px-4 py-2 rounded-xl text-xs font-bold text-slate-300 pointer-events-none">
+            💡 النواة بالمركز • الإلكترونات تدور في مستويات الطاقة
+          </div>
+        </div>
+
+        <!-- Real-time Stats & Controls Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+          <!-- Stat 1: Element Name -->
+          <div class="p-5 bg-slate-950 border border-slate-800 rounded-2xl text-center space-y-1">
+            <span class="text-xs font-bold text-slate-400">العنصر المتشكل:</span>
+            <div id="lbl-name" class="text-2xl font-black text-emerald-300">هيدروجين (H)</div>
+            <div id="lbl-desc" class="text-xs text-slate-400">عنصر غازي لافلز</div>
+          </div>
+
+          <!-- Stat 2: Atomic Number (Z) -->
+          <div class="p-5 bg-slate-950 border border-slate-800 rounded-2xl text-center space-y-1">
+            <span class="text-xs font-bold text-sky-400">العدد الذري (البروتونات Z):</span>
+            <div id="lbl-protons" class="text-3xl font-black text-sky-300">1</div>
+            <div class="flex justify-center gap-2 mt-2">
+              <button onclick="addProton(1)" class="touch-btn w-12 h-12 bg-sky-700 hover:bg-sky-600 rounded-xl font-bold text-xl text-white">+</button>
+              <button onclick="addProton(-1)" class="touch-btn w-12 h-12 bg-slate-800 hover:bg-slate-700 rounded-xl font-bold text-xl text-slate-300">-</button>
+            </div>
+          </div>
+
+          <!-- Stat 3: Neutrons -->
+          <div class="p-5 bg-slate-950 border border-slate-800 rounded-2xl text-center space-y-1">
+            <span class="text-xs font-bold text-purple-400">النيوترونات (المتعادلة N):</span>
+            <div id="lbl-neutrons" class="text-3xl font-black text-purple-300">0</div>
+            <div class="flex justify-center gap-2 mt-2">
+              <button onclick="addNeutron(1)" class="touch-btn w-12 h-12 bg-purple-700 hover:bg-purple-600 rounded-xl font-bold text-xl text-white">+</button>
+              <button onclick="addNeutron(-1)" class="touch-btn w-12 h-12 bg-slate-800 hover:bg-slate-700 rounded-xl font-bold text-xl text-slate-300">-</button>
+            </div>
+          </div>
+
+          <!-- Stat 4: Mass Number (A) -->
+          <div class="p-5 bg-slate-950 border border-slate-800 rounded-2xl text-center space-y-1">
+            <span class="text-xs font-bold text-amber-400">العدد الكتلي (A = Z + N):</span>
+            <div id="lbl-mass" class="text-3xl font-black text-amber-300">1</div>
+            <div id="lbl-isotope" class="text-xs font-bold text-amber-400/90 mt-2">نظير الهيدروجين-1 (البروتيوم)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: PHYSICAL MIXTURE SEPARATION        -->
+    <!-- ========================================== -->
+    <section id="sec-separate" class="hidden space-y-6">
+      <div class="bg-slate-900 p-6 rounded-3xl border-2 border-amber-500/40 neon-border-amber">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-2xl font-black text-amber-300">⚗️ محاكاة استقصاء فصل المخلوط المعقد</h2>
+            <p class="text-slate-300 text-base">مخلوط صلب يحتوي على: (برادة حديد + حصى كبير + رمل ناعم + ملح طعام ذائب):</p>
+          </div>
+          <button onclick="resetSeparation()" class="touch-btn px-5 py-2.5 bg-slate-800 text-amber-300 border border-amber-500/40 rounded-xl font-bold text-sm hover:bg-slate-700 transition">
+            🔄 إعادة تعيين التجربة
+          </button>
+        </div>
+
+        <!-- 4 Step Interactive Stage Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <!-- Step 1: Magnet -->
+          <div id="step-card-1" class="p-5 bg-slate-950 border-2 border-sky-500/50 rounded-2xl text-center space-y-2 transition">
+            <span class="text-3xl">🧲</span>
+            <div class="font-extrabold text-sky-300 text-lg">الخطوة 1: المغناطيس</div>
+            <p class="text-xs text-slate-400">جذب برادة الحديد لعزلها بخاصيتها المغناطيسية</p>
+            <button id="btn-sep-1" onclick="executeStep(1)" class="touch-btn w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl shadow transition">
+              جذب برادة الحديد
+            </button>
+          </div>
+
+          <!-- Step 2: Sieving -->
+          <div id="step-card-2" class="p-5 bg-slate-950 border-2 border-slate-800 rounded-2xl text-center space-y-2 opacity-50 transition">
+            <span class="text-3xl">🧺</span>
+            <div class="font-extrabold text-slate-300 text-lg">الخطوة 2: الغربلة</div>
+            <p class="text-xs text-slate-400">عزل الحصى ذي الحبات الكبيرة عبر فتحات المنخل</p>
+            <button id="btn-sep-2" onclick="executeStep(2)" disabled class="touch-btn w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-xl transition">
+              غربلة الحصى
+            </button>
+          </div>
+
+          <!-- Step 3: Dissolve & Filter -->
+          <div id="step-card-3" class="p-5 bg-slate-950 border-2 border-slate-800 rounded-2xl text-center space-y-2 opacity-50 transition">
+            <span class="text-3xl">📄</span>
+            <div class="font-extrabold text-slate-300 text-lg">الخطوة 3: الإذابة والترشيح</div>
+            <p class="text-xs text-slate-400">إذابة الملح بالماء وترشيح حبيبات الرمل غير الذائبة</p>
+            <button id="btn-sep-3" onclick="executeStep(3)" disabled class="touch-btn w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-xl transition">
+              ترشيح الرمل
+            </button>
+          </div>
+
+          <!-- Step 4: Evaporation -->
+          <div id="step-card-4" class="p-5 bg-slate-950 border-2 border-slate-800 rounded-2xl text-center space-y-2 opacity-50 transition">
+            <span class="text-3xl">🔥</span>
+            <div class="font-extrabold text-slate-300 text-lg">الخطوة 4: التبخير والبلورة</div>
+            <p class="text-xs text-slate-400">تسخين المحلول الملحي لتبخير الماء وترسيب الملح النقي</p>
+            <button id="btn-sep-4" onclick="executeStep(4)" disabled class="touch-btn w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-xl transition">
+              تبخير وترسيب الملح
+            </button>
+          </div>
+        </div>
+
+        <!-- Simulation Visualization Canvas (1300 x 360) -->
+        <div class="relative w-full overflow-hidden rounded-2xl border-2 border-slate-800 bg-[#0B1120] mt-6 flex flex-col items-center justify-center">
+          <canvas id="sepCanvas" width="1300" height="360" class="w-full max-w-full h-auto"></canvas>
+        </div>
+
+        <!-- Log & Educational Explanation -->
+        <div id="sep-status" class="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+          <div class="text-sm font-bold text-amber-300">📋 السجل العلمي لعمليات الفصل:</div>
+          <div id="sep-log" class="text-base text-slate-300 font-medium">
+            المخلوط الآن في حالته الأصلية غير المفصولة. ابدأ بالضغط على "جذب برادة الحديد" لتطبيق أول خاصية فيزيائية.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive JavaScript Engine -->
+  <script>
+    // Tab Switching
+    function switchTab(tabId) {
+      ['classify', 'isotopes', 'separate'].forEach(id => {
+        const sec = document.getElementById('sec-' + id);
+        const btn = document.getElementById('tab-' + id);
+        if (id === tabId) {
+          sec.classList.remove('hidden');
+          btn.className = 'touch-btn px-5 py-3 rounded-xl font-bold text-base bg-sky-600 text-white transition flex items-center gap-2';
+        } else {
+          sec.classList.add('hidden');
+          btn.className = 'touch-btn px-5 py-3 rounded-xl font-bold text-base bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-2';
+        }
+      });
+      if (tabId === 'isotopes') {
+        initAtomCanvas();
+      } else if (tabId === 'separate') {
+        drawSeparationCanvas();
+      }
+    }
+
+    // ---------------------------------------------
+    // TAB 1: CLASSIFICATION LOGIC
+    // ---------------------------------------------
+    const items = [
+      { name: "سلك نحاسي نقي (Cu)", type: "عنصر", hint: "مادة حمراء براقة موصلة للكهرباء", exp: "يتكون من نوع واحد فقط من الذرات ولا يمكن تجزئته كيميائياً." },
+      { name: "ملح الطعام المتبلور (NaCl)", type: "مركب", hint: "بلورات بيضاء تنتج عن اتحاد الصوديوم والكلور", exp: "مركب كيميائي تحكمه نسبة وزنية ثابتة 1:1 وخواصه تختلف تماماً عن عناصره." },
+      { name: "عصير التفاح المصفى الرائق", type: "متجانس", hint: "سائل رائق متجانس دون رواسب", exp: "مخلوط متجانس (محلول) تمتزج فيه الجزيئات بانتظام تام." },
+      { name: "طبق سلطة خضار طازج", type: "غير متجانس", hint: "قطع طماطم وخيار وخس متجاورة", exp: "مخلوط غير متجانس يسهل تمييز أجزائه وفصلها فيزيائياً." },
+      { name: "غاز الأكسجين في أسطوانة نقية (O2)", type: "عنصر", hint: "غاز التنفس المكون من جزيئات ثنائية الذرة", exp: "عنصر نقي لافلز يتكون من ذرات متطابقة." },
+      { name: "الماء المقطر النقي (H2O)", type: "مركب", hint: "سائل نقي ناتج عن تفاعل الهيدروجين والأكسجين", exp: "مركب نقي ناتج عن اتحاد كيميائي بروابط تساهمية قوية بنسبة 2 هيدروجين : 1 أكسجين." },
+      { name: "عينة من دم الإنسان", type: "غير متجانس", hint: "سائل حيوي يحوي خلايا وبلازما", exp: "مخلوط غير متجانس تترسب خلاياه عند تركه أو بجهاز الطرد المركزي." },
+      { name: "شريحة من السيليكون النقي (Si)", type: "عنصر", hint: "المادة الأساسية لصناعة رقائق الحواسيب", exp: "عنصر من أشباه الفلزات يتميز بخصائص التوصيل الشبه موصل." },
+      { name: "محلول ماء البحر المالح المصفى", type: "متجانس", hint: "مياه بحر نقية ذائبة الأملاح", exp: "مخلوط متجانس يحوي أملاحاً ذائبة بانتظام في الماء." },
+      { name: "حساء الخضار المشكل", type: "غير متجانس", hint: "قطع جزر وبطاطس ومرق", exp: "مخلوط غير متجانس لا تمتزج مكوناته بانتظام." }
+    ];
+    let curIdx = 0;
+
+    function renderItem() {
+      const it = items[curIdx];
+      document.getElementById('current-item').textContent = it.name;
+      document.getElementById('item-hint').textContent = '💡 تلميح: ' + it.hint;
+    }
+
+    function checkAnswer(chosen) {
+      const it = items[curIdx];
+      const fb = document.getElementById('feedback');
+      if (chosen === it.type) {
+        fb.innerHTML = '<span class="text-emerald-400">✅ إجابة نموذجية صحيحة 100%! ' + it.exp + '</span>';
+        fb.className = 'mt-6 min-h-[70px] flex items-center justify-center p-4 rounded-2xl bg-emerald-950/60 border-2 border-emerald-500 text-center text-lg font-bold';
+        curIdx = (curIdx + 1) % items.length;
+        setTimeout(() => {
+          fb.innerHTML = '';
+          fb.className = 'mt-6 min-h-[70px] flex items-center justify-center p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center text-lg font-bold';
+          renderItem();
+        }, 2200);
+      } else {
+        fb.innerHTML = '<span class="text-rose-400">❌ إجابة غير دقيقة! فكر في ترابط الجزيئات وإمكانية الفصل الفيزيائي.</span>';
+        fb.className = 'mt-6 min-h-[70px] flex items-center justify-center p-4 rounded-2xl bg-rose-950/60 border-2 border-rose-500 text-center text-lg font-bold';
+      }
+    }
+
+    // ---------------------------------------------
+    // TAB 2: ATOM & ISOTOPE BUILDER ANIMATION
+    // ---------------------------------------------
+    let protons = 1, neutrons = 0;
+    let atomAngle = 0;
+    let atomAnimId = null;
+
+    function addProton(delta) {
+      protons = Math.max(1, Math.min(6, protons + delta));
+      updateAtomUI();
+    }
+
+    function addNeutron(delta) {
+      neutrons = Math.max(0, Math.min(8, neutrons + delta));
+      updateAtomUI();
+    }
+
+    function resetAtom() {
+      protons = 1;
+      neutrons = 0;
+      updateAtomUI();
+    }
+
+    const elementData = {
+      1: { name: "هيدروجين (H)", desc: "غاز لافلز خفيف جداً، يشتعل بفرقعة", isotopes: { 0: "البروتيوم (H-1)", 1: "الديوتيريوم (H-2)", 2: "التريتيوم المشع (H-3)" } },
+      2: { name: "هيليوم (He)", desc: "غاز نبيل خامل يملأ المناطيد", isotopes: { 1: "هيليوم-3 النادر", 2: "هيليوم-4 المستقر" } },
+      3: { name: "ليثيوم (Li)", desc: "فلز قلوي خفيف لصناعة بطاريات الهواتف", isotopes: { 3: "ليثيوم-6 (7.5%)", 4: "ليثيوم-7 الشائع (92.5%)" } },
+      4: { name: "بيريليوم (Be)", desc: "فلز صلب يدخل في سبائك الفضاء", isotopes: { 5: "بيريليوم-9 المستقر" } },
+      5: { name: "بورون (B)", desc: "شبه فلز مقاوم للحرارة", isotopes: { 5: "بورون-10", 6: "بورون-11" } },
+      6: { name: "كربون (C)", desc: "أساس الكيمياء العضوية وأشكال الجرافيت والماس", isotopes: { 6: "كربون-12 المستقر (99%)", 7: "كربون-13", 8: "كربون-14 المشع لتأريخ الحفريات" } }
+    };
+
+    function updateAtomUI() {
+      document.getElementById('lbl-protons').textContent = protons;
+      document.getElementById('lbl-neutrons').textContent = neutrons;
+      const mass = protons + neutrons;
+      document.getElementById('lbl-mass').textContent = mass;
+
+      const ed = elementData[protons] || { name: "عنصر غير محدد", desc: "", isotopes: {} };
+      document.getElementById('lbl-name').textContent = ed.name;
+      document.getElementById('lbl-desc').textContent = ed.desc;
+
+      const isoName = ed.isotopes[neutrons] || `نظير ${ed.name.split(' ')[0]}-${mass}`;
+      document.getElementById('lbl-isotope').textContent = `الرمز النووي: ${isoName}`;
+    }
+
+    function initAtomCanvas() {
+      const cvs = document.getElementById('atomCanvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+
+      // Prevent touch scroll on iPad
+      cvs.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+      cvs.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+      if (atomAnimId) cancelAnimationFrame(atomAnimId);
+
+      function loop() {
+        ctx.fillStyle = '#0B1120';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+        const cx = cvs.width / 2;
+        const cy = cvs.height / 2;
+
+        // Draw Electron Orbits
+        const r1 = 120;
+        const r2 = 210;
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 6]);
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, r1, 0, Math.PI * 2);
+        ctx.stroke();
+
+        if (protons > 2) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, r2, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        // Orbiting Electrons
+        atomAngle += 0.025;
+        const electronsK = Math.min(2, protons);
+        for (let i = 0; i < electronsK; i++) {
+          const a = atomAngle + (i * Math.PI);
+          const ex = cx + r1 * Math.cos(a);
+          const ey = cy + r1 * Math.sin(a);
+
+          // Glow
+          ctx.shadowColor = '#38BDF8';
+          ctx.shadowBlur = 15;
+          ctx.fillStyle = '#38BDF8';
+          ctx.beginPath();
+          ctx.arc(ex, ey, 9, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 11px Tajawal';
+          ctx.textAlign = 'center';
+          ctx.fillText('e⁻', ex, ey + 4);
+        }
+
+        if (protons > 2) {
+          const electronsL = protons - 2;
+          for (let i = 0; i < electronsL; i++) {
+            const a = -atomAngle * 0.7 + (i * (Math.PI * 2 / electronsL));
+            const ex = cx + r2 * Math.cos(a);
+            const ey = cy + r2 * Math.sin(a);
+
+            ctx.shadowColor = '#38BDF8';
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = '#38BDF8';
+            ctx.beginPath();
+            ctx.arc(ex, ey, 9, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 11px Tajawal';
+            ctx.textAlign = 'center';
+            ctx.fillText('e⁻', ex, ey + 4);
+          }
+        }
+
+        // Draw Nucleus
+        ctx.shadowColor = '#F59E0B';
+        ctx.shadowBlur = 30;
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
+        ctx.beginPath();
+        ctx.arc(cx, cy, 45, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Draw Protons (Red/Orange) and Neutrons (Purple)
+        const totalNucleons = protons + neutrons;
+        for (let i = 0; i < totalNucleons; i++) {
+          const isP = i < protons;
+          const theta = (i * 2.39996) + atomAngle * 0.1;
+          const dist = 12 + (i % 3) * 11;
+          const nx = cx + dist * Math.cos(theta);
+          const ny = cy + dist * Math.sin(theta);
+
+          ctx.fillStyle = isP ? '#EF4444' : '#A855F7';
+          ctx.shadowColor = isP ? '#EF4444' : '#A855F7';
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.arc(nx, ny, 11, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 10px Tajawal';
+          ctx.textAlign = 'center';
+          ctx.fillText(isP ? 'p⁺' : 'n⁰', nx, ny + 3.5);
+        }
+
+        atomAnimId = requestAnimationFrame(loop);
+      }
+      loop();
+    }
+
+    // ---------------------------------------------
+    // TAB 3: SEPARATION SIMULATION CANVAS
+    // ---------------------------------------------
+    let currentStep = 0;
+    const stepLogs = {
+      1: "✅ اكتملت الخطوة 1: تم تقريب مغناطيس قوي؛ فانجذبت برادة الحديد بالكامل وعُزلت فيزيائياً عن بقية المخلوط.",
+      2: "✅ اكتملت الخطوة 2: تم صب المخلوط المتبقي عبر منخل سلكي دقيق؛ فاحتُجزت حبات الحصى الكبيرة ونفذ الرمل والملح.",
+      3: "✅ اكتملت الخطوة 3: أضيف الماء لإذابة الملح بالكامل، ثم صُب المحلول عبر قمع وورق ترشيح؛ فتجمّع الرمل على الورقة ونفذ المحلول المائي الرائق.",
+      4: "🎉 اكتملت الخطوة 4: سُخّن المحلول الملحي في جفنة تسخين حتى تبخر الماء تماماً وتصاعد كبخار، وترسبت بلورات ملح الطعام النقية (NaCl) في القاع!"
+    };
+
+    function executeStep(s) {
+      currentStep = s;
+      document.getElementById('sep-log').textContent = stepLogs[s];
+
+      // Update card states
+      for (let i = 1; i <= 4; i++) {
+        const card = document.getElementById('step-card-' + i);
+        const btn = document.getElementById('btn-sep-' + i);
+        if (i <= s) {
+          card.classList.remove('opacity-50');
+          card.classList.add('border-emerald-500/80');
+          btn.disabled = true;
+          btn.textContent = '✔ تم الإنجاز';
+          btn.className = 'touch-btn w-full bg-emerald-800 text-emerald-200 font-bold py-3 rounded-xl transition';
+        } else if (i === s + 1) {
+          card.classList.remove('opacity-50');
+          card.classList.add('border-sky-500/80');
+          btn.disabled = false;
+          btn.className = 'touch-btn w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl shadow transition';
+        } else {
+          card.classList.add('opacity-50');
+          btn.disabled = true;
+        }
+      }
+      drawSeparationCanvas();
+    }
+
+    function resetSeparation() {
+      currentStep = 0;
+      document.getElementById('sep-log').textContent = "المخلوط الآن في حالته الأصلية غير المفصولة. ابدأ بالضغط على 'جذب برادة الحديد' لتطبيق أول خاصية فيزيائية.";
+      for (let i = 1; i <= 4; i++) {
+        const card = document.getElementById('step-card-' + i);
+        const btn = document.getElementById('btn-sep-' + i);
+        card.className = (i === 1 ? 'p-5 bg-slate-950 border-2 border-sky-500/50 rounded-2xl text-center space-y-2 transition' : 'p-5 bg-slate-950 border-2 border-slate-800 rounded-2xl text-center space-y-2 opacity-50 transition');
+        btn.disabled = (i !== 1);
+        if (i === 1) {
+          btn.textContent = 'جذب برادة الحديد';
+          btn.className = 'touch-btn w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl shadow transition';
+        } else if (i === 2) {
+          btn.textContent = 'غربلة الحصى';
+          btn.className = 'touch-btn w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-xl transition';
+        } else if (i === 3) {
+          btn.textContent = 'ترشيح الرمل';
+          btn.className = 'touch-btn w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-xl transition';
+        } else if (i === 4) {
+          btn.textContent = 'تبخير وترسيب الملح';
+          btn.className = 'touch-btn w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-xl transition';
+        }
+      }
+      drawSeparationCanvas();
+    }
+
+    function drawSeparationCanvas() {
+      const cvs = document.getElementById('sepCanvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+
+      ctx.fillStyle = '#0B1120';
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+      // Draw 4 Station Beakers across 1300 width
+      const beakers = [
+        { x: 180, title: "1. برادة الحديد", color: "#64748B", isolated: currentStep >= 1 },
+        { x: 500, title: "2. الحصى الكبير", color: "#78716C", isolated: currentStep >= 2 },
+        { x: 820, title: "3. الرمل الناعم", color: "#FBBF24", isolated: currentStep >= 3 },
+        { x: 1140, title: "4. ملح الطعام النقي", color: "#38BDF8", isolated: currentStep >= 4 }
+      ];
+
+      beakers.forEach(b => {
+        // Draw Beaker Outline
+        ctx.strokeStyle = b.isolated ? '#10B981' : '#334155';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(b.x - 70, 70);
+        ctx.lineTo(b.x - 70, 260);
+        ctx.quadraticCurveTo(b.x - 70, 290, b.x - 40, 290);
+        ctx.lineTo(b.x + 40, 290);
+        ctx.quadraticCurveTo(b.x + 70, 290, b.x + 70, 260);
+        ctx.lineTo(b.x + 70, 70);
+        ctx.stroke();
+
+        // Title
+        ctx.fillStyle = b.isolated ? '#34D399' : '#94A3B8';
+        ctx.font = 'bold 20px Tajawal';
+        ctx.textAlign = 'center';
+        ctx.fillText(b.title, b.x, 45);
+
+        // Content inside Beaker
+        if (b.isolated) {
+          ctx.fillStyle = b.color;
+          ctx.beginPath();
+          ctx.arc(b.x, 230, 40, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 15px Tajawal';
+          ctx.fillText('مادة معزولة بنجاح ✔', b.x, 325);
+        } else {
+          ctx.fillStyle = '#475569';
+          ctx.font = '14px Tajawal';
+          ctx.fillText('قيد الانتظار...', b.x, 200);
+        }
+      });
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderItem();
+      initAtomCanvas();
+      drawSeparationCanvas();
+    });
+  </script>
+</body>
+</html>
