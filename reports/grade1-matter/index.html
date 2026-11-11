@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>تقرير نتائج اختبار المادة وتغيراتها (1م) — منصة العلوم</title>
+    <meta property="og:title" content="تقرير نتائج وتحليل اختبار المادة وتغيراتها — علوم أول متوسط">
+    <meta property="og:description" content="اختر اسمك للاطلاع على درجتك ونموذج إجاباتك بالتفصيل والمهارات المتقنة والتغذية الراجعة الفردية — أ. علي جبريل">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        option {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+    <!-- Top Bar -->
+    <header class="border-b border-slate-800 bg-slate-900/95 backdrop-blur-md sticky top-0 z-50 px-4 py-3 shadow-lg">
+        <div class="max-w-3xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <a href="https://abodahmaj.github.io/science-virtual-labs/" class="w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 transition" title="الرئيسية">
+                    🏠
+                </a>
+                <div>
+                    <h1 class="text-sm sm:text-base font-black text-white leading-tight">تقرير النتائج والتحليل الفردي</h1>
+                    <p class="text-[11px] text-slate-400">الصف الأول المتوسط — المادة وتغيراتها</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <span class="inline-block px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold">
+                    معلم المادة: أ. علي جبريل
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl mx-auto px-4 py-5 w-full flex-1 flex flex-col gap-5">
+
+        <!-- Hero Banner -->
+        <div class="rounded-3xl bg-gradient-to-br from-blue-950 via-slate-900 to-slate-900 border border-blue-500/30 p-5 shadow-xl relative overflow-hidden">
+            <div class="flex items-center justify-between mb-2">
+                <span class="px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-500/30">
+                    ⚗️ تقرير اختبار المادة وتغيراتها
+                </span>
+                <span class="text-xs text-slate-400 font-bold">الفصل الدراسي الأول</span>
+            </div>
+            <h2 class="text-lg sm:text-2xl font-black text-white mb-1.5">
+                اضغط على اسمك لعرض نتيجتك وتحليلك الفردي
+            </h2>
+            <p class="text-xs text-slate-300 leading-relaxed">
+                انقر على اسمك في الشبكة أدناه لعرض الدرجة، وتصحيح الأسئلة العشرة، ونقاط القوة والمهارات التي تحتاج لمراجعة وتمكين.
+            </p>
+        </div>
+
+        <!-- Student Selector -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-lg flex flex-col gap-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                <span class="text-xs sm:text-sm font-black text-slate-200 flex items-center gap-1.5">
+                    <span>👥</span> قائمة طلاب الصف (19 طالباً) — اضغط على اسمك:
+                </span>
+                <div class="relative w-full sm:w-48">
+                    <input type="text" id="student-search" oninput="filterStudents(this.value)" placeholder="ابحث باسمك..." class="w-full bg-slate-950 border border-slate-700 focus:border-blue-500 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none">
+                </div>
+            </div>
+            <div id="students-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-64 overflow-y-auto p-1"></div>
+        </div>
+
+        <!-- Dynamic Individual Report Card Area -->
+        <div id="student-report-card" class="flex flex-col gap-5 transition-all duration-300">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl relative overflow-hidden">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
+                    <div class="flex flex-col gap-1.5">
+                        <div class="flex items-center justify-center sm:justify-start gap-2">
+                            <span id="st-badge" class="px-3 py-1 rounded-full text-xs font-black"></span>
+                            <span id="st-code" class="text-xs text-slate-400 font-bold"></span>
+                        </div>
+                        <h3 id="st-name" class="text-xl sm:text-2xl font-black text-white"></h3>
+                        <p class="text-xs text-slate-400">مجمع الثقافة التعليمي — علوم 1م</p>
+                    </div>
+                    <div class="flex items-center gap-4 bg-slate-950 border border-slate-800 px-5 py-3 rounded-2xl shadow-inner">
+                        <div class="text-center">
+                            <span class="text-[11px] text-slate-400 font-bold block mb-0.5">الدرجة النهائية</span>
+                            <div class="flex items-baseline justify-center gap-1">
+                                <span id="st-score-num" class="text-3xl sm:text-4xl font-black"></span>
+                                <span class="text-xs text-slate-500 font-bold">/ 10</span>
+                            </div>
+                        </div>
+                        <div class="h-10 w-[1px] bg-slate-800"></div>
+                        <div class="text-center">
+                            <span class="text-[11px] text-slate-400 font-bold block mb-0.5">نسبة الإتقان</span>
+                            <span id="st-score-pct" class="text-lg sm:text-xl font-black text-slate-200"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-4 rounded-2xl bg-slate-950 border-r-4 border-emerald-500 flex flex-col gap-1.5">
+                    <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                        <span>💬</span> التغذية الراجعة من معلم المادة:
+                    </span>
+                    <p id="st-feedback" class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium"></p>
+                    <div id="st-corrections-box" class="hidden mt-2 p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-300 font-bold"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 shadow-lg flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2 text-emerald-400 font-black text-xs sm:text-sm border-b border-slate-800 pb-2.5">
+                        <span class="w-6 h-6 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xs">✔</span>
+                        <span>المهارات والمفاهيم المتقنة</span>
+                    </div>
+                    <ul id="st-mastered-list" class="flex flex-col gap-2"></ul>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 shadow-lg flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2 text-amber-400 font-black text-xs sm:text-sm border-b border-slate-800 pb-2.5">
+                        <span class="w-6 h-6 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 text-xs">🎯</span>
+                        <span>مفاهيم تحتاج للمراجعة والتمكين</span>
+                    </div>
+                    <ul id="st-missed-list" class="flex flex-col gap-2"></ul>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl">
+                <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-800">
+                    <h4 class="text-xs sm:text-sm font-black text-white flex items-center gap-1.5">
+                        <span>📋</span>
+                        <span>التحليل التفصيلي لإجابات الاختبار (10 أسئلة)</span>
+                    </h4>
+                    <span class="text-[10px] text-slate-400">النموذج الرسمي</span>
+                </div>
+                <div class="flex flex-col gap-2.5" id="st-questions-table"></div>
+            </div>
+        </div>
+
+        <!-- Class Performance -->
+        <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-4 shadow-lg flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">
+                    <span>📊</span>
+                    <span>ملخص أداء الفصل العام (19 طالباً)</span>
+                </h3>
+                <span class="text-[11px] bg-slate-800 px-2.5 py-1 rounded-xl text-slate-300 font-bold">متوسط الفصل: 7.47 / 10</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-2xl">
+                    <span class="text-[10px] text-slate-400 font-medium block mb-0.5">الدرجة الكاملة (10)</span>
+                    <span class="text-base font-black text-amber-400">4 طلاب 🏆</span>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-2xl">
+                    <span class="text-[10px] text-slate-400 font-medium block mb-0.5">المتفوقون (7+)</span>
+                    <span class="text-base font-black text-emerald-400">12 طلاب</span>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-2xl">
+                    <span class="text-[10px] text-slate-400 font-medium block mb-0.5">نسبة الاجتياز</span>
+                    <span class="text-base font-black text-blue-400">82.4 %</span>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-2xl">
+                    <span class="text-[10px] text-slate-400 font-medium block mb-0.5">الغياب</span>
+                    <span class="text-base font-black text-rose-400">2 طلاب</span>
+                </div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-right">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl">🌟</span>
+                    <div>
+                        <span class="text-[11px] font-black text-amber-300 block">لوحة صدارة وتفوق الفصل (10/10):</span>
+                        <span class="text-xs text-slate-200">احمد محمد شعبان عبود &nbsp;•&nbsp; سعود احمد سعيد الحيدي &nbsp;•&nbsp; محمد موسى يحي عسيري &nbsp;•&nbsp; وليد يحي محمد عسيري</span>
+                    </div>
+                </div>
+                <span class="text-[10px] font-bold text-amber-400 bg-amber-500/20 px-2.5 py-1 rounded-xl border border-amber-500/30">
+                    وسام التميز القياسي
+                </span>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-slate-900 bg-slate-950 py-4 px-4 text-center text-xs text-slate-400 mt-auto">
+        <p class="font-bold text-slate-300 mb-0.5">معلم المادة: علي جبريل — مجمع الثقافة التعليمي</p>
+        <p class="text-[11px] text-slate-500">منصة العلوم التفاعلية — المرحلة المتوسطة</p>
+    </footer>
+
+    <script>
+        const students = [{"num": 1, "code": "1M-01", "name": "احمد علي فايع عسيري", "page": 12, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ج", "4": "ج", "5": "ب", "6": "ب", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": null, "wrong_questions": [3], "score": 9, "score_20": 18, "feedback": "أداء ممتاز واستيعاب قوي لكافة مفاهيم المادة وتغيراتها؛ خطأ وحيد في س3 (حساب كثافة المكعب والانغمار)."}, {"num": 2, "code": "1M-02", "name": "احمد محمد احمد عسيري", "page": 3, "status": "حاضر", "answers": {"1": "ب", "2": "ج", "3": "د", "4": "ج", "5": "ج", "6": "ب", "7": "ج", "8": "ج", "9": "د", "10": "أ"}, "corrections": "عدّل س3 وشطب خياره الصحيح (ب) وكتب «غيرت» واختار (د)", "wrong_questions": [1, 2, 3, 5, 7, 10], "score": 4, "score_20": 8, "feedback": "أجاد في قياس الحجم بالإزاحة والخاصية الكيميائية وقانون حفظ الكتلة؛ يحتاج إلى خطة تمكين في مفهوم الكثافة والخواص الفيزيائية وأنواع التغيرات، مع مراجعة التردد أثناء التعديل."}, {"num": 3, "code": "1M-03", "name": "احمد محمد شعبان عبود", "page": 7, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ب", "4": "ج", "5": "ب", "6": "ب", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": null, "wrong_questions": [], "score": 10, "score_20": 20, "feedback": "إتقان تام 100% (10 من 10) بدون أي أخطاء، وتظليل نموذجي منظم ودقيق — من أبطال صدارة الفصل ⭐."}, {"num": 4, "code": "1M-04", "name": "الحسين يحي الحسين عسيري", "page": 14, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ب", "4": "ج", "5": "ب", "6": "أ", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": null, "wrong_questions": [6], "score": 9, "score_20": 18, "feedback": "أداء متميز وتفوق واضح في مسائل الكثافة وقانون حفظ الكتلة؛ خطأ وحيد فقط في س6 (تعريف الخاصية الكيميائية)."}, {"num": 5, "code": "1M-05", "name": "بندر محمد يحي عسيري", "page": 6, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ج", "4": "ج", "5": "ب", "6": "أ", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": "عدّل 3 فقرات بوضع X و«غيرت»: س3 (أ←ج خطأ)، س6 (شطب ب الصواب←أ خطأ)، س7 (ج←أ صواب)", "wrong_questions": [3, 6], "score": 8, "score_20": 16, "feedback": "مستوى جيد جداً وإتقان ممتاز لحالات المادة وحفظ الكتلة؛ وقع في التردد أثناء التعديل في س6 ففقد إجابته الصحيحة، كما أخطأ في س3 (الكثافة)."}, {"num": 6, "code": "1M-06", "name": "حسين ابراهيم حسين المخلوطي", "page": 9, "status": "حاضر", "answers": {"1": "أ", "2": "ب", "3": "ج", "4": "أ", "5": "د", "6": "ب", "7": "ب", "8": "د", "9": "أ", "10": "ج"}, "corrections": null, "wrong_questions": [2, 3, 4, 5, 7, 8, 9, 10], "score": 2, "score_20": 4, "feedback": "أتقن تعريفي الخاصية الفيزيائية والكيميائية (س1، س6)؛ يحتاج إلى تدخل علاجي مكثف ومتابعة فردية في مسائل الكثافة ودلائل التغيرات الكيميائية."}, {"num": 7, "code": "1M-07", "name": "زياد احمد الحسين عسيري", "page": null, "status": "غائب", "answers": {}, "corrections": null, "wrong_questions": [], "score": 0, "score_20": 0, "feedback": "مؤجل: لم يتم تسليم الورقة (غياب عن موعد الاختبار الرسمي)."}, {"num": 8, "code": "1M-08", "name": "سعود احمد سعيد الحيدي", "page": 17, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ب", "4": "ج", "5": "ب", "6": "ب", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": null, "wrong_questions": [], "score": 10, "score_20": 20, "feedback": "إتقان تام 100% (10 من 10) بورقة نظيفة وتظليل مثالي متناسق — من أبطال صدارة الفصل ⭐."}, {"num": 9, "code": "1M-09", "name": "عادل بن عبدالرحمن بن الحسين حسن عسيري", "page": 8, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ب", "4": "ج", "5": "أ", "6": "ب", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": null, "wrong_questions": [5], "score": 9, "score_20": 18, "feedback": "أداء متميز وتظليل منضبط؛ خطأ وحيد في س5 (الخلط بين القابلية للسحب كاسلاك والقابلية للطرق)."}, {"num": 10, "code": "1M-10", "name": "عبدالاله يحيى ملفي عسيري", "page": 4, "status": "حاضر", "answers": {"1": "أ", "2": "ج", "3": "أ", "4": "ج", "5": "ب", "6": "ب", "7": "أ", "8": "أ", "9": "ج", "10": "د"}, "corrections": null, "wrong_questions": [2, 3, 8, 9], "score": 6, "score_20": 12, "feedback": "اجتاز الاختبار بمستوى متوسط؛ أتقن الإزاحة وخواص المادة وصدأ الحديد، ويحتاج لمراجعة ترتيب دقائق الحالة الصلبة وحساب الكثافة وقانون حفظ الكتلة."}, {"num": 11, "code": "1M-11", "name": "عبدالله أحمد محمد العسيري", "page": 13, "status": "حاضر", "answers": {"1": "ب", "2": "أ", "3": "أ", "4": "ج", "5": "أ", "6": "أ", "7": "ج", "8": "ج", "9": "د", "10": "د"}, "corrections": "عدّل س3 وشطب (ج) بـ X وكتب «غيرت» واختار (أ)", "wrong_questions": [1, 3, 5, 6, 7], "score": 5, "score_20": 10, "feedback": "أجاد في حفظ الكتلة والإزاحة وتفاعل الخل؛ يحتاج لدعم وتمكين في التمييز بين الخواص الفيزيائية والكيميائية وحساب الكثافة."}, {"num": 12, "code": "1M-12", "name": "علي عبدالله محمد عسيري", "page": 15, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ج", "4": "د", "5": "ج", "6": "ب", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": null, "wrong_questions": [3, 4, 5], "score": 7, "score_20": 14, "feedback": "مستوى جيد واستيعاب ممتاز للتغيرات الكيميائية وحفظ الكتلة؛ يحتاج لمراجعة قوانين حساب الكثافة (س3، س4) وخاصية السحب (س5)."}, {"num": 13, "code": "1M-13", "name": "محمد ابراهيم على عسيري", "page": 1, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ب", "4": "ج", "5": "أ", "6": "ب", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": "عدّل س3 وشطب (أ) بـ X وكتب «غيرت» واختار (ب) واحتُسبت صواباً", "wrong_questions": [5], "score": 9, "score_20": 18, "feedback": "أداء متميز وتصحيح موفق في س3؛ خطأ وحيد فقط في س5 (التمييز بين القابلية للسحب والقابلية للطرق)."}, {"num": 14, "code": "1M-14", "name": "محمد احمد علي عسيري", "page": 5, "status": "حاضر", "answers": {"1": "أ", "2": "ج", "3": "ج", "4": "ج", "5": "ب", "6": "أ", "7": "ج", "8": "أ", "9": "ج", "10": "د"}, "corrections": "عدّل س3 وشطب خياره الصحيح (ب) بـ X وكتب «غيرت» واختار (ج)", "wrong_questions": [2, 3, 6, 7, 8, 9], "score": 4, "score_20": 8, "feedback": "أجاد في الإزاحة والقابلية للسحب والتمييز في س10؛ يحتاج لمراجعة التغيرات الكيميائية وقانون حفظ الكتلة والانتباه عند التعديل (فقد صواب س3)."}, {"num": 15, "code": "1M-15", "name": "محمد موسى يحي عسيري", "page": 10, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ب", "4": "ج", "5": "ب", "6": "ب", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": "استخدم قلم الرصاص والممحاة بنظافة في س3 وس4 لاختيار الإجابة الصحيحة", "wrong_questions": [], "score": 10, "score_20": 20, "feedback": "إتقان تام 100% (10 من 10) مع التزام مثالي باستخدام الرصاص والمسح النظيف عند التعديل — من أبطال صدارة الفصل ⭐."}, {"num": 16, "code": "1M-16", "name": "موسى محمد بن موسى ابراهيم هادي الشريف", "page": null, "status": "غائب", "answers": {}, "corrections": null, "wrong_questions": [], "score": 0, "score_20": 0, "feedback": "مؤجل: لم يتم تسليم الورقة (غياب عن موعد الاختبار الرسمي)."}, {"num": 17, "code": "1M-17", "name": "وليد يحي محمد عسيري", "page": 11, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ب", "4": "ج", "5": "ب", "6": "ب", "7": "أ", "8": "ج", "9": "د", "10": "د"}, "corrections": null, "wrong_questions": [], "score": 10, "score_20": 20, "feedback": "إتقان تام 100% (10 من 10) بورقة نظيفة ومرتبة بدون أي شطب — من أبطال صدارة الفصل ⭐."}, {"num": 18, "code": "1M-18", "name": "يحيى حسن يحيى عسيري", "page": 16, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ج", "4": "ج", "5": "ج", "6": "ب", "7": "أ", "8": "أ", "9": "د", "10": "د"}, "corrections": "عدّل س3 وشطب (أ) بـ X ووضع دائرة وعلامة ✓ على (ج)", "wrong_questions": [3, 5, 8], "score": 7, "score_20": 14, "feedback": "مستوى جيد جداً وإتقان لمفاهيم الحالة الصلبة والإزاحة وحفظ الكتلة؛ يحتاج لمراجعة حساب الكثافة (س3) والقابلية للسحب (س5) ودليل تفاعل الخل (س8)."}, {"num": 19, "code": "1M-19", "name": "يحيى محمد حسن غرامه", "page": 2, "status": "حاضر", "answers": {"1": "أ", "2": "أ", "3": "ب", "4": "ج", "5": "ب", "6": "أ", "7": "أ", "8": "ج", "9": "أ", "10": "د"}, "corrections": "عدّل س10 وشطب (أ) بـ X وكتب «غيرت» واختار (د) واحتُسبت صواباً", "wrong_questions": [6, 9], "score": 8, "score_20": 16, "feedback": "أداء متميز وتعديل موفق في س10؛ أخطأ فقط في س6 (الخاصية الكيميائية) وس9 (قانون حفظ الكتلة)."}];
+        const questions = {"1": {"title": "س1: وصف الخاصية الفيزيائية للمادة", "concept": "مفهوم الخاصية الفيزيائية (تُلاحظ دون تغيير هوية المادة)", "correct_option": "أ", "explanation": "الخاصية الفيزيائية سمة يمكن ملاحظتها أو قياسها (كاللون والكثافة والحالة) دون إحداث تغيير في هوية المادة أو تركيبها الأصلي."}, "2": {"title": "س2: ترتيب دقائق الحالة الصلبة", "concept": "تراص دقائق المادة الصلبة واهتزازها في موضعها", "correct_option": "أ", "explanation": "دقائق الحالة الصلبة (الشكل أ) متراصة بإحكام في نمط منتظم وتهتز في مكانها دون أن تنتقل، مما يحفظ الشكل والحجم ثابتين."}, "3": {"title": "س3: حساب الكثافة والتنبؤ بالطفو والانغمار", "concept": "حساب الكثافة (60 ÷ 20 = 3 جم/سم³) والانغمار بالماء", "correct_option": "ب", "explanation": "الكثافة = الكتلة ÷ الحجم = 60 ÷ 20 = 3 جم/سم³؛ وبما أن 3 > 1 جم/سم³ (كثافة الماء) فإن المكعب ينغمر."}, "4": {"title": "س4: قياس حجم جسم غير منتظم بالإزاحة وحساب كثافته", "concept": "طريقة الإزاحة (75 - 50 = 25 سم³) وحساب الكثافة (2 جم/سم³)", "correct_option": "ج", "explanation": "حجم الحجر = الارتفاع المزاح = 75 - 50 = 25 سم³، والكثافة = 50 ÷ 25 = 2 جم/سم³."}, "5": {"title": "س5: قابلية الفلزات للتشكل في صورة أسلاك", "concept": "التمييز بين القابلية للسحب (Ductility) والطرق (Malleability)", "correct_option": "ب", "explanation": "تشكل النحاس في صورة أسلاك كهربائية دون انقطاع يُسمى القابلية للسحب (Ductility)، أما التشكيل كصفائح فهو القابلية للطرق."}, "6": {"title": "س6: مفهوم الخاصية الكيميائية للمادة", "concept": "الخاصية الكيميائية (ميل المادة لتغير تركيبها وإنتاج مواد جديدة)", "correct_option": "ب", "explanation": "الخاصية الكيميائية تشير إلى ميل المادة وقدرتها على الدخول في تغير يبدل تركيبها الأصلي لإنتاج مواد جديدة."}, "7": {"title": "س7: صدأ الحديد نوعاً ومواداً متفاعلة", "concept": "صدأ الحديد تغير كيميائي بتفاعل الحديد مع الأكسجين والرطوبة", "correct_option": "أ", "explanation": "صدأ الحديد تغير كيميائي ينتج عن اتحاد الحديد مع الأكسجين بوجود الرطوبة (الماء) لتكوين أكسيد الحديد."}, "8": {"title": "س8: دليل التغير الكيميائي في تفاعل الخل وصودا الخبز", "concept": "تصاعد غاز جديد (CO₂) كدليل حاسم على التفاعل الكيميائي", "correct_option": "ج", "explanation": "الفوران والفقاعات عند إضافة الخل لصودا الخبز دليل على تصاعد غاز جديد (ثاني أكسيد الكربون CO₂) ناتج عن تغير كيميائي."}, "9": {"title": "س9: قانون حفظ الكتلة في الدورق المغلق", "concept": "قانون حفظ الكتلة (كتل المتفاعلات = كتل النواتج عند 150 جم)", "correct_option": "د", "explanation": "ثبات قراءة الميزان في النظام المغلق يثبت قانون حفظ الكتلة: المادة لا تفنى ولا تُستحدث بل يُعاد ترتيب ذراتها."}, "10": {"title": "س10: التمييز بين التغيرات الفيزيائية والكيميائية", "concept": "تصنيف احتراق الخشب كتغير كيميائي مقابل الانصهار والتقطيع والذوبان", "correct_option": "د", "explanation": "انصهار الشمع وتقطيع الخشب وذوبان الملح تغيرات فيزيائية لا تغير هوية المادة، بينما احتراق الخشب تغير كيميائي ينتج رماداً ودخاناً."}};
+        let activeCode = '1M-03';
+
+        const gridEl = document.getElementById('students-grid');
+
+        function renderGrid(filterText = '') {
+            gridEl.innerHTML = '';
+            students.forEach((s) => {
+                if (filterText && !s.name.includes(filterText) && !s.code.toLowerCase().includes(filterText.toLowerCase())) {
+                    return;
+                }
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectStudent(s.code);
+
+                const isSelected = (s.code === activeCode);
+                const isFull = (s.score === 10);
+                const isAbsent = (s.status === 'غائب');
+
+                btn.className = `p-2.5 rounded-2xl border text-right transition-all flex items-center justify-between gap-1.5 active:scale-95 ${
+                    isSelected ? 'bg-blue-600 text-white border-blue-400 shadow-lg shadow-blue-600/30 ring-2 ring-blue-400' :
+                    isFull ? 'bg-slate-950 text-slate-200 border-amber-500/50 hover:border-amber-400' :
+                    isAbsent ? 'bg-slate-950/60 text-slate-500 border-slate-800' :
+                    'bg-slate-950 text-slate-300 border-slate-800 hover:border-slate-700'
+                }`;
+
+                btn.innerHTML = `
+                    <div class="truncate text-xs font-bold leading-tight">
+                        ${s.num}. ${s.name.split(' ').slice(0, 2).join(' ')}
+                    </div>
+                    <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md shrink-0 ${
+                        isSelected ? 'bg-white text-blue-900' :
+                        isFull ? 'bg-amber-500/20 text-amber-300' :
+                        isAbsent ? 'bg-rose-500/20 text-rose-400' :
+                        'bg-slate-800 text-slate-400'
+                    }">
+                        ${isAbsent ? 'غائب' : s.score + '/10'}
+                    </span>
+                `;
+                gridEl.appendChild(btn);
+            });
+        }
+
+        function filterStudents(val) {
+            renderGrid(val.trim());
+        }
+
+        function selectStudent(code) {
+            activeCode = code;
+            renderGrid(document.getElementById('student-search').value.trim());
+            renderReportCard(code);
+        }
+
+        function renderReportCard(code) {
+            const student = students.find(s => s.code === code);
+            if (!student) return;
+
+            document.getElementById('st-name').textContent = student.name;
+            document.getElementById('st-code').textContent = `كود الطالب: ${student.code}`;
+
+            const badgeEl = document.getElementById('st-badge');
+            const scoreNumEl = document.getElementById('st-score-num');
+            const scorePctEl = document.getElementById('st-score-pct');
+
+            if (student.status === 'غائب') {
+                badgeEl.textContent = 'متغيب عن الاختبار ⏳';
+                badgeEl.className = 'px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 border border-rose-500/30';
+                scoreNumEl.textContent = '0';
+                scoreNumEl.className = 'text-3xl sm:text-4xl font-black text-rose-400';
+                scorePctEl.textContent = '0 %';
+            } else {
+                scoreNumEl.textContent = student.score;
+                scorePctEl.textContent = `${student.score * 10} %`;
+
+                if (student.score === 10) {
+                    badgeEl.textContent = 'الدرجة الكاملة — صدارة الفصل 🏆';
+                    badgeEl.className = 'px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/30';
+                    scoreNumEl.className = 'text-3xl sm:text-4xl font-black text-amber-400';
+                } else if (student.score >= 7) {
+                    badgeEl.textContent = 'مستوى متفوق ومتميز 🌟';
+                    badgeEl.className = 'px-3 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                    scoreNumEl.className = 'text-3xl sm:text-4xl font-black text-emerald-400';
+                } else if (student.score >= 5) {
+                    badgeEl.textContent = 'مستوى متقدم ومتقن 👍';
+                    badgeEl.className = 'px-3 py-1 rounded-full text-xs font-black bg-blue-500/20 text-blue-400 border border-blue-500/30';
+                    scoreNumEl.className = 'text-3xl sm:text-4xl font-black text-blue-400';
+                } else {
+                    badgeEl.textContent = 'يحتاج خطة تمكين وتثبيت 🎯';
+                    badgeEl.className = 'px-3 py-1 rounded-full text-xs font-black bg-rose-500/20 text-rose-400 border border-rose-500/30';
+                    scoreNumEl.className = 'text-3xl sm:text-4xl font-black text-rose-400';
+                }
+            }
+
+            document.getElementById('st-feedback').textContent = student.feedback;
+            const corrBox = document.getElementById('st-corrections-box');
+            if (student.corrections) {
+                corrBox.classList.remove('hidden');
+                corrBox.innerHTML = `<span>✏️ ملاحظة فاحصة: </span>${student.corrections}`;
+            } else {
+                corrBox.classList.add('hidden');
+            }
+
+            const masteredListEl = document.getElementById('st-mastered-list');
+            const missedListEl = document.getElementById('st-missed-list');
+            masteredListEl.innerHTML = '';
+            missedListEl.innerHTML = '';
+
+            const wrongSet = new Set(student.wrong_questions || []);
+
+            if (student.status === 'غائب') {
+                missedListEl.innerHTML = '<li class="text-xs text-rose-300 p-2 rounded-xl bg-slate-950 border border-rose-500/20">الطالب متغيب، يلزم تحديد موعد للاختبار البديل.</li>';
+                masteredListEl.innerHTML = '<li class="text-xs text-slate-400 p-2 rounded-xl bg-slate-950">لا توجد بيانات متاحة لغياب الطالب.</li>';
+            } else {
+                for (let q = 1; q <= 10; q++) {
+                    const qData = questions[q];
+                    if (wrongSet.has(q)) {
+                        const li = document.createElement('li');
+                        li.className = 'text-xs p-2.5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col gap-1';
+                        li.innerHTML = `
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-slate-200">س${q}: ${qData.concept}</span>
+                                <span class="text-[10px] text-rose-400 font-bold bg-rose-500/10 px-2 py-0.5 rounded-md">مراجعة</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400">${qData.explanation}</p>
+                        `;
+                        missedListEl.appendChild(li);
+                    } else {
+                        const li = document.createElement('li');
+                        li.className = 'text-xs p-2 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between';
+                        li.innerHTML = `
+                            <span class="text-slate-200 font-medium">س${q}: ${qData.concept}</span>
+                            <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-md">متقن ✔</span>
+                        `;
+                        masteredListEl.appendChild(li);
+                    }
+                }
+
+                if (missedListEl.children.length === 0) {
+                    missedListEl.innerHTML = '<li class="text-xs text-emerald-400 font-bold p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">ما شاء الله تبارك الله! أتقنت كافة مهارات ومفاهيم الفصل دون أي خطأ 🌟</li>';
+                }
+            }
+
+            const tableEl = document.getElementById('st-questions-table');
+            tableEl.innerHTML = '';
+
+            for (let q = 1; q <= 10; q++) {
+                const qData = questions[q];
+                const isWrong = wrongSet.has(q);
+                const stAns = (student.answers && student.answers[q]) ? student.answers[q] : (student.status === 'غائب' ? '—' : 'غير محدد');
+
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+                    student.status === 'غائب' ? 'bg-slate-950 border-slate-800' :
+                    isWrong ? 'bg-rose-950/20 border-rose-500/30' : 'bg-slate-950 border-emerald-500/30'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex items-start gap-2">
+                        <span class="w-5 h-5 rounded-md text-[11px] font-black flex items-center justify-center shrink-0 ${
+                            student.status === 'غائب' ? 'bg-slate-800 text-slate-400' :
+                            isWrong ? 'bg-rose-500 text-white' : 'bg-emerald-500 text-white'
+                        }">
+                            ${student.status === 'غائب' ? '⏳' : (isWrong ? '✘' : '✔')}
+                        </span>
+                        <div>
+                            <span class="text-xs font-bold text-white">${qData.title}</span>
+                            <p class="text-[11px] text-slate-400">${qData.concept}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end gap-3 text-xs shrink-0 pt-1.5 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+                        <div class="flex items-center gap-1">
+                            <span class="text-[11px] text-slate-500">إجابتك:</span>
+                            <span class="font-black px-2 py-0.5 rounded-md ${
+                                isWrong ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'
+                            }">${stAns}</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="text-[11px] text-slate-500">الصحيحة:</span>
+                            <span class="font-black px-2 py-0.5 rounded-md bg-slate-800 text-emerald-400">${qData.correct_option}</span>
+                        </div>
+                    </div>
+                `;
+                tableEl.appendChild(card);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderGrid();
+            renderReportCard(activeCode);
+        });
+    </script>
+</body>
+</html>
