@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المختبر الافتراضي التفاعلي — درس النواة</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --card: #0b1220; --text: #f8fafc;
+    --muted: #94a3b8; --accent: #38bdf8; --green: #22c55e; --amber: #f59e0b;
+    --red-bg: #FEE2E2; --red-txt: #DC2626;
+  }
+  * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; }
+  body { margin: 0; background: var(--bg); color: var(--text); padding: 14px; }
+  .wrap { max-width: 1360px; margin: 0 auto; }
+  .topbar {
+    background: linear-gradient(90deg, #1e3a8a, #0f766e);
+    border-radius: 16px; padding: 14px 20px;
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+  }
+  .topbar h1 { margin: 0; font-size: 1.45rem; }
+  .topbar p { margin: 4px 0 0; color: #dbeafe; font-size: 0.95rem; }
+  .modes { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+  .mode-btn {
+    min-height: 54px; padding: 10px 16px; border-radius: 12px; border: 2px solid #334155;
+    background: var(--panel); color: var(--text); font-size: 1rem; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s;
+  }
+  .mode-btn.active { border-color: var(--accent); background: #172554; box-shadow: 0 0 0 2px rgba(56,189,248,0.25); }
+  .cog-tag {
+    background: var(--red-bg); color: var(--red-txt); border: 1px solid var(--red-txt);
+    border-radius: 999px; padding: 2px 9px; font-size: 0.8rem; font-weight: 800;
+  }
+  .controls {
+    background: var(--panel); border-radius: 14px; padding: 14px;
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px;
+  }
+  .ctrl-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  label { font-weight: 700; color: #cbd5e1; font-size: 0.95rem; }
+  select, button.action-btn {
+    min-height: 48px; padding: 8px 14px; border-radius: 10px; border: 1px solid #475569;
+    background: #0f172a; color: #f8fafc; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  }
+  button.action-btn.primary { background: #2563eb; border-color: #3b82f6; }
+  button.action-btn.success { background: #15803d; border-color: #22c55e; }
+  button.action-btn.warn { background: #b45309; border-color: #f59e0b; }
+  .canvas-box {
+    background: var(--card); border: 2px solid #334155; border-radius: 16px;
+    padding: 10px; overflow: hidden;
+  }
+  canvas { width: 100%; height: auto; display: block; border-radius: 10px; background: #020617; }
+  .grid-bottom {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;
+  }
+  .panel-card { background: var(--panel); border-radius: 14px; padding: 14px; }
+  .panel-card h3 { margin: 0 0 10px; color: var(--accent); font-size: 1.08rem; }
+  .stat-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stat-pill { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 8px 12px; font-size: 0.92rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th, td { border: 1px solid #334155; padding: 6px 8px; text-align: center; }
+  th { background: #0f172a; color: #93c5fd; }
+  .challenge-box { display: none; width: 100%; background: #172554; border: 1px solid #3b82f6; border-radius: 12px; padding: 12px; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .challenge-box.show { display: flex; }
+  input[type=number] { min-height: 46px; width: 130px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; padding: 6px 10px; font-size: 1rem; text-align: center; }
+  .footer { text-align: center; color: var(--muted); margin-top: 14px; font-size: 0.9rem; font-weight: 700; }
+  @media (max-width: 820px) {
+    .grid-bottom { grid-template-columns: 1fr; }
+    .mode-btn { flex: 1 1 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>المختبر الافتراضي التفاعلي: النواة وعمر النصف والتحوّل الإشعاعي</h1>
+      <p>محاكاة حية لتجربة الكتاب (رسم بياني لعمر النصف) + تحلل ألفا وبيتا + تحدي النظير المجهول</p>
+    </div>
+  </div>
+
+  <div class="modes">
+    <button class="mode-btn active" onclick="setMode('halflife', this)">
+      <span>1. تجربة عمر النصف والمنحنى البياني</span>
+      <span class="cog-tag">[فهم] [تطبيق]</span>
+    </button>
+    <button class="mode-btn" onclick="setMode('decay', this)">
+      <span>2. محاكاة التحوّل (ألفا α وبيتا β)</span>
+      <span class="cog-tag">[تحليل]</span>
+    </button>
+    <button class="mode-btn" onclick="setMode('inquiry', this)">
+      <span>3. تحدي الاستقصاء: النظير المجهول</span>
+      <span class="cog-tag">[تقويم] [ابتكار]</span>
+    </button>
+  </div>
+
+  <div class="controls" id="ctrl-halflife">
+    <div class="ctrl-group">
+      <label for="isotopeSelect">النظير المشع:</label>
+      <select id="isotopeSelect" onchange="resetHalflife()">
+        <option value="th234">الثوريوم-234 (64 جم | عمر النصف: 24 يوماً)</option>
+        <option value="i131">اليود-131 (4 جم | عمر النصف: 8 أيام)</option>
+        <option value="h3">التريتيوم H-3 (20 جم | عمر النصف: 12.5 سنة)</option>
+        <option value="c14">الكربون-14 (100 جم | عمر النصف: 5730 سنة)</option>
+      </select>
+    </div>
+    <button class="action-btn primary" onclick="stepHalflife()">إضافة فترة عمر نصف (+1)</button>
+    <button class="action-btn warn" onclick="resetHalflife()">إعادة الضبط (t = 0)</button>
+    <button class="action-btn success" onclick="recordObservation()">رصد في الدفتر</button>
+  </div>
+
+  <div class="controls" id="ctrl-decay" style="display:none">
+    <button class="action-btn primary" onclick="selectDecay('alpha')">تحلل ألفا: أميريسيوم-241 ➔ نبتونيوم-237 + α</button>
+    <button class="action-btn success" onclick="selectDecay('beta')">تحلل بيتا: هيدروجين-3 ➔ هيليوم-3 + β⁻</button>
+    <button class="action-btn warn" onclick="triggerDecayAnim()">إطلاق الجسيم الآن</button>
+  </div>
+
+  <div class="controls" id="ctrl-inquiry" style="display:none">
+    <div class="challenge-box show">
+      <span><strong>مهمة استقصائية:</strong> ابدأ بكتلة <strong id="inqM0">80 جم</strong> من نظير مجهول، واضغط «تمرير زمن» لمراقبة الكتلة المتبقية، ثم استنتج عمر النصف له:</span>
+      <button class="action-btn primary" onclick="stepInquiry()">تمرير 10 أيام</button>
+      <label for="inqGuess">عمر النصف المستنتج (يوم):</label>
+      <input type="number" id="inqGuess" placeholder="مثال: 10">
+      <button class="action-btn success" onclick="checkInquiry()">تحقق من الاستنتاج</button>
+      <button class="action-btn warn" onclick="newInquiry()">عينة جديدة</button>
+      <span id="inqFeedback" style="font-weight:800;"></span>
+    </div>
+  </div>
+
+  <div class="canvas-box">
+    <canvas id="simCanvas" width="1300" height="580"></canvas>
+  </div>
+
+  <div class="grid-bottom">
+    <div class="panel-card">
+      <h3>القراءات الفيزيائية اللحظية</h3>
+      <div class="stat-row" id="liveStats"></div>
+    </div>
+    <div class="panel-card">
+      <h3>دفتر الرصد الآلي للبيانات</h3>
+      <table>
+        <thead><tr><th>الوضع / النظير</th><th>الفترات / النوع</th><th>الزمن</th><th>الكتلة / الناتج</th></tr></thead>
+        <tbody id="logBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">معلم المادة: علي جبريل - مجمع الثقافة التعليمي</div>
+</div>
+
+<script>
+const canvas = document.getElementById('simCanvas');
+const ctx = canvas.getContext('2d');
+let mode = 'halflife';
+
+const ISOTOPES = {
+  th234: { name: 'الثوريوم-234', m0: 64, hl: 24, unit: 'يوم' },
+  i131:  { name: 'اليود-131',    m0: 4,  hl: 8,  unit: 'يوم' },
+  h3:    { name: 'التريتيوم H-3',m0: 20, hl: 12.5, unit: 'سنة' },
+  c14:   { name: 'الكربون-14',   m0: 100,hl: 5730, unit: 'سنة' }
+};
+
+let hlPeriods = 0;
+let decayType = 'alpha';
+let decayAnim = 0;
+let animTimer = null;
+
+let inqTargetHL = 20;
+let inqM0 = 80;
+let inqDays = 0;
+
+function resizeCanvasForDevice() {
+  if (window.innerWidth <= 820) {
+    canvas.width = 720; canvas.height = 640;
+  } else {
+    canvas.width = 1300; canvas.height = 580;
+  }
+  draw();
+}
+window.addEventListener('resize', resizeCanvasForDevice);
+
+function setMode(m, btn) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('ctrl-halflife').style.display = m === 'halflife' ? 'flex' : 'none';
+  document.getElementById('ctrl-decay').style.display    = m === 'decay' ? 'flex' : 'none';
+  document.getElementById('ctrl-inquiry').style.display  = m === 'inquiry' ? 'flex' : 'none';
+  draw();
+}
+
+function resetHalflife() { hlPeriods = 0; draw(); }
+function stepHalflife() { if (hlPeriods < 6) { hlPeriods++; draw(); } }
+
+function recordObservation() {
+  const iso = ISOTOPES[document.getElementById('isotopeSelect').value];
+  const rem = +(iso.m0 / Math.pow(2, hlPeriods)).toFixed(4);
+  const t = +(hlPeriods * iso.hl).toFixed(2);
+  addLog(iso.name, hlPeriods + ' فترة', t + ' ' + iso.unit, rem + ' جم');
+}
+
+function addLog(a, b, c, d) {
+  const tbody = document.getElementById('logBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${a}</td><td>${b}</td><td>${c}</td><td>${d}</td>`;
+  tbody.prepend(tr);
+  if (tbody.children.length > 6) tbody.removeChild(tbody.lastChild);
+}
+
+function selectDecay(t) { decayType = t; decayAnim = 0; draw(); }
+function triggerDecayAnim() {
+  decayAnim = 0;
+  if (animTimer) clearInterval(animTimer);
+  animTimer = setInterval(() => {
+    decayAnim += 0.05;
+    if (decayAnim >= 1) { decayAnim = 1; clearInterval(animTimer); }
+    draw();
+  }, 30);
+  if (decayType === 'alpha') addLog('تحلل ألفا (α)', 'p: 95 ➔ 93', 'فقدان 2p+2n', 'نبتونيوم-237');
+  else addLog('تحلل بيتا (β⁻)', 'p: 1 ➔ 2', 'n ➔ p + e⁻', 'هيليوم-3');
+}
+
+function newInquiry() {
+  const choices = [10, 20, 30];
+  inqTargetHL = choices[Math.floor(Math.random() * choices.length)];
+  inqM0 = 80; inqDays = 0;
+  document.getElementById('inqM0').textContent = inqM0 + ' جم';
+  document.getElementById('inqGuess').value = '';
+  document.getElementById('inqFeedback').textContent = '';
+  draw();
+}
+function stepInquiry() { if (inqDays < 90) { inqDays += 10; draw(); } }
+function checkInquiry() {
+  const g = parseFloat(document.getElementById('inqGuess').value);
+  const fb = document.getElementById('inqFeedback');
+  if (g === inqTargetHL) {
+    fb.style.color = '#4ade80';
+    fb.textContent = 'أحسنت! استنتاج علمي دقيق لعمر النصف (' + inqTargetHL + ' يوماً).';
+    addLog('تحدي الاستقصاء', 'نجاح', inqDays + ' يوم', 'عمر النصف = ' + inqTargetHL + ' يوماً');
+  } else {
+    fb.style.color = '#f87171';
+    fb.textContent = 'حاول مرة أخرى! راقب الزمن الذي تنخفض فيه الكتلة إلى النصف (40 جم).';
+  }
+}
+
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#020617';
+  ctx.fillRect(0, 0, W, H);
+
+  if (mode === 'halflife') drawHalflife(W, H);
+  else if (mode === 'decay') drawDecay(W, H);
+  else drawInquiry(W, H);
+}
+
+function drawHalflife(W, H) {
+  const iso = ISOTOPES[document.getElementById('isotopeSelect').value];
+  const rem = +(iso.m0 / Math.pow(2, hlPeriods)).toFixed(4);
+  const t = +(hlPeriods * iso.hl).toFixed(2);
+
+  // Graph area
+  const gx = 90, gy = 65, gw = W > 900 ? 740 : W - 130, gh = H - 140;
+  ctx.strokeStyle = '#475569'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(gx, gy + gh); ctx.lineTo(gx + gw, gy + gh); ctx.stroke();
+
+  ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'center';
+  ctx.fillText('منحنى التحلل الإشعاعي: ' + iso.name, gx + gw / 2, 36);
+
+  // Plot theoretical curve + current points
+  ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3.5; ctx.beginPath();
+  for (let p = 0; p <= 6; p++) {
+    const px = gx + (p / 6) * gw;
+    const py = gy + gh - (Math.pow(0.5, p) * gh * 0.9);
+    if (p === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  for (let p = 0; p <= hlPeriods; p++) {
+    const px = gx + (p / 6) * gw;
+    const val = +(iso.m0 / Math.pow(2, p)).toFixed(2);
+    const py = gy + gh - (Math.pow(0.5, p) * gh * 0.9);
+    ctx.fillStyle = p === hlPeriods ? '#f59e0b' : '#22c55e';
+    ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#f8fafc'; ctx.font = 'bold 14px Arial';
+    ctx.fillText(val + ' جم', px, py - 14);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText(p + ' ن', px, gy + gh + 24);
+  }
+
+  // Atom grid on right (desktop) or top-right
+  if (W > 900) {
+    const ax = 890, ay = 80;
+    ctx.fillStyle = '#cbd5e1'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'right';
+    ctx.fillText('تمثيل الأنوية المتبقية (64 نواة):', ax + 340, 46);
+    const total = 64, activeCount = Math.round(total / Math.pow(2, hlPeriods));
+    for (let i = 0; i < total; i++) {
+      const col = i % 8, row = Math.floor(i / 8);
+      ctx.fillStyle = i < activeCount ? '#ef4444' : '#334155';
+      ctx.beginPath(); ctx.arc(ax + col * 42 + 20, ay + row * 46 + 20, 14, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  document.getElementById('liveStats').innerHTML = `
+    <div class="stat-pill">النظير: <strong>${iso.name}</strong></div>
+    <div class="stat-pill">الفترات (ن): <strong>${hlPeriods}</strong></div>
+    <div class="stat-pill">الزمن المنقضي: <strong>${t} ${iso.unit}</strong></div>
+    <div class="stat-pill">الكتلة المتبقية: <strong style="color:#4ade80">${rem} جم</strong></div>
+  `;
+}
+
+function drawDecay(W, H) {
+  ctx.fillStyle = '#f8fafc'; ctx.font = 'bold 24px Arial'; ctx.textAlign = 'center';
+  if (decayType === 'alpha') {
+    ctx.fillText('تحلل ألفا (α): الأميريسيوم-241 (95p, 146n) ➔ النبتونيوم-237 (93p, 144n) + جسيم ألفا', W / 2, 48);
+    // Parent / Daughter nucleus
+    ctx.fillStyle = '#1e3a8a'; ctx.beginPath(); ctx.arc(W * 0.35, H * 0.52, 95, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 20px Arial';
+    ctx.fillText(decayAnim >= 0.8 ? 'نبتونيوم-237 (93p)' : 'أميريسيوم-241 (95p)', W * 0.35, H * 0.52);
+
+    // Emitted alpha particle
+    const ex = W * 0.35 + decayAnim * (W * 0.38);
+    ctx.fillStyle = '#f97316'; ctx.beginPath(); ctx.arc(ex, H * 0.52, 32, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Arial';
+    ctx.fillText('α (2p,2n)', ex, H * 0.52 + 5);
+
+    document.getElementById('liveStats').innerHTML = `
+      <div class="stat-pill">النوع: <strong>تحلل ألفا (α)</strong></div>
+      <div class="stat-pill">التغير في العدد الذري: <strong>−2</strong></div>
+      <div class="stat-pill">الناتج: <strong>النبتونيوم-237</strong></div>
+    `;
+  } else {
+    ctx.fillText('تحلل بيتا (β⁻): هيدروجين-3 (1p, 2n) ➔ هيليوم-3 (2p, 1n) + إلكترون عالي الطاقة', W / 2, 48);
+    ctx.fillStyle = '#0f766e'; ctx.beginPath(); ctx.arc(W * 0.35, H * 0.52, 80, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 20px Arial';
+    ctx.fillText(decayAnim >= 0.8 ? 'هيليوم-3 (2p, 1n)' : 'هيدروجين-3 (1p, 2n)', W * 0.35, H * 0.52);
+
+    const ex = W * 0.35 + decayAnim * (W * 0.4);
+    ctx.fillStyle = '#eab308'; ctx.beginPath(); ctx.arc(ex, H * 0.48, 16, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fef08a'; ctx.font = 'bold 18px Arial';
+    ctx.fillText('β⁻ (e⁻)', ex, H * 0.42);
+
+    document.getElementById('liveStats').innerHTML = `
+      <div class="stat-pill">النوع: <strong>تحلل بيتا (β⁻)</strong></div>
+      <div class="stat-pill">التغير في العدد الذري: <strong>+1</strong></div>
+      <div class="stat-pill">الناتج: <strong>هيليوم-3</strong></div>
+    `;
+  }
+}
+
+function drawInquiry(W, H) {
+  const rem = +(inqM0 * Math.pow(0.5, inqDays / inqTargetHL)).toFixed(2);
+  ctx.fillStyle = '#f8fafc'; ctx.font = 'bold 24px Arial'; ctx.textAlign = 'center';
+  ctx.fillText('مختبر الاستقصاء: قِس الكتلة المتبقية واستنتج عمر النصف للنظير المجهول', W / 2, 50);
+
+  // Digital Scale Bar
+  const barW = W * 0.65, barH = 54, bx = (W - barW) / 2, by = H * 0.45;
+  ctx.fillStyle = '#1e293b'; ctx.fillRect(bx, by, barW, barH);
+  ctx.fillStyle = '#38bdf8'; ctx.fillRect(bx, by, barW * (rem / inqM0), barH);
+  ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2; ctx.strokeRect(bx, by, barW, barH);
+
+  ctx.fillStyle = '#ffffff'; ctx.font = 'bold 22px Arial';
+  ctx.fillText(`الزمن المنقضي: ${inqDays} يوماً   |   الكتلة المقاسة: ${rem} جم (من أصل ${inqM0} جم)`, W / 2, by - 25);
+
+  document.getElementById('liveStats').innerHTML = `
+    <div class="stat-pill">الكتلة الابتدائية: <strong>${inqM0} جم</strong></div>
+    <div class="stat-pill">الزمن الحالي: <strong>${inqDays} يوماً</strong></div>
+    <div class="stat-pill">الكتلة المقاسة: <strong style="color:#38bdf8">${rem} جم</strong></div>
+  `;
+}
+
+resizeCanvasForDevice();
+</script>
+</body>
+</html>
