@@ -6,56 +6,64 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>المعادن: جواهر الأرض — الصف الأول المتوسط</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+        (function() {
+            if (localStorage.getItem('science_theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         .tab-btn.active {
-            background: linear-gradient(135deg, #065f46 0%, #10b981 100%);
-            color: #ffffff;
-            border-color: #34d399;
-            box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.35);
+            background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+            color: #ffffff !important;
+            border-color: #10b981 !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
         .quiz-option { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); min-height: 54px; }
         .quiz-option:active { transform: scale(0.98); }
         .lvl-pill {
             display: inline-block; background: #fee2e2; color: #dc2626;
-            border: 1px solid #ef4444; font-weight: 800; font-size: 11px;
-            padding: 1px 8px; border-radius: 999px;
+            border: 1px solid #ef4444; font-weight: 800; font-size: 13px;
+            padding: 2px 10px; border-radius: 999px;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
 
-    <header class="bg-slate-900/90 border-b border-slate-800/80 px-3 sm:px-6 py-2 sticky top-0 z-50 backdrop-blur flex items-center justify-between gap-2">
-        <a href="../../index.html" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-xs sm:text-sm font-bold border border-slate-700 transition">
-            <span>←</span>
-            <span>الرئيسية</span>
+    <header class="bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-3 sm:px-6 py-2.5 sticky top-0 z-50 backdrop-blur flex items-center justify-between gap-2 shadow-sm">
+        <a href="../../index.html#grade1" class="min-h-[44px] flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-sm font-bold border border-slate-300 dark:border-slate-700 transition">
+            <span>←</span><span>الرئيسية</span>
         </a>
-        <div class="flex items-center gap-2 text-center">
-            <span class="text-lg sm:text-xl">💎</span>
-            <div>
-                <h1 class="text-xs sm:text-sm font-black text-white">المعادن: جواهر الأرض</h1>
-                <p class="text-[10px] sm:text-xs text-slate-400">الصف الأول المتوسط</p>
+        <div class="flex items-center gap-2 text-center min-w-0">
+            <span class="text-xl sm:text-2xl shrink-0">💎</span>
+            <div class="min-w-0">
+                <h1 class="text-sm sm:text-lg font-black text-slate-900 dark:text-white truncate">المعادن: جواهر الأرض</h1>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 truncate">الصف الأول المتوسط</p>
             </div>
         </div>
-        <div class="text-[10px] sm:text-xs bg-slate-800 text-amber-400 font-bold px-2.5 py-1.5 rounded-lg border border-slate-700 whitespace-nowrap">
-            أ. علي جبريل
-        </div>
+        <button onclick="toggleTheme()" id="theme-toggle" class="min-h-[44px] px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-sm font-bold flex items-center gap-1 transition">
+            <span id="theme-icon">🌙</span>
+            <span id="theme-label" class="hidden sm:inline">ليلي</span>
+        </button>
     </header>
 
     <!-- Strict RTL Tab Order: الملخص -> الخريطة -> المختبر -> الاختبار الذاتي -->
-    <nav class="bg-slate-900/70 border-b border-slate-800 px-2 py-1.5 sticky top-[48px] sm:top-[56px] z-40 backdrop-blur">
-        <div class="max-w-4xl mx-auto grid grid-cols-4 gap-1.5 sm:gap-2">
-            <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn active flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
+    <nav class="bg-white/90 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 px-2 sm:px-4 py-2 sticky top-[64px] z-40 backdrop-blur">
+        <div class="max-w-5xl mx-auto grid grid-cols-4 gap-1.5 sm:gap-2">
+            <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn active min-h-[50px] flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs sm:text-base font-bold border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 transition">
                 <span>📄</span><span>الملخص</span>
             </button>
-            <button onclick="switchTab('mindmap')" id="tab-btn-mindmap" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
+            <button onclick="switchTab('mindmap')" id="tab-btn-mindmap" class="tab-btn min-h-[50px] flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs sm:text-base font-bold border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 transition">
                 <span>🗺️</span><span>الخريطة</span>
             </button>
-            <button onclick="switchTab('lab')" id="tab-btn-lab" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
+            <button onclick="switchTab('lab')" id="tab-btn-lab" class="tab-btn min-h-[50px] flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs sm:text-base font-bold border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 transition">
                 <span>🔬</span><span>المختبر</span>
             </button>
-            <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
+            <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn min-h-[50px] flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs sm:text-base font-bold border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 transition">
                 <span>📝</span><span>الاختبار الذاتي</span>
             </button>
         </div>
@@ -65,89 +73,89 @@
 
         <!-- TAB 1: SUMMARY -->
         <section id="tab-summary" class="space-y-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
                 <div>
-                    <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
                         <span>📄</span><span>الملخص السبوري المعتمد (8 صفحات)</span>
                     </h2>
-                    <p class="text-xs sm:text-sm text-slate-400 mt-1">مرتب حسب محطات الدرس مع الأشكال المستخرجة، أسئلة «ماذا قرأت؟»، وتحديات نافس.</p>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-1">مرتب حسب محطات الدرس مع الأشكال المستخرجة، أسئلة «ماذا قرأت؟»، وتحديات نافس.</p>
                 </div>
-                <a href="summary.pdf" download="minerals_summary.pdf" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center gap-1.5">
+                <a href="summary.pdf" download="minerals_summary.pdf" class="w-full sm:w-auto min-h-[48px] px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm sm:text-base font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
                     <span>⬇️</span><span>تحميل الملخص PDF</span>
                 </a>
             </div>
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl h-[74vh]">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-md h-[72vh]">
                 <iframe src="summary.pdf" class="w-full h-full border-0" title="الملخص السبوري"></iframe>
             </div>
         </section>
 
-        <!-- TAB 2: MINDMAP (Concept Tree + Pan/Zoom Visual Map) -->
+        <!-- TAB 2: MINDMAP -->
         <section id="tab-mindmap" class="hidden space-y-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-2">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
                 <div>
-                    <h2 class="text-base sm:text-lg font-extrabold text-white">🗺️ الخريطة الذهنية التفاعلية</h2>
-                    <p class="text-xs text-slate-400">بدّل بين شجرة المفاهيم القابلة للطي والخريطة البصرية فائقة الدقة (2400×1450).</p>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">🗺️ الخريطة الذهنية التفاعلية</h2>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">بدّل بين شجرة المفاهيم القابلة للطي والخريطة البصرية فائقة الدقة (2400×1450).</p>
                 </div>
-                <div class="flex gap-2">
-                    <button onclick="setMapMode('tree')" id="map-btn-tree" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white">🌳 شجرة المفاهيم</button>
-                    <button onclick="setMapMode('img')" id="map-btn-img" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">🖼️ الخريطة البصرية</button>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button onclick="setMapMode('tree')" id="map-btn-tree" class="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-emerald-600 text-white">🌳 شجرة المفاهيم</button>
+                    <button onclick="setMapMode('img')" id="map-btn-img" class="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">🖼️ الخريطة البصرية</button>
                 </div>
             </div>
 
             <div id="map-tree-view" class="space-y-3">
-                <details open class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
-                    <summary class="cursor-pointer font-extrabold text-white flex items-center justify-between">
+                <details open class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <summary class="cursor-pointer font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center justify-between gap-2">
                         <span>١. ما المعدن؟ وطرائق تشكّله</span>
-                        <span class="lvl-pill">[تذكر وفهم]</span>
+                        <span class="lvl-pill shrink-0">[تذكر وفهم]</span>
                     </summary>
-                    <ul class="mt-3 text-xs sm:text-sm text-slate-300 space-y-1.5 list-disc pr-5">
+                    <ul class="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 space-y-2 list-disc pr-5 leading-relaxed">
                         <li><b>الشروط الأربع:</b> مادة صلبة، غير عضوية، طبيعية، ذات ترتيب ذري منتظم وتركيب كيميائي محدد.</li>
                         <li><b>الفرق عن الصخر:</b> الصخر خليط من معدن واحد أو أكثر (مثل الجرانيت).</li>
                         <li><b>طرائق التشكّل:</b> التبريد البطيء للصهارة (بلورات كبيرة) أو السريع للابة (بلورات صغيرة)، والتبخر والترسيب.</li>
                     </ul>
                 </details>
-                <details class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
-                    <summary class="cursor-pointer font-extrabold text-white flex items-center justify-between">
+                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <summary class="cursor-pointer font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center justify-between gap-2">
                         <span>٢. الشكل البلوري، الانفصام والمكسر، واللون</span>
-                        <span class="lvl-pill">[فهم وتحليل]</span>
+                        <span class="lvl-pill shrink-0">[فهم وتحليل]</span>
                     </summary>
-                    <ul class="mt-3 text-xs sm:text-sm text-slate-300 space-y-1.5 list-disc pr-5">
+                    <ul class="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 space-y-2 list-disc pr-5 leading-relaxed">
                         <li><b>البلورة:</b> جسم صلب مرتب الذرات. <b>الانفصام:</b> انقسام أملس على مستويات الضعف (المايكا، الهاليت). <b>المكسر:</b> كسر خشن/محاري (الكوارتز).</li>
                         <li><b>اللون غير كافٍ:</b> لتشابه الذهب والبيريت، وتغيّر لون المعدن الواحد بسبب الشوائب.</li>
                     </ul>
                 </details>
-                <details class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
-                    <summary class="cursor-pointer font-extrabold text-white flex items-center justify-between">
+                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <summary class="cursor-pointer font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center justify-between gap-2">
                         <span>٣. المخدش، اللمعان، ومقياس موهس (١ – ١٠)</span>
-                        <span class="lvl-pill">[تطبيق]</span>
+                        <span class="lvl-pill shrink-0">[تطبيق]</span>
                     </summary>
-                    <ul class="mt-3 text-xs sm:text-sm text-slate-300 space-y-1.5 list-disc pr-5">
+                    <ul class="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 space-y-2 list-disc pr-5 leading-relaxed">
                         <li><b>المخدش:</b> لون المسحوق على لوح الخزف غير المصقول (الهيماتيت بني محمر، البيريت أخضر/بني مسود).</li>
                         <li><b>القساوة:</b> الظفر (٢,٥)، النقد النحاسي (٣,٥)، المسمار (٤,٥)، الزجاج (٥,٥)، المبرد (٦,٥)، لوح المخدش (٧).</li>
                     </ul>
                 </details>
-                <details class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
-                    <summary class="cursor-pointer font-extrabold text-white flex items-center justify-between">
+                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <summary class="cursor-pointer font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center justify-between gap-2">
                         <span>٤. المعادن الشائعة، الخامات، والاستدامة</span>
-                        <span class="lvl-pill">[تحليل وتقويم وابتكار]</span>
+                        <span class="lvl-pill shrink-0">[تحليل وتقويم وابتكار]</span>
                     </summary>
-                    <ul class="mt-3 text-xs sm:text-sm text-slate-300 space-y-1.5 list-disc pr-5">
+                    <ul class="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 space-y-2 list-disc pr-5 leading-relaxed">
                         <li><b>السيليكات:</b> تتكون من السيليكون والأكسجين وتشكّل أكثر من ٥٠٪ من معادن القشرة الأرضية.</li>
                         <li><b>تجربة ص ١٤١:</b> المغنيتيت ينجذب للمغناطيس، والكالسيت يفور مع حمض HCl المخفف.</li>
                     </ul>
                 </details>
             </div>
 
-            <div id="map-img-view" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-3">
+            <div id="map-img-view" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 space-y-3 shadow-sm">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex gap-2">
-                        <button onclick="zoomMap(1.2)" class="px-3 py-1 bg-slate-800 rounded-lg text-xs font-bold">+ تكبير</button>
-                        <button onclick="zoomMap(0.8)" class="px-3 py-1 bg-slate-800 rounded-lg text-xs font-bold">- تصغير</button>
-                        <button onclick="resetMap()" class="px-3 py-1 bg-slate-800 rounded-lg text-xs font-bold">↺ إعادة ضبط</button>
+                        <button onclick="zoomMap(1.2)" class="min-h-[44px] px-3.5 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold">+ تكبير</button>
+                        <button onclick="zoomMap(0.8)" class="min-h-[44px] px-3.5 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold">- تصغير</button>
+                        <button onclick="resetMap()" class="min-h-[44px] px-3.5 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold">↺ ضبط</button>
                     </div>
-                    <a href="mindmap.png" download="minerals_mindmap.png" class="px-3 py-1.5 bg-emerald-600 text-white text-xs font-bold rounded-lg">⬇️ تحميل الصورة</a>
+                    <a href="mindmap.png" download="minerals_mindmap.png" class="min-h-[44px] px-4 py-2 bg-emerald-600 text-white text-sm font-bold rounded-xl flex items-center">⬇️ تحميل الصورة</a>
                 </div>
-                <div id="panzoom-box" class="overflow-hidden rounded-xl border border-slate-800 bg-slate-950 h-[62vh] flex items-center justify-center cursor-grab touch-none">
+                <div id="panzoom-box" class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 h-[62vh] flex items-center justify-center cursor-grab touch-none">
                     <img id="panzoom-img" src="mindmap.png" alt="الخريطة الذهنية" class="max-w-full max-h-full select-none pointer-events-none transition-transform duration-75" draggable="false">
                 </div>
             </div>
@@ -155,48 +163,65 @@
 
         <!-- TAB 3: VIRTUAL LAB -->
         <section id="tab-lab" class="hidden space-y-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
                 <div>
-                    <h2 class="text-base sm:text-lg font-extrabold text-white">🔬 المختبر الافتراضي التفاعلي</h2>
-                    <p class="text-xs text-slate-400">محاكاة حية لاختبار المخدش، مقياس موهس، تجربة ص ١٤١، وتحدي العينة المجهولة.</p>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">🔬 المختبر الافتراضي التفاعلي</h2>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">محاكاة حية لاختبار المخدش، مقياس موهس، تجربة ص ١٤١، وتحدي العينة المجهولة.</p>
                 </div>
-                <a href="lab.html" target="_blank" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow">↗️ فتح في نافذة مستقلة</a>
+                <a href="lab.html" target="_blank" class="w-full sm:w-auto min-h-[48px] px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm sm:text-base font-bold rounded-xl shadow flex items-center justify-center gap-2">↗️ فتح في نافذة مستقلة</a>
             </div>
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+            <div class="bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-md">
                 <iframe src="lab.html" class="w-full h-[640px] sm:h-[760px] border-0" title="المختبر الافتراضي"></iframe>
             </div>
         </section>
 
         <!-- TAB 4: SELF QUIZ -->
         <section id="tab-quiz" class="hidden space-y-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-2">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
                 <div>
-                    <h2 class="text-base sm:text-lg font-extrabold text-white">📝 الاختبار الذاتي التفاعلي</h2>
-                    <p class="text-xs text-slate-400">١٢ سؤالاً متدرجة في المستويات المعرفية مع تصحيح وتفسير فوري.</p>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">📝 الاختبار الذاتي التفاعلي</h2>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">١٢ سؤالاً متدرجة في المستويات المعرفية مع تصحيح وتفسير فوري.</p>
                 </div>
-                <div id="quiz-score" class="px-3 py-1.5 bg-slate-800 rounded-xl text-xs sm:text-sm font-bold text-emerald-400 border border-slate-700">النتيجة: ٠ / ١٢</div>
+                <div id="quiz-score" class="px-4 py-2 bg-emerald-100 dark:bg-emerald-950 rounded-xl text-sm sm:text-base font-extrabold text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">النتيجة: ٠ / ١٢</div>
             </div>
             <div id="quiz-container" class="space-y-4"></div>
         </section>
 
     </main>
 
-    <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-400">
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 text-center text-sm text-slate-600 dark:text-slate-400">
         معلم المادة: علي جبريل - مجمع الثقافة التعليمي
     </footer>
 
     <script>
+        function syncThemeUI() {
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+            document.getElementById('theme-label').textContent = isDark ? 'نهاري' : 'ليلي';
+        }
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('science_theme', isDark ? 'dark' : 'light');
+            syncThemeUI();
+        }
+        syncThemeUI();
+
         function switchTab(name) {
             ['summary', 'mindmap', 'lab', 'quiz'].forEach(t => {
                 document.getElementById('tab-' + t).classList.toggle('hidden', t !== name);
                 document.getElementById('tab-btn-' + t).classList.toggle('active', t === name);
             });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         function setMapMode(m) {
             document.getElementById('map-tree-view').classList.toggle('hidden', m !== 'tree');
             document.getElementById('map-img-view').classList.toggle('hidden', m !== 'img');
-            document.getElementById('map-btn-tree').className = m === 'tree' ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white' : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700';
-            document.getElementById('map-btn-img').className = m === 'img' ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white' : 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700';
+            document.getElementById('map-btn-tree').className = m === 'tree'
+                ? 'flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-emerald-600 text-white'
+                : 'flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700';
+            document.getElementById('map-btn-img').className = m === 'img'
+                ? 'flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-emerald-600 text-white'
+                : 'flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700';
         }
         let scale = 1, tx = 0, ty = 0, dragging = false, sx = 0, sy = 0;
         const box = document.getElementById('panzoom-box'), img = document.getElementById('panzoom-img');
@@ -218,20 +243,20 @@
             c.innerHTML = '';
             questionsData.forEach((q, idx) => {
                 const card = document.createElement('div');
-                card.className = 'bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3';
+                card.className = 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm';
                 card.innerHTML = `
                     <div class="flex items-start justify-between gap-2">
-                        <div class="font-bold text-sm sm:text-base text-blue-200">${idx + 1}. ${q.question}</div>
+                        <div class="font-bold text-base sm:text-lg text-blue-900 dark:text-blue-200 leading-relaxed">${idx + 1}. ${q.question}</div>
                         <span class="lvl-pill shrink-0">${q.tag}</span>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="opts-${q.id}"></div>
-                    <div id="exp-${q.id}" class="hidden text-xs sm:text-sm p-3 rounded-xl border"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="opts-${q.id}"></div>
+                    <div id="exp-${q.id}" class="hidden text-sm sm:text-base p-3.5 rounded-xl border leading-relaxed"></div>
                 `;
                 c.appendChild(card);
                 const optsEl = card.querySelector(`#opts-${q.id}`);
                 q.options.forEach((opt, oi) => {
                     const b = document.createElement('button');
-                    b.className = 'quiz-option text-right px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs sm:text-sm font-semibold text-slate-100';
+                    b.className = 'quiz-option text-right px-4 py-3 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100';
                     b.textContent = opt;
                     b.onclick = () => pickOption(q, oi, optsEl);
                     optsEl.appendChild(b);
@@ -244,14 +269,14 @@
             answered[q.id] = (oi === q.answer);
             Array.from(optsEl.children).forEach((btn, idx) => {
                 btn.disabled = true;
-                if (idx === q.answer) btn.className = 'quiz-option text-right px-4 py-2.5 rounded-xl bg-emerald-700/80 border border-emerald-400 text-xs sm:text-sm font-bold text-white';
-                else if (idx === oi) btn.className = 'quiz-option text-right px-4 py-2.5 rounded-xl bg-rose-700/80 border border-rose-400 text-xs sm:text-sm font-bold text-white';
+                if (idx === q.answer) btn.className = 'quiz-option text-right px-4 py-3 rounded-xl bg-emerald-600 border border-emerald-700 text-sm sm:text-base font-bold text-white';
+                else if (idx === oi) btn.className = 'quiz-option text-right px-4 py-3 rounded-xl bg-rose-600 border border-rose-700 text-sm sm:text-base font-bold text-white';
             });
             const exp = document.getElementById(`exp-${q.id}`);
             exp.classList.remove('hidden');
             exp.className = (oi === q.answer)
-                ? 'text-xs sm:text-sm p-3 rounded-xl border bg-emerald-950/60 border-emerald-700 text-emerald-200'
-                : 'text-xs sm:text-sm p-3 rounded-xl border bg-rose-950/60 border-rose-700 text-rose-200';
+                ? 'text-sm sm:text-base p-3.5 rounded-xl border bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200 leading-relaxed'
+                : 'text-sm sm:text-base p-3.5 rounded-xl border bg-rose-50 dark:bg-rose-950/60 border-rose-300 dark:border-rose-700 text-rose-900 dark:text-rose-200 leading-relaxed';
             exp.innerHTML = `<b>${oi === q.answer ? '✅ إجابة صحيحة:' : '❌ الإجابة الصحيحة موضحة أعلاه:'}</b> ${q.explanation}`;
             const score = Object.values(answered).filter(Boolean).length;
             document.getElementById('quiz-score').textContent = `النتيجة: ${score} / ${questionsData.length}`;
