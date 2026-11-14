@@ -84,9 +84,7 @@
                     <span>⬇️</span><span>تحميل الملخص PDF</span>
                 </a>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-md h-[72vh]">
-                <iframe src="summary.pdf" class="w-full h-full border-0" title="الملخص السبوري"></iframe>
-            </div>
+            <div data-pdf-viewer data-pdf="summary.pdf" data-accent="amber"></div>
         </section>
 
         <!-- TAB 2: MINDMAP -->
@@ -285,5 +283,6 @@
             document.getElementById('quiz-score').textContent = `النتيجة: ${score} / ${questionsData.length}`;
         }
     </script>
+    <script src="../../assets/pdf-viewer.js"></script>
 </body>
 </html>
