@@ -4,805 +4,286 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>نماذج الذرة — الصف الثالث المتوسط</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+        (function() {
+            if (localStorage.getItem('science_theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        body { font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         .tab-btn.active {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: #ffffff;
-            border-color: #60a5fa;
-            box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            color: #ffffff !important;
+            border-color: #f59e0b !important;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
         }
-        .quiz-option {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 54px;
-        }
-        .quiz-option:active {
-            transform: scale(0.98);
+        .quiz-option { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); min-height: 54px; }
+        .quiz-option:active { transform: scale(0.98); }
+        .lvl-pill {
+            display: inline-block; background: #fee2e2; color: #dc2626;
+            border: 1px solid #ef4444; font-weight: 800; font-size: 13px;
+            padding: 2px 10px; border-radius: 999px;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
 
-    <!-- Top Fixed Bar with Back to Main Portal -->
-    <header class="bg-slate-900/90 border-b border-slate-800/80 px-3 sm:px-6 py-1.5 sm:py-2.5 sticky top-0 z-50 backdrop-blur flex items-center justify-between gap-2 sm:gap-3">
-        <a href="../../index.html" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-xs sm:text-sm font-bold border border-slate-700/80 transition active:scale-95">
-            <span>←</span>
-            <span>الرئيسية</span>
+    <header class="bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-3 sm:px-6 py-2.5 sticky top-0 z-50 backdrop-blur flex items-center justify-between gap-2 shadow-sm">
+        <a href="../../index.html#grade3" class="min-h-[44px] flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-sm font-bold border border-slate-300 dark:border-slate-700 transition">
+            <span>←</span><span>الرئيسية</span>
         </a>
-        <div class="flex items-center gap-2 text-center">
-            <span class="text-lg sm:text-xl">⚛️</span>
-            <div>
-                <h1 class="text-xs sm:text-sm font-black text-white truncate max-w-[200px] sm:max-w-md">نماذج الذرة</h1>
-                <p class="text-[10px] sm:text-xs text-slate-400 truncate">الصف الثالث المتوسط</p>
+        <div class="flex items-center gap-2 text-center min-w-0">
+            <span class="text-xl sm:text-2xl shrink-0">⚛️</span>
+            <div class="min-w-0">
+                <h1 class="text-sm sm:text-lg font-black text-slate-900 dark:text-white truncate">نماذج الذرة</h1>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 truncate">الصف الثالث المتوسط</p>
             </div>
         </div>
-        <div class="text-[10px] sm:text-xs bg-slate-800/90 text-amber-400 font-bold px-2.5 py-1.5 rounded-lg border border-slate-700/80 whitespace-nowrap">
-            أ. علي جبريل
-        </div>
+        <button onclick="toggleTheme()" id="theme-toggle" class="min-h-[44px] px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-sm font-bold flex items-center gap-1 transition">
+            <span id="theme-icon">🌙</span>
+            <span id="theme-label" class="hidden sm:inline">ليلي</span>
+        </button>
     </header>
 
-    <!-- Navigation Tabs (RTL: Strictly Starts from Right with Summary) -->
-    <nav class="bg-slate-900/70 border-b border-slate-800/80 px-1.5 sm:px-2 py-1.5 sticky top-[48px] sm:top-[56px] z-40 backdrop-blur">
-        <div class="max-w-4xl mx-auto grid grid-cols-4 gap-1.5 sm:gap-2">
-            <!-- 1. الملخص (Rightmost / First Tab) -->
-            <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn active flex flex-col sm:flex-row items-center justify-center gap-1 py-1.5 sm:py-2 px-1 rounded-xl text-[11px] sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
-                <span class="text-base sm:text-lg">📄</span>
-                <span>الملخص</span>
+    <!-- Strict RTL Tab Order: الملخص -> الخريطة -> المختبر -> الاختبار الذاتي -->
+    <nav class="bg-white/90 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 px-2 sm:px-4 py-2 sticky top-[64px] z-40 backdrop-blur">
+        <div class="max-w-5xl mx-auto grid grid-cols-4 gap-1.5 sm:gap-2">
+            <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn active min-h-[50px] flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs sm:text-base font-bold border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 transition">
+                <span>📄</span><span>الملخص</span>
             </button>
-            <!-- 2. الخريطة -->
-            <button onclick="switchTab('map')" id="tab-btn-map" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-1.5 sm:py-2 px-1 rounded-xl text-[11px] sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
-                <span class="text-base sm:text-lg">🗺️</span>
-                <span>الخريطة</span>
+            <button onclick="switchTab('mindmap')" id="tab-btn-mindmap" class="tab-btn min-h-[50px] flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs sm:text-base font-bold border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 transition">
+                <span>🗺️</span><span>الخريطة</span>
             </button>
-            <!-- 3. المختبر -->
-            <button onclick="switchTab('lab')" id="tab-btn-lab" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-1.5 sm:py-2 px-1 rounded-xl text-[11px] sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
-                <span class="text-base sm:text-lg">🧪</span>
-                <span>المختبر</span>
+            <button onclick="switchTab('lab')" id="tab-btn-lab" class="tab-btn min-h-[50px] flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs sm:text-base font-bold border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 transition">
+                <span>🔬</span><span>المختبر</span>
             </button>
-            <!-- 4. الاختبار (Leftmost / Last Tab) -->
-            <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn flex flex-col sm:flex-row items-center justify-center gap-1 py-1.5 sm:py-2 px-1 rounded-xl text-[11px] sm:text-sm font-bold border border-slate-800 text-slate-300 transition">
-                <span class="text-base sm:text-lg">📝</span>
-                <span>الاختبار</span>
-                <span class="hidden sm:inline-block bg-white/20 text-[10px] px-1.5 py-0.5 rounded-full">20</span>
+            <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn min-h-[50px] flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs sm:text-base font-bold border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 transition">
+                <span>📝</span><span>الاختبار الذاتي</span>
             </button>
         </div>
     </nav>
 
-    <!-- Main Content Area -->
-    <main class="max-w-4xl w-full mx-auto p-2 sm:p-4 flex-1">
+    <main class="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6">
 
-        <!-- TAB 1: SUMMARY PDF (ACTIVE INITIALLY ON PAGE LOAD) -->
-        <section id="section-summary" class="tab-content block">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-2.5 sm:p-4 shadow-xl">
-                <div class="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-800">
-                    <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                        <span>📄</span>
-                        <span>الملخص السبوري</span>
+        <!-- TAB 1: SUMMARY -->
+        <section id="tab-summary" class="space-y-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                        <span>📄</span><span>الملخص السبوري المعتمد</span>
                     </h2>
-                    <a href="summary.pdf" download="atomic_models_summary.pdf" class="text-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95">
-                        <span>⬇️</span>
-                        <span>تحميل PDF</span>
-                    </a>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-1">ملخص درس نماذج الذرة وتطورها التاريخي من ديموقريطوس إلى السحابة الإلكترونية.</p>
                 </div>
-                <div class="w-full h-[540px] sm:h-[720px] rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
-                    <iframe src="summary.pdf" class="w-full h-full border-0" title="الملخص السبوري"></iframe>
-                </div>
+                <a href="summary.pdf" download="atomic_models_summary.pdf" class="w-full sm:w-auto min-h-[48px] px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+                    <span>⬇️</span><span>تحميل الملخص PDF</span>
+                </a>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-md h-[72vh]">
+                <iframe src="summary.pdf" class="w-full h-full border-0" title="الملخص السبوري"></iframe>
             </div>
         </section>
 
-
-        <!-- TAB 2: INTERACTIVE MIND MAP -->
-        <section id="section-map" class="tab-content hidden">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-2.5 sm:p-4 shadow-xl space-y-4">
-                
-                <!-- Header with Mode Switcher & Global Actions -->
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">🗺️</span>
-                        <div>
-                            <h2 class="text-base sm:text-lg font-bold text-white">الخريطة الذهنية التفاعلية</h2>
-                            <p class="text-[11px] sm:text-xs text-slate-400">استكشف المفاهيم بالطي والنقر أو تحكم بالخريطة البصرية بالتكبير والتصغير</p>
-                        </div>
-                    </div>
-                    
-                    <!-- View Switcher -->
-                    <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 self-center sm:self-auto">
-                        <button onclick="switchMapView('tree')" id="map-mode-tree-btn" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-blue-600 text-white shadow">
-                            <span>🌳</span>
-                            <span>شجرة المفاهيم (نقر وطي)</span>
-                        </button>
-                        <button onclick="switchMapView('visual')" id="map-mode-visual-btn" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-400 hover:text-white">
-                            <span>🔍</span>
-                            <span>الخريطة البصرية (تكبير)</span>
-                        </button>
-                    </div>
+        <!-- TAB 2: MINDMAP -->
+        <section id="tab-mindmap" class="hidden space-y-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">🗺️ الخريطة الذهنية التفاعلية</h2>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">بدّل بين شجرة المفاهيم القابلة للطي والخريطة البصرية فائقة الدقة (2400×1450).</p>
                 </div>
-
-                <!-- VIEW 1: COLLAPSIBLE CONCEPT TREE (DEFAULT) -->
-                <div id="map-view-tree" class="block space-y-3">
-                    <div class="flex items-center justify-between gap-2 px-1">
-                        <div class="text-xs text-slate-400 font-semibold">
-                            انقر على أي بطاقة لتوسيع أو طي التفاصيل
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="expandAllBranches()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition font-bold active:scale-95">
-                                ➕ توسيع الكل
-                            </button>
-                            <button onclick="collapseAllBranches()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition font-bold active:scale-95">
-                                ➖ طي الكل
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        
-        <!-- Branch Accordion Card -->
-        <div class="border border-blue-500/40 hover:border-blue-500 bg-blue-950/20 rounded-2xl overflow-hidden transition-all duration-300 shadow-lg">
-            <button onclick="toggleBranch('g3_b1')" class="w-full text-right p-4 sm:p-5 flex items-center justify-between gap-3 focus:outline-none select-none active:bg-white/5 transition">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-600/20 text-blue-400 border border-white/10 flex items-center justify-center text-xl sm:text-2xl shrink-0">
-                        ⚪
-                    </div>
-                    <div>
-                        <h3 class="font-extrabold text-white text-base sm:text-lg">1. البدايات ونموذج دالتون</h3>
-                        <p class="text-xs sm:text-sm text-slate-400 mt-0.5">أول نظرية علمية حديثة تفسر تركيب المادة</p>
-                    </div>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button onclick="setMapMode('tree')" id="map-btn-tree" class="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-amber-600 hover:bg-amber-700 text-white">🌳 شجرة المفاهيم</button>
+                    <button onclick="setMapMode('img')" id="map-btn-img" class="flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">🖼️ الخريطة البصرية</button>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="hidden sm:inline-block text-xs text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 font-semibold">2 مفاهيم</span>
-                    <div id="icon-g3_b1" class="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700/70 flex items-center justify-center text-slate-300 transition-transform duration-300 transform rotate-180 text-xs">
-                        ▲
-                    </div>
-                </div>
-            </button>
-            <div id="content-g3_b1" class="p-3 sm:p-5 pt-0 space-y-2.5 block transition-all duration-300">
-                
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">أفكار ديموقريطوس القديمة</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-blue-500/20 text-blue-300 border-blue-500/30">الفلسفة اليونانية</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">اقترح أن المادة مؤلفة من جسيمات دقيقة غير قابلة للتجزئة سماها (ذرات - Atomos)، لكن فكرته رفضت قروناً لصالح أرسطو.</p>
-                </div>
-            
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">نموذج دالتون الذري (1803م)</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-blue-500/20 text-blue-300 border-blue-500/30">كرة صلبة مصمتة</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">افترض أن الذرة كرة صلبة مصمتة لا تتجزأ ولا يمكن تدميرها، وأن ذرات العنصر الواحد متماثلة في الكتلة والخواص الكيميائية.</p>
-                </div>
-            
             </div>
-        </div>
-        
-        <!-- Branch Accordion Card -->
-        <div class="border border-emerald-500/40 hover:border-emerald-500 bg-emerald-950/20 rounded-2xl overflow-hidden transition-all duration-300 shadow-lg">
-            <button onclick="toggleBranch('g3_b2')" class="w-full text-right p-4 sm:p-5 flex items-center justify-between gap-3 focus:outline-none select-none active:bg-white/5 transition">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-600/20 text-emerald-400 border border-white/10 flex items-center justify-center text-xl sm:text-2xl shrink-0">
-                        ⚡
-                    </div>
-                    <div>
-                        <h3 class="font-extrabold text-white text-base sm:text-lg">2. نموذج طومسون واكتشاف الإلكترون</h3>
-                        <p class="text-xs sm:text-sm text-slate-400 mt-0.5">إثبات أن الذرة قابلة للتجزئة وتحتوي جسيمات سالبة</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="hidden sm:inline-block text-xs text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 font-semibold">3 مفاهيم</span>
-                    <div id="icon-g3_b2" class="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700/70 flex items-center justify-center text-slate-300 transition-transform duration-300 transform rotate-180 text-xs">
-                        ▲
-                    </div>
-                </div>
-            </button>
-            <div id="content-g3_b2" class="p-3 sm:p-5 pt-0 space-y-2.5 block transition-all duration-300">
-                
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">تجربة أشعة المهبط (الكاثود)</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-emerald-500/20 text-emerald-300 border-emerald-500/30">تفريغ كهربائي</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">أمرّ تياراً في أنبوب تفريغ زجاجي مخلخل، فلاحظ توهج أشعة خضراء تنحرف نحو القطب الموجب، مما أثبت أنها جسيمات سالبة الشحنة.</p>
-                </div>
-            
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">اكتشاف الإلكترون (e⁻)</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-emerald-500/20 text-emerald-300 border-emerald-500/30">أول جسيم دون ذري</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">أول جسيم دون ذري يُكتشف علمياً، ذو شحنة سالبة وكتلة ضئيلة جداً لا تقارن بكتلة الذرة.</p>
-                </div>
-            
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">نموذج فطيرة الخوخ / البودنج</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-emerald-500/20 text-emerald-300 border-emerald-500/30">كرة موجبة تحوي إلكترونات</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">تصور الذرة كرة مصمتة من مادة موجبة الشحنة تنغمر بداخلها الإلكترونات السالبة، لتكون الذرة ككل متعادلة كهربائياً.</p>
-                </div>
-            
-            </div>
-        </div>
-        
-        <!-- Branch Accordion Card -->
-        <div class="border border-amber-500/40 hover:border-amber-500 bg-amber-950/20 rounded-2xl overflow-hidden transition-all duration-300 shadow-lg">
-            <button onclick="toggleBranch('g3_b3')" class="w-full text-right p-4 sm:p-5 flex items-center justify-between gap-3 focus:outline-none select-none active:bg-white/5 transition">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-600/20 text-amber-400 border border-white/10 flex items-center justify-center text-xl sm:text-2xl shrink-0">
-                        🎯
-                    </div>
-                    <div>
-                        <h3 class="font-extrabold text-white text-base sm:text-lg">3. نموذج رذرفورد واكتشاف النواة</h3>
-                        <p class="text-xs sm:text-sm text-slate-400 mt-0.5">التجربة الثورية لرقاقة الذهب واكتشاف الفراغ الذري</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="hidden sm:inline-block text-xs text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 font-semibold">3 مفاهيم</span>
-                    <div id="icon-g3_b3" class="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700/70 flex items-center justify-center text-slate-300 transition-transform duration-300 transform rotate-180 text-xs">
-                        ▲
-                    </div>
-                </div>
-            </button>
-            <div id="content-g3_b3" class="p-3 sm:p-5 pt-0 space-y-2.5 block transition-all duration-300">
-                
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">تجربة صفيحة الذهب (1911م)</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-amber-500/20 text-amber-300 border-amber-500/30">جسيمات ألفا</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">صوب حزمة من جسيمات ألفا (+) نحو شريحة ذهب بالغة الرقة، ورصد ارتدادها وانحرافها بشاشة كبريتيد الخارصين الفلورية.</p>
-                </div>
-            
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">المشاهدات الحاسمة</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-amber-500/20 text-amber-300 border-amber-500/30">معظم الجسيمات نفذت</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">1) معظم جسيمات ألفا نفذ على استقامته تماماً. 2) نسبة نادرة ارتدت للخلف (1 من 8000). 3) نسبة ضئيلة انحرفت بزوايا مختلفة.</p>
-                </div>
-            
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">استنتاجات رذرفورد</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-amber-500/20 text-amber-300 border-amber-500/30">النموذج النووي</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">1) الذرة معظمها فراغ هائل. 2) توجد نواة مركزية موجبة بالغة الصغر والكثافة تتركز فيها معظم كتلة الذرة. 3) تدور الإلكترونات في هذا الفراغ.</p>
-                </div>
-            
-            </div>
-        </div>
-        
-        <!-- Branch Accordion Card -->
-        <div class="border border-purple-500/40 hover:border-purple-500 bg-purple-950/20 rounded-2xl overflow-hidden transition-all duration-300 shadow-lg">
-            <button onclick="toggleBranch('g3_b4')" class="w-full text-right p-4 sm:p-5 flex items-center justify-between gap-3 focus:outline-none select-none active:bg-white/5 transition">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-600/20 text-purple-400 border border-white/10 flex items-center justify-center text-xl sm:text-2xl shrink-0">
-                        🌌
-                    </div>
-                    <div>
-                        <h3 class="font-extrabold text-white text-base sm:text-lg">4. نماذج بور والحديث (السحابة الإلكترونية)</h3>
-                        <p class="text-xs sm:text-sm text-slate-400 mt-0.5">مستويات الطاقة والاحتمالية المكانية لوجود الإلكترون</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="hidden sm:inline-block text-xs text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 font-semibold">3 مفاهيم</span>
-                    <div id="icon-g3_b4" class="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700/70 flex items-center justify-center text-slate-300 transition-transform duration-300 transform rotate-180 text-xs">
-                        ▲
-                    </div>
-                </div>
-            </button>
-            <div id="content-g3_b4" class="p-3 sm:p-5 pt-0 space-y-2.5 block transition-all duration-300">
-                
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">نموذج نيلز بور (1913م)</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-purple-500/20 text-purple-300 border-purple-500/30">مستويات طاقة ثابتة</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">اقترح أن الإلكترونات تدور في مستويات طاقة محددة ومدارات دائرية ثابتة حول النواة، وتكتسب أو تشع طاقة فقط عند انتقالها بين المستويات.</p>
-                </div>
-            
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">اكتشاف النيوترون (تشادويك 1932م)</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-purple-500/20 text-purple-300 border-purple-500/30">جسيم متعادل</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">أثبت وجود جسيمات متعادلة الشحنة داخل النواة كتلتها مساوية لكتلة البروتون أطلق عليها النيوترونات (n⁰).</p>
-                </div>
-            
-                <div class="bg-slate-900/95 border border-slate-800 rounded-xl p-3.5 sm:p-4 hover:border-slate-700 transition shadow">
-                    <div class="flex items-center justify-between gap-2 mb-1.5">
-                        <h4 class="font-bold text-white text-sm sm:text-base">النموذج السحابي الحديث</h4>
-                        <span class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border bg-purple-500/20 text-purple-300 border-purple-500/30">السحابة الإلكترونية</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">أثبتت الميكانيكا الكمية استحالة تحديد موضع الإلكترون وسرعته معاً بدقة، واستبدلت المدارات الدائرية بـ 'السحابة الإلكترونية' كمنطقة احتمالية ثلاثية الأبعاد.</p>
-                </div>
-            
-            </div>
-        </div>
-        
-                    </div>
-                </div>
 
-                <!-- VIEW 2: VISUAL MAP WITH PAN & ZOOM -->
-                <div id="map-view-visual" class="hidden space-y-3">
-                    
-                    <!-- Zoom & Pan Controls Bar -->
-                    <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="zoomMap(0.25)" class="px-3 py-1.5 bg-slate-800 hover:bg-blue-600 active:scale-95 text-white text-xs font-bold rounded-lg border border-slate-700 transition flex items-center gap-1" title="تكبير">
-                                <span>➕</span>
-                                <span>تكبير</span>
-                            </button>
-                            <button onclick="zoomMap(-0.25)" class="px-3 py-1.5 bg-slate-800 hover:bg-blue-600 active:scale-95 text-white text-xs font-bold rounded-lg border border-slate-700 transition flex items-center gap-1" title="تصغير">
-                                <span>➖</span>
-                                <span>تصغير</span>
-                            </button>
-                            <button onclick="resetMapZoom()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 hover:text-white text-xs font-bold rounded-lg border border-slate-700 transition" title="الحجم الأصلي">
-                                <span>🔄 الحجم الأصلي</span>
-                            </button>
-                            <span id="map-zoom-badge" class="text-xs font-mono font-bold text-amber-400 bg-slate-900 px-2 py-1 rounded border border-slate-800">100%</span>
-                        </div>
-                        
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="toggleMapFullscreen()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 hover:text-white text-xs font-bold rounded-lg border border-slate-700 transition flex items-center gap-1">
-                                <span>⛶</span>
-                                <span class="hidden sm:inline">ملء الشاشة</span>
-                            </button>
-                            <a href="mindmap.png" download="atomic_models_mindmap.png" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white text-xs font-bold rounded-lg shadow transition flex items-center gap-1">
-                                <span>⬇️</span>
-                                <span>تحميل الأصل</span>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <p class="text-[11px] text-slate-400 text-center">💡 يمكنك السحب بالماوس أو اللمس للتحريك، واستخدام عجلة الماوس أو اللمس المزدوج للتكبير</p>
-                    
-                    <!-- Interactive Viewport -->
-                    <div id="map-viewport" class="relative w-full h-[520px] sm:h-[650px] overflow-hidden rounded-xl border border-slate-800 bg-slate-950 cursor-grab active:cursor-grabbing flex items-center justify-center select-none touch-none">
-                        <img id="panzoom-map-img" src="mindmap.png" alt="الخريطة الذهنية" class="max-w-none transition-transform duration-75 origin-center select-none pointer-events-none" style="transform: translate(0px, 0px) scale(1);" draggable="false">
-                    </div>
-                </div>
+            <div id="map-tree-view" class="space-y-3">
+                <details open class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <summary class="cursor-pointer font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center justify-between gap-2">
+                        <span>1. البدايات ونموذج دالتون</span>
+                        <span class="lvl-pill shrink-0">[تذكر وفهم]</span>
+                    </summary>
+                    <ul class="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 space-y-2 list-disc pr-5 leading-relaxed">
+                        <li><b>أفكار ديموقريطوس القديمة:</b> اقترح أن المادة مؤلفة من جسيمات دقيقة غير قابلة للتجزئة سماها (ذرات - Atomos)، لكن فكرته رفضت قروناً لصالح أرسطو.</li>
+                        <li><b>نموذج دالتون الذري (1803م):</b> افترض أن الذرة كرة صلبة مصمتة لا تتجزأ ولا يمكن تدميرها، وأن ذرات العنصر الواحد متماثلة في الكتلة والخواص الكيميائية.</li>
+                    </ul>
+                </details>
+                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <summary class="cursor-pointer font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center justify-between gap-2">
+                        <span>2. نموذج طومسون واكتشاف الإلكترون</span>
+                        <span class="lvl-pill shrink-0">[فهم وتطبيق]</span>
+                    </summary>
+                    <ul class="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 space-y-2 list-disc pr-5 leading-relaxed">
+                        <li><b>تجربة أشعة المهبط (الكاثود):</b> أمرّ تياراً في أنبوب تفريغ زجاجي مخلخل، فلاحظ توهج أشعة خضراء تنحرف نحو القطب الموجب، مما أثبت أنها جسيمات سالبة الشحنة.</li>
+                        <li><b>اكتشاف الإلكترون (e⁻):</b> أول جسيم دون ذري يُكتشف علمياً، ذو شحنة سالبة وكتلة ضئيلة جداً لا تقارن بكتلة الذرة.</li>
+                        <li><b>نموذج فطيرة الخوخ / البودنج:</b> تصور الذرة كرة مصمتة من مادة موجبة الشحنة تنغمر بداخلها الإلكترونات السالبة، لتكون الذرة ككل متعادلة كهربائياً.</li>
+                    </ul>
+                </details>
+                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <summary class="cursor-pointer font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center justify-between gap-2">
+                        <span>3. نموذج رذرفورد واكتشاف النواة</span>
+                        <span class="lvl-pill shrink-0">[تطبيق وتحليل]</span>
+                    </summary>
+                    <ul class="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 space-y-2 list-disc pr-5 leading-relaxed">
+                        <li><b>تجربة صفيحة الذهب (1911م):</b> صوب حزمة من جسيمات ألفا (+) نحو شريحة ذهب بالغة الرقة، ورصد ارتدادها وانحرافها بشاشة كبريتيد الخارصين الفلورية.</li>
+                        <li><b>المشاهدات الحاسمة:</b> 1) معظم جسيمات ألفا نفذ على استقامته تماماً. 2) نسبة نادرة ارتدت للخلف (1 من 8000). 3) نسبة ضئيلة انحرفت بزوايا مختلفة.</li>
+                        <li><b>استنتاجات رذرفورد:</b> 1) الذرة معظمها فراغ هائل. 2) توجد نواة مركزية موجبة بالغة الصغر والكثافة تتركز فيها معظم كتلة الذرة. 3) تدور الإلكترونات في هذا الفراغ.</li>
+                    </ul>
+                </details>
+                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <summary class="cursor-pointer font-extrabold text-base sm:text-lg text-slate-900 dark:text-white flex items-center justify-between gap-2">
+                        <span>4. نماذج بور والحديث (السحابة الإلكترونية)</span>
+                        <span class="lvl-pill shrink-0">[تحليل وتقويم]</span>
+                    </summary>
+                    <ul class="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 space-y-2 list-disc pr-5 leading-relaxed">
+                        <li><b>نموذج نيلز بور (1913م):</b> اقترح أن الإلكترونات تدور في مستويات طاقة محددة ومدارات دائرية ثابتة حول النواة، وتكتسب أو تشع طاقة فقط عند انتقالها بين المستويات.</li>
+                        <li><b>اكتشاف النيوترون (تشادويك 1932م):</b> أثبت وجود جسيمات متعادلة الشحنة داخل النواة كتلتها مساوية لكتلة البروتون أطلق عليها النيوترونات (n⁰).</li>
+                        <li><b>النموذج السحابي الحديث:</b> أثبتت الميكانيكا الكمية استحالة تحديد موضع الإلكترون وسرعته معاً بدقة، واستبدلت المدارات الدائرية بـ 'السحابة الإلكترونية' كمنطقة احتمالية ثلاثية الأبعاد.</li>
+                    </ul>
+                </details>
+            </div>
 
+            <div id="map-img-view" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 space-y-3 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex gap-2">
+                        <button onclick="zoomMap(1.2)" class="min-h-[44px] px-3.5 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold">+ تكبير</button>
+                        <button onclick="zoomMap(0.8)" class="min-h-[44px] px-3.5 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold">- تصغير</button>
+                        <button onclick="resetMap()" class="min-h-[44px] px-3.5 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold">↺ ضبط</button>
+                    </div>
+                    <a href="mindmap.png" download="atomic_models_mindmap.png" class="min-h-[44px] px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-xl flex items-center">⬇️ تحميل الصورة</a>
+                </div>
+                <div id="panzoom-box" class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 h-[62vh] flex items-center justify-center cursor-grab touch-none">
+                    <img id="panzoom-img" src="mindmap.png" alt="الخريطة الذهنية" class="max-w-full max-h-full select-none pointer-events-none transition-transform duration-75" draggable="false">
+                </div>
             </div>
         </section>
-    
 
         <!-- TAB 3: VIRTUAL LAB -->
-        <section id="section-lab" class="tab-content hidden">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 shadow-xl">
-                <div class="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-800">
-                    <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                        <span>🧪</span>
-                        <span>المختبر الافتراضي</span>
-                    </h2>
-                    <a href="lab.html" target="_blank" class="text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95">
-                        <span>⛶</span>
-                        <span>فتح في نافذة كاملة</span>
-                    </a>
+        <section id="tab-lab" class="hidden space-y-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">🔬 المختبر الافتراضي التفاعلي</h2>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">محاكاة حية لتطور النماذج الذرية وتجربة رذرفورد لرقاقة الذهب.</p>
                 </div>
-                <div class="w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950">
-                    <iframe src="lab.html" class="w-full h-[540px] sm:h-[720px] border-0" title="المختبر الافتراضي"></iframe>
-                </div>
+                <a href="lab.html" target="_blank" class="w-full sm:w-auto min-h-[48px] px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base font-bold rounded-xl shadow flex items-center justify-center gap-2">↗️ فتح في نافذة مستقلة</a>
+            </div>
+            <div class="bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-md">
+                <iframe src="lab.html" class="w-full h-[640px] sm:h-[760px] border-0" title="المختبر الافتراضي"></iframe>
             </div>
         </section>
 
-        <!-- TAB 4: SELF-QUIZ -->
-        <section id="section-quiz" class="tab-content hidden">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-xl max-w-2xl mx-auto">
-                
-                <!-- Quiz Progress Bar -->
-                <div class="flex items-center justify-between gap-3 mb-3 text-xs sm:text-sm text-slate-400 font-bold">
-                    <div class="flex items-center gap-2">
-                        <span id="quiz-q-num" class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-full border border-blue-500/30">سؤال 1 من 20</span>
-                        <span id="quiz-type-badge" class="bg-slate-800 text-slate-300 px-2 py-1 rounded-md text-[11px]">اختيار من متعدد</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 text-amber-400">
-                        <span>⭐</span>
-                        <span>النقاط: <span id="quiz-score" class="font-mono">0</span></span>
-                    </div>
+        <!-- TAB 4: SELF QUIZ -->
+        <section id="tab-quiz" class="hidden space-y-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">📝 الاختبار الذاتي التفاعلي</h2>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">20 سؤالاً متدرجة في المستويات المعرفية مع تصحيح وتفسير فوري.</p>
                 </div>
-
-                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-6">
-                    <div id="quiz-progress-fill" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full w-[5%] transition-all duration-300"></div>
-                </div>
-
-                <!-- Active Question Container -->
-                <div id="quiz-card" class="space-y-4">
-                    <h3 id="quiz-question-text" class="text-base sm:text-lg font-extrabold text-white leading-relaxed">
-                        جاري تحميل السؤال...
-                    </h3>
-
-                    <!-- Options Container -->
-                    <div id="quiz-options" class="space-y-2.5 pt-2">
-                        <!-- Rendered by JS -->
-                    </div>
-
-                    <!-- Feedback Box (Hidden initially) -->
-                    <div id="quiz-feedback" class="hidden p-4 rounded-xl border transition-all mt-4">
-                        <div class="flex items-start gap-2.5">
-                            <span id="feedback-icon" class="text-xl shrink-0 mt-0.5"></span>
-                            <div>
-                                <h4 id="feedback-title" class="font-bold text-sm sm:text-base mb-1"></h4>
-                                <p id="feedback-explanation" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Navigation Next Button -->
-                    <div class="pt-4 flex justify-end">
-                        <button id="quiz-next-btn" onclick="nextQuestion()" class="hidden w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
-                            <span>السؤال التالي</span>
-                            <span>←</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Quiz Results Screen (Hidden initially) -->
-                <div id="quiz-results" class="hidden text-center py-8 space-y-4">
-                    <div class="w-20 h-20 mx-auto rounded-full bg-blue-500/10 border-2 border-blue-500/30 flex items-center justify-center text-4xl mb-2">
-                        🏆
-                    </div>
-                    <h3 class="text-xl sm:text-2xl font-black text-white">أحسنت! أكملت الاختبار الذاتي</h3>
-                    <p class="text-sm text-slate-400">لقد انتهيت من مراجعة كافة أسئلة الدرس بنجاح</p>
-                    
-                    <div class="inline-block bg-slate-950 border border-slate-800 rounded-2xl p-5 my-4">
-                        <div class="text-3xl sm:text-4xl font-black text-amber-400 font-mono mb-1" id="results-score-display">0 / 20</div>
-                        <p class="text-xs text-slate-400" id="results-percentage">النسبة المئوية: 0%</p>
-                    </div>
-
-                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-                        <button onclick="restartQuiz()" class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow transition active:scale-95">
-                            🔄 إعادة الاختبار
-                        </button>
-                        <button onclick="switchTab('map')" class="w-full sm:w-auto px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl border border-slate-700 transition active:scale-95">
-                            🗺️ مراجعة الخريطة الذهنية
-                        </button>
-                    </div>
-                </div>
-
+                <div id="quiz-score" class="px-4 py-2 bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800 rounded-xl text-sm sm:text-base font-extrabold border">النتيجة: 0 / 20</div>
             </div>
+            <div id="quiz-container" class="space-y-4"></div>
         </section>
 
     </main>
 
-    <!-- Footer with Teacher Attribution (Strictly NO Ministry or Year Mention) -->
-    <footer class="mt-auto border-t border-slate-800/80 bg-slate-950/80 py-4 px-4 text-center text-xs text-slate-500 font-medium">
-        حقيبة العلوم التعليمية • إعداد: <span class="text-slate-300 font-bold">علي جبريل</span> — مجمع الثقافة التعليمي
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 text-center text-sm text-slate-600 dark:text-slate-400">
+        معلم المادة: علي جبريل - مجمع الثقافة التعليمي
     </footer>
 
-    <!-- Interactive Script Logic -->
     <script>
-        const questions = [{"id": 1, "type": "mcq", "question": "أصل مصطلح (ذرة Atom) مشتق من الفلسفة الإغريقية القديمة ويعني لغوياً:", "options": ["غير قابل للتجزئة أو التقسيم", "الكرة الصلبة المتجانسة", "الجسيم المشحون كهربائياً", "السحابة الهوائية"], "answer": 0, "explanation": "مشتقة من كلمة Atomos اليونانية؛ حيث A تعني 'لا' و tomos تعني 'ينقسم'، أي الشيء غير القابل للتجزئة."}, {"id": 2, "type": "mcq", "question": "اقترح العالم جون دالتون في نظريته الذرية عام 1803م أن الذرة عبارة عن:", "options": ["سحابة إلكترونية احتمالية", "كرة صلبة مصمتة متجانسة لا تتجزأ", "نواة مركزية يدور حولها إلكترونات", "فراغ هائل"], "answer": 1, "explanation": "صوّر دالتون الذرة ككرة صلبة مصمتة متجانسة تشبه كرات البلياردو الصلبة، لا يمكن تجزئتها لأجزاء أصغر."}, {"id": 3, "type": "mcq", "question": "في أنبوب التفريغ الكهربائي لكروكس، تنطلق الأشعة المهبطية من:", "options": ["الأنود (المصعد) الموجب", "الكاثود (المهبط) السالب", "الغاز المتبقي في المنتصف", "الحاجز الفلزي X"], "answer": 1, "explanation": "سُميت أشعة مهبطية (أشعة الكاثود) لأنها تنبعث من القطب السالب (المهبط) متجهة نحو المصعد الموجب."}, {"id": 4, "type": "mcq", "question": "تكون ظل حاد للحاجز الفلزي X على جدار أنبوب كروكس يثبت علمياً أن الأشعة المهبطية:", "options": ["تسير في خطوط مستقيمة", "موجات صوتية ميكانيكية", "جسيمات موجبة الشحنة", "تتحرك في مدارات دائرية"], "answer": 0, "explanation": "تكون الظل الحاد يثبت أن الأشعة تسير في خطوط مستقيمة، فإذا اعترضها حاجز شكلت ظلاً حاداً خلفه."}, {"id": 5, "type": "mcq", "question": "استنتج طومسون أن الأشعة المهبطية سيل من جسيمات مشحونة وليست ضوءاً عادياً بسبب:", "options": ["توهجها باللون الأخضر", "انحنائها عند تقريب قطب مغناطيسي منها", "قدرتها على تسخين الزجاج", "سرعتها الفائقة"], "answer": 1, "explanation": "الضوء العادي لا ينحني بالمغناطيس، بينما انحناء الأشعة المهبطية برهن أنها دقائق مادية مشحونة بشحنة سالبة."}, {"id": 6, "type": "mcq", "question": "الجسيمات دون الذرية سالبة الشحنة التي اكتشفها العالم الفيزيائي طومسون هي:", "options": ["البروتونات", "النيوترونات", "الإلكترونات", "جسيمات ألفا"], "answer": 2, "explanation": "أطلق طومسون على الجسيمات السالبة المكونة للأشعة المهبطية اسم (الإلكترونات)."}, {"id": 7, "type": "mcq", "question": "لماذا تضمن نموذج طومسون وجود شحنات موجبة داخل الذرة؟", "options": ["لتفسير كتلة الإلكترونات", "لأن المادة متعادلة كهربائياً ويجب أن تعادل الشحنات الموجبة شحنات الإلكترونات السالبة", "لجذب النيوترونات", "لتثبيت أنبوب كروكس"], "answer": 1, "explanation": "بما أن المادة في الحالة الطبيعية متعادلة الشحنة، فلزم وجود شحنات موجبة تعادل شحنات الإلكترونات السالبة."}, {"id": 8, "type": "mcq", "question": "المشاهدة المعملية الحاسمة في تجربة رذرفورد التي أثبتت أن معظم حجم الذرة فراغ هائل هي:", "options": ["ارتداد نسبة نادرة من الجسيمات", "انحراف نسبة ضئيلة بزوايا حادة", "نفاذ معظم جسيمات ألفا على استقامتها دون انحراف", "توقف جسيمات ألفا في الذهب"], "answer": 2, "explanation": "نفاذ أكثر من 99% من جسيمات ألفا دون أن يعترض طريقها شيء أثبت فيزيائياً أن باطن الذرة فراغ شاسع."}, {"id": 9, "type": "mcq", "question": "فسر رذرفورد ارتداد نسبة ضئيلة جداً (1 من كل 8000 جسيم) من جسيمات ألفا إلى الخلف باصطدامها بـ:", "options": ["إلكترونات صفيحة الذهب", "نواة مركزية موجبة فائقة الكثافة تتركز فيها معظم كتلة الذرة", "الشاشة الفلورسنتية", "الهواء المحيط"], "answer": 1, "explanation": "الارتداد المباشر نحو المصدر لا يحدث إلا عند الاصطدام بجسم كثيف وشديد الكتلة وهو النواة الموجبة."}, {"id": 10, "type": "mcq", "question": "الجسيمات المتعادلة كهربائياً التي اكتشفها العالم جيمس شادويك عام 1932م داخل النواة هي:", "options": ["الإلكترونات", "البروتونات", "النيوترونات", "المدارات"], "answer": 2, "explanation": "اكتشف شادويك النيوترونات لتفسير كتلة النواة المفقودة، وهي جسيمات متعادلة الشحنة داخل النواة."}, {"id": 11, "type": "tf", "question": "اعتقد فلاسفة الإغريق القدماء أن المادة يمكن الاستمرار في تقسيمها وتجزئتها إلى ما لا نهاية دون حد أخير.", "options": ["صواب ✅", "خطأ ❌"], "answer": 1, "explanation": "خطأ؛ اعتقد ديموقريطس وفلاسفة الإغريق بالوصول حتماً إلى جزء أخير لا يقبل التجزئة سُمي الذرة."}, {"id": 12, "type": "tf", "question": "افترض دالتون في نظريته الذرية أن ذرات العنصر الواحد متطابقة تماماً في كتلها وخواصها الكيميائية.", "options": ["صواب ✅", "خطأ ❌"], "answer": 0, "explanation": "صواب؛ كان هذا أحد البنود الأربعة الحاكمة لنظرية دالتون الذرية عام 1803م."}, {"id": 13, "type": "tf", "question": "الأشعة المهبطية تتألف من موجات ضوئية كهرومغناطيسية تتأثر بالمغناطيس والمجالات الكهربائية.", "options": ["صواب ✅", "خطأ ❌"], "answer": 1, "explanation": "خطأ؛ الأشعة المهبطية تتألف من دقائق مادية سالبة الشحنة (إلكترونات) وليست موجات ضوئية."}, {"id": 14, "type": "tf", "question": "شحنة نواة الذرة دائماً موجبة الشحنة.", "options": ["صواب ✅", "خطأ ❌"], "answer": 0, "explanation": "صواب؛ لأنها تحتوي على بروتونات موجبة ونيوترونات متعادلة، فتكون المحصلة موجبة دائماً."}, {"id": 15, "type": "tf", "question": "كتلة الإلكترون تعادل كتلة البروتون تقريباً، ولذا تتوزع كتلة الذرة بالتساوي بين النواة والإلكترونات.", "options": ["صواب ✅", "خطأ ❌"], "answer": 1, "explanation": "خطأ؛ كتلة البروتون تفوق الإلكترون بـ 1836 ضعفاً، وتتركز أكثر من 99.9% من كتلة الذرة في النواة فقط."}, {"id": 16, "type": "tf", "question": "في نموذج السحابة الإلكترونية الحديث، تدور الإلكترونات في مسارات دائرية ثابتة ومحددة بدقة مطلقة.", "options": ["صواب ✅", "خطأ ❌"], "answer": 1, "explanation": "خطأ؛ الإلكترونات تتحرك في منطقة احتمالية ثلاثية الأبعاد لا يمكن تحديد موقعها وسرعتها بدقة في آن واحد."}, {"id": 17, "type": "mcq", "question": "مسألة نافس: أظهرت حسابات تجربة رذرفورد نفاذ 99.8% من جسيمات ألفا دون انحراف. ما الاستنتاج الهندسي الدقيق لحجم النواة مقارنة بحجم الذرة؟", "options": ["حجم النواة يشغل نصف حجم الذرة تقريباً", "حجم النواة يشغل حيزاً متناهي الصغر يكاد لا يذكر مقارنة بالفراغ الهائل المحيط بها", "النواة تتمدد وتتقلص حسب عدد الجسيمات", "الإلكترونات تشغل حجماً أكبر من النواة بألف مرة"], "answer": 1, "explanation": "قطر النواة جزء من مئة ألف جزء من قطر الذرة، مما يجعل النواة نقطة فائقة الصغر في محيط فراغ واسع."}, {"id": 18, "type": "mcq", "question": "مسألة نافس: ذرة متعادلة تحتوي على 19 بروتوناً و 20 نيوتروناً. إذا فقدت إلكتروناً واحداً، فما الشحنة الكلية وعدد جسيمات نواتها؟", "options": ["شحنة سالبة (-1)، و 39 جسيماً في النواة", "شحنة موجبة (+1)، و 39 جسيماً في النواة", "متعادلة (0)، و 19 جسيماً في النواة", "شحنة موجبة (+1)، و 38 جسيماً في النواة"], "answer": 1, "explanation": "فقد إلكترون يجعل الشحنات الموجبة (19) أكثر من السالبة (18) فتصبح (+1)، ومحتوى النواة ثابت 19 + 20 = 39."}, {"id": 19, "type": "mcq", "question": "مسألة نافس: إذا علمت أن كتلة البروتون تفوق الإلكترون بـ 1836 ضعفاً، فما النتيجة الفيزيائية المترتبة على ذلك في تركيب المادة؟", "options": ["تتركز معظم كتلة الذرة داخل نواتها المركزية بنسبة تفوق 99.9%", "تتوزع الكتلة بالتساوي بين الفراغ والنواة", "تتحرك الإلكترونات ببطء شديد لثقلها", "تفقد الذرة جاذبيتها الكهروستاتيكية"], "answer": 0, "explanation": "ضآلة كتلة الإلكترون تعني أن وزن أي جسم في الكون هو عملياً وزن الأنوية الذرية الموجودة فيه."}, {"id": 20, "type": "mcq", "question": "مسألة نافس: لماذا استبدل المجتمع العلمي نموذج نيلز بور للمدارات الثابتة بنموذج السحابة الإلكترونية الحديث؟", "options": ["لأن الإلكترونات لا تتحرك نهائياً وتظل ساكنة", "لأن الطبيعة الموجية للإلكترونات ومبدأ عدم التأكد أثبتا استحالة تحديد مسار دائري دقيق، واستبدل بسحابة احتمالية", "لأن نموذج بور كان ينكر وجود النواة", "بسبب خروج الإلكترونات تلقائياً من الذرة"], "answer": 1, "explanation": "ميكانيكا الكم أثبتت الطبيعة المزدوجة للإلكترون واستحالة قياس موقعه وسرعته بدقة معاً، فاعتمدت السحابة الاحتمالية."}];
-        let currentQIndex = 0;
-        let score = 0;
-        let answered = false;
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('block');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            const targetSection = document.getElementById('section-' + tabId);
-            const targetBtn = document.getElementById('tab-btn-' + tabId);
-            if (targetSection) targetSection.classList.remove('hidden');
-            if (targetSection) targetSection.classList.add('block');
-            if (targetBtn) targetBtn.classList.add('active');
-
-            if (tabId === 'map') {
-                // Init visual map listeners if user opens visual mode
-                setTimeout(initPanZoom, 100);
-            }
+        function syncThemeUI() {
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+            document.getElementById('theme-label').textContent = isDark ? 'نهاري' : 'ليلي';
         }
-
-        // --- Interactive Mind Map Scripts ---
-        function switchMapView(mode) {
-            const treeView = document.getElementById('map-view-tree');
-            const visualView = document.getElementById('map-view-visual');
-            const treeBtn = document.getElementById('map-mode-tree-btn');
-            const visualBtn = document.getElementById('map-mode-visual-btn');
-
-            if (mode === 'tree') {
-                treeView.classList.remove('hidden');
-                treeView.classList.add('block');
-                visualView.classList.add('hidden');
-                visualView.classList.remove('block');
-
-                treeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-blue-600 text-white shadow";
-                visualBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-400 hover:text-white";
-            } else {
-                visualView.classList.remove('hidden');
-                visualView.classList.add('block');
-                treeView.classList.add('hidden');
-                treeView.classList.remove('block');
-
-                visualBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-blue-600 text-white shadow";
-                treeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-400 hover:text-white";
-                setTimeout(initPanZoom, 100);
-            }
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('science_theme', isDark ? 'dark' : 'light');
+            syncThemeUI();
         }
+        syncThemeUI();
 
-        function toggleBranch(branchId) {
-            const content = document.getElementById('content-' + branchId);
-            const icon = document.getElementById('icon-' + branchId);
-            if (!content) return;
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                content.classList.add('block');
-                if (icon) icon.style.transform = 'rotate(180deg)';
-            } else {
-                content.classList.add('hidden');
-                content.classList.remove('block');
-                if (icon) icon.style.transform = 'rotate(0deg)';
-            }
-        }
-
-        function expandAllBranches() {
-            document.querySelectorAll('[id^="content-g"]').forEach(c => {
-                c.classList.remove('hidden');
-                c.classList.add('block');
+        function switchTab(name) {
+            ['summary', 'mindmap', 'lab', 'quiz'].forEach(t => {
+                document.getElementById('tab-' + t).classList.toggle('hidden', t !== name);
+                document.getElementById('tab-btn-' + t).classList.toggle('active', t === name);
             });
-            document.querySelectorAll('[id^="icon-g"]').forEach(i => {
-                i.style.transform = 'rotate(180deg)';
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        function collapseAllBranches() {
-            document.querySelectorAll('[id^="content-g"]').forEach(c => {
-                c.classList.add('hidden');
-                c.classList.remove('block');
-            });
-            document.querySelectorAll('[id^="icon-g"]').forEach(i => {
-                i.style.transform = 'rotate(0deg)';
-            });
+        function setMapMode(m) {
+            document.getElementById('map-tree-view').classList.toggle('hidden', m !== 'tree');
+            document.getElementById('map-img-view').classList.toggle('hidden', m !== 'img');
+            document.getElementById('map-btn-tree').className = m === 'tree'
+                ? 'flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-amber-600 hover:bg-amber-700 text-white'
+                : 'flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700';
+            document.getElementById('map-btn-img').className = m === 'img'
+                ? 'flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-amber-600 hover:bg-amber-700 text-white'
+                : 'flex-1 sm:flex-initial min-h-[44px] px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700';
         }
+        let scale = 1, tx = 0, ty = 0, dragging = false, sx = 0, sy = 0;
+        const box = document.getElementById('panzoom-box'), img = document.getElementById('panzoom-img');
+        function applyTransform() { img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; }
+        function zoomMap(f) { scale = Math.min(4, Math.max(0.7, scale * f)); applyTransform(); }
+        function resetMap() { scale = 1; tx = 0; ty = 0; applyTransform(); }
+        box.addEventListener('pointerdown', e => { dragging = true; sx = e.clientX - tx; sy = e.clientY - ty; });
+        window.addEventListener('pointermove', e => { if (!dragging) return; tx = e.clientX - sx; ty = e.clientY - sy; applyTransform(); });
+        window.addEventListener('pointerup', () => dragging = false);
 
-        // --- Pan & Zoom Logic ---
-        let mapZoom = 1;
-        let mapPanX = 0;
-        let mapPanY = 0;
-        let isPanning = false;
-        let startPanX = 0;
-        let startPanY = 0;
-        let panZoomInited = false;
+        let questionsData = [], answered = {};
+        fetch('questions.json').then(r => r.json()).then(data => {
+            questionsData = data;
+            renderQuiz();
+        });
 
-        function updateMapTransform() {
-            const img = document.getElementById('panzoom-map-img');
-            const badge = document.getElementById('map-zoom-badge');
-            if (img) {
-                img.style.transform = `translate(${mapPanX}px, ${mapPanY}px) scale(${mapZoom})`;
-            }
-            if (badge) {
-                badge.innerText = Math.round(mapZoom * 100) + '%';
-            }
-        }
-
-        function zoomMap(delta) {
-            mapZoom = Math.min(4, Math.max(0.5, mapZoom + delta));
-            updateMapTransform();
-        }
-
-        function resetMapZoom() {
-            mapZoom = 1;
-            mapPanX = 0;
-            mapPanY = 0;
-            updateMapTransform();
-        }
-
-        function toggleMapFullscreen() {
-            const vp = document.getElementById('map-viewport');
-            if (!document.fullscreenElement) {
-                if (vp.requestFullscreen) vp.requestFullscreen();
-                else if (vp.webkitRequestFullscreen) vp.webkitRequestFullscreen();
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
-        }
-
-        function initPanZoom() {
-            if (panZoomInited) return;
-            const vp = document.getElementById('map-viewport');
-            const img = document.getElementById('panzoom-map-img');
-            if (!vp || !img) return;
-
-            // Mouse drag
-            vp.addEventListener('mousedown', (e) => {
-                isPanning = true;
-                startPanX = e.clientX - mapPanX;
-                startPanY = e.clientY - mapPanY;
-                vp.classList.remove('cursor-grab');
-                vp.classList.add('cursor-grabbing');
-            });
-
-            window.addEventListener('mousemove', (e) => {
-                if (!isPanning) return;
-                mapPanX = e.clientX - startPanX;
-                mapPanY = e.clientY - startPanY;
-                updateMapTransform();
-            });
-
-            window.addEventListener('mouseup', () => {
-                if (isPanning) {
-                    isPanning = false;
-                    vp.classList.remove('cursor-grabbing');
-                    vp.classList.add('cursor-grab');
-                }
-            });
-
-            // Mouse wheel zoom
-            vp.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                const delta = e.deltaY < 0 ? 0.15 : -0.15;
-                zoomMap(delta);
-            }, { passive: false });
-
-            // Touch events
-            let touchDist = 0;
-            vp.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1) {
-                    isPanning = true;
-                    startPanX = e.touches[0].clientX - mapPanX;
-                    startPanY = e.touches[0].clientY - mapPanY;
-                } else if (e.touches.length === 2) {
-                    isPanning = false;
-                    touchDist = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                }
-            }, { passive: false });
-
-            vp.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 1 && isPanning) {
-                    e.preventDefault();
-                    mapPanX = e.touches[0].clientX - startPanX;
-                    mapPanY = e.touches[0].clientY - startPanY;
-                    updateMapTransform();
-                } else if (e.touches.length === 2) {
-                    e.preventDefault();
-                    const newDist = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                    if (touchDist > 0) {
-                        const diff = (newDist - touchDist) * 0.005;
-                        zoomMap(diff);
-                    }
-                    touchDist = newDist;
-                }
-            }, { passive: false });
-
-            vp.addEventListener('touchend', (e) => {
-                if (e.touches.length < 2) touchDist = 0;
-                if (e.touches.length === 0) isPanning = false;
-            });
-
-            panZoomInited = true;
-        }
-
-        // --- Self-Quiz Logic ---
-        function loadQuestion(idx) {
-            answered = false;
-            const q = questions[idx];
-            document.getElementById('quiz-q-num').innerText = `سؤال ${idx + 1} من ${questions.length}`;
-            document.getElementById('quiz-type-badge').innerText = q.type === 'tf' ? 'صح أو خطأ' : 'اختيار من متعدد';
-            document.getElementById('quiz-question-text').innerText = q.question;
-            document.getElementById('quiz-score').innerText = score;
-
-            const progress = ((idx + 1) / questions.length) * 100;
-            document.getElementById('quiz-progress-fill').style.width = progress + '%';
-
-            const optsContainer = document.getElementById('quiz-options');
-            optsContainer.innerHTML = '';
-
-            const feedback = document.getElementById('quiz-feedback');
-            feedback.classList.add('hidden');
-            document.getElementById('quiz-next-btn').classList.add('hidden');
-
-            q.options.forEach((opt, oIdx) => {
-                const btn = document.createElement('button');
-                btn.className = "quiz-option w-full text-right p-3.5 sm:p-4 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-800 text-slate-200 font-bold text-xs sm:text-sm flex items-center justify-between gap-3";
-                btn.innerHTML = `
-                    <span>${opt}</span>
-                    <span class="w-6 h-6 rounded-full border border-slate-700 bg-slate-950 flex items-center justify-center text-xs text-slate-400 font-mono shrink-0">${String.fromCharCode(65 + oIdx)}</span>
+        function renderQuiz() {
+            const c = document.getElementById('quiz-container');
+            c.innerHTML = '';
+            questionsData.forEach((q, idx) => {
+                const tag = q.tag || (q.type === 'tf' ? 'صح أو خطأ' : 'اختيار من متعدد');
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm';
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="font-bold text-base sm:text-lg text-blue-900 dark:text-blue-200 leading-relaxed">${idx + 1}. ${q.question}</div>
+                        <span class="lvl-pill shrink-0">${tag}</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="opts-${q.id}"></div>
+                    <div id="exp-${q.id}" class="hidden text-sm sm:text-base p-3.5 rounded-xl border leading-relaxed"></div>
                 `;
-                btn.onclick = () => selectAnswer(oIdx, q.correct);
-                optsContainer.appendChild(btn);
+                c.appendChild(card);
+                const optsEl = card.querySelector(`#opts-${q.id}`);
+                q.options.forEach((opt, oi) => {
+                    const b = document.createElement('button');
+                    b.className = 'quiz-option text-right px-4 py-3 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100';
+                    b.textContent = opt;
+                    b.onclick = () => pickOption(q, oi, optsEl);
+                    optsEl.appendChild(b);
+                });
             });
         }
 
-        function selectAnswer(selectedIdx, correctIdx) {
-            if (answered) return;
-            answered = true;
-
-            const opts = document.querySelectorAll('.quiz-option');
-            const q = questions[currentQIndex];
-            const isCorrect = selectedIdx === correctIdx;
-
-            if (isCorrect) {
-                score++;
-                document.getElementById('quiz-score').innerText = score;
-            }
-
-            opts.forEach((btn, idx) => {
+        function pickOption(q, oi, optsEl) {
+            if (answered[q.id] !== undefined) return;
+            answered[q.id] = (oi === q.answer);
+            Array.from(optsEl.children).forEach((btn, idx) => {
                 btn.disabled = true;
-                btn.classList.remove('hover:bg-slate-800');
-                if (idx === correctIdx) {
-                    btn.className = "quiz-option w-full text-right p-3.5 sm:p-4 rounded-xl border-2 border-emerald-500 bg-emerald-950/40 text-emerald-200 font-bold text-xs sm:text-sm flex items-center justify-between gap-3";
-                    btn.querySelector('span:last-child').className = "w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold";
-                    btn.querySelector('span:last-child').innerText = "✓";
-                } else if (idx === selectedIdx && !isCorrect) {
-                    btn.className = "quiz-option w-full text-right p-3.5 sm:p-4 rounded-xl border-2 border-rose-500 bg-rose-950/40 text-rose-200 font-bold text-xs sm:text-sm flex items-center justify-between gap-3";
-                    btn.querySelector('span:last-child').className = "w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold";
-                    btn.querySelector('span:last-child').innerText = "✗";
-                } else {
-                    btn.classList.add('opacity-40');
-                }
+                if (idx === q.answer) btn.className = 'quiz-option text-right px-4 py-3 rounded-xl bg-emerald-600 border border-emerald-700 text-sm sm:text-base font-bold text-white';
+                else if (idx === oi) btn.className = 'quiz-option text-right px-4 py-3 rounded-xl bg-rose-600 border border-rose-700 text-sm sm:text-base font-bold text-white';
             });
-
-            const feedback = document.getElementById('quiz-feedback');
-            const icon = document.getElementById('feedback-icon');
-            const title = document.getElementById('feedback-title');
-            const exp = document.getElementById('feedback-explanation');
-
-            feedback.classList.remove('hidden');
-            if (isCorrect) {
-                feedback.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 mt-4";
-                icon.innerText = "🌟";
-                title.innerText = "إجابة صحيحة وممتازة!";
-                title.className = "font-extrabold text-sm sm:text-base text-emerald-400 mb-1";
-            } else {
-                feedback.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-300 mt-4";
-                icon.innerText = "💡";
-                title.innerText = "إجابة غير صحيحة — ركّز في التوضيح التالي:";
-                title.className = "font-extrabold text-sm sm:text-base text-rose-400 mb-1";
-            }
-            exp.innerText = q.explanation || "راجع مفاهيم الدرس لترسيخ المعلومة.";
-
-            document.getElementById('quiz-next-btn').classList.remove('hidden');
+            const exp = document.getElementById(`exp-${q.id}`);
+            exp.classList.remove('hidden');
+            exp.className = (oi === q.answer)
+                ? 'text-sm sm:text-base p-3.5 rounded-xl border bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200 leading-relaxed'
+                : 'text-sm sm:text-base p-3.5 rounded-xl border bg-rose-50 dark:bg-rose-950/60 border-rose-300 dark:border-rose-700 text-rose-900 dark:text-rose-200 leading-relaxed';
+            exp.innerHTML = `<b>${oi === q.answer ? '✅ إجابة صحيحة:' : '❌ الإجابة الصحيحة موضحة أعلاه:'}</b> ${q.explanation}`;
+            const score = Object.values(answered).filter(Boolean).length;
+            document.getElementById('quiz-score').textContent = `النتيجة: ${score} / ${questionsData.length}`;
         }
-
-        function nextQuestion() {
-            currentQIndex++;
-            if (currentQIndex < questions.length) {
-                loadQuestion(currentQIndex);
-            } else {
-                showResults();
-            }
-        }
-
-        function showResults() {
-            document.getElementById('quiz-card').classList.add('hidden');
-            document.getElementById('quiz-results').classList.remove('hidden');
-            document.getElementById('results-score-display').innerText = `${score} / ${questions.length}`;
-            const pct = Math.round((score / questions.length) * 100);
-            document.getElementById('results-percentage').innerText = `النسبة المئوية: ${pct}%`;
-        }
-
-        function restartQuiz() {
-            currentQIndex = 0;
-            score = 0;
-            document.getElementById('quiz-card').classList.remove('hidden');
-            document.getElementById('quiz-results').classList.add('hidden');
-            loadQuestion(0);
-        }
-
-        window.onload = function() {
-            // Strictly activate Summary on load
-            switchTab('summary');
-            loadQuestion(0);
-        };
     </script>
 </body>
 </html>
