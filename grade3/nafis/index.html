@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>بوابة اختبارات نافس المحاكية — الصف الثالث المتوسط</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+    (function () {
+      if (localStorage.getItem('science_theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200 selection:bg-amber-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-6 py-3 shadow-sm">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <a href="../../index.html" class="w-11 h-11 shrink-0 rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-500 flex items-center justify-center text-2xl text-white shadow-md shadow-amber-600/20" title="العودة للمنصة">
+          🎯
+        </a>
+        <div class="min-w-0">
+          <h1 class="text-base sm:text-xl font-black text-slate-900 dark:text-white truncate">بوابة اختبارات نافس المحاكية</h1>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 truncate">الصف الثالث المتوسط — مادة العلوم</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="../../index.html" class="min-h-[42px] px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold flex items-center gap-1 transition">
+          <span>🏠</span><span class="hidden sm:inline">الرئيسية</span>
+        </a>
+        <button onclick="toggleTheme()" id="theme-toggle" class="min-h-[42px] px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-sm font-bold flex items-center gap-1.5 transition">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-1 w-full">
+
+    <!-- VIEW 1: LOGIN -->
+    <section id="view-login" class="max-w-md mx-auto mt-4 sm:mt-8">
+      <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-lg">
+        <div class="text-center mb-6">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-100 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-3xl mb-3">🔐</div>
+          <h2 class="text-2xl font-black mb-1">دخول الطالب</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400">أدخل الكود الخاص بك للوصول إلى اختبارات نافس المحاكية</p>
+        </div>
+
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="student-code" class="block text-sm font-bold mb-1.5">كود الطالب الخاص</label>
+            <input id="student-code" type="text" dir="ltr" autocomplete="off" placeholder="مثال: N3-4821"
+              class="w-full text-center text-lg font-extrabold tracking-widest uppercase px-4 py-3.5 rounded-xl border-2 border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-amber-500 focus:outline-none transition" required />
+          </div>
+          <div id="login-error" class="hidden p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-sm font-bold text-center"></div>
+          <button type="submit" id="login-btn" class="w-full min-h-[52px] rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-base shadow-md shadow-amber-600/20 transition flex items-center justify-center gap-2 active:scale-[0.98]">
+            <span>دخول للبوابة</span><span>←</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- VIEW 2: EXAMS HUB -->
+    <section id="view-hub" class="hidden space-y-6">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4 shadow-sm">
+        <div>
+          <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">الصف الثالث المتوسط</span>
+          <h2 class="text-xl sm:text-2xl font-black mt-2">مرحباً، <span id="hub-student-name" class="text-amber-600 dark:text-amber-400"></span></h2>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">الكود: <span id="hub-student-code" class="font-mono font-bold"></span></p>
+        </div>
+        <button onclick="logout()" class="min-h-[44px] px-4 py-2 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-slate-800 dark:hover:bg-rose-950/60 text-slate-700 dark:text-slate-200 hover:text-rose-700 font-bold text-sm transition">
+          تسجيل الخروج
+        </button>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-black mb-3 flex items-center gap-2"><span>📋</span><span>الاختبارات المحاكية المتاحة</span></h3>
+        <div id="exams-list" class="grid grid-cols-1 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: EXAM RUNNER -->
+    <section id="view-exam" class="hidden space-y-5">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm sticky top-[68px] z-30">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div>
+            <h2 id="exam-title" class="text-base sm:text-lg font-black"></h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">السؤال <span id="q-current-num">1</span> من <span id="q-total-num">25</span></p>
+          </div>
+          <div id="timer-box" class="px-3.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/70 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 font-mono font-black text-base" dir="ltr">
+            35:00
+          </div>
+        </div>
+        <div class="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mb-3">
+          <div id="progress-bar" class="h-full bg-amber-600 transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <div id="q-pills" class="flex flex-wrap gap-1.5"></div>
+      </div>
+
+      <div id="question-card" class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-7 shadow-sm space-y-5">
+        <div class="flex flex-wrap gap-2 text-xs font-bold">
+          <span id="q-lesson" class="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300"></span>
+          <span id="q-level" class="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"></span>
+        </div>
+        <h3 id="q-text" class="text-lg sm:text-xl font-black leading-relaxed"></h3>
+        <div id="q-options" class="grid grid-cols-1 gap-3"></div>
+      </div>
+
+      <div class="flex items-center justify-between gap-3">
+        <button id="prev-btn" onclick="moveQuestion(-1)" class="min-h-[48px] px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 font-bold text-sm sm:text-base transition disabled:opacity-40">
+          → السابق
+        </button>
+        <button id="next-btn" onclick="moveQuestion(1)" class="min-h-[48px] px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm sm:text-base transition">
+          التالي ←
+        </button>
+        <button id="submit-btn" onclick="confirmSubmit()" class="hidden min-h-[48px] px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm sm:text-base shadow-md shadow-emerald-600/20 transition">
+          ✅ تسليم الاختبار
+        </button>
+      </div>
+    </section>
+
+    <!-- VIEW 4: RESULT -->
+    <section id="view-result" class="hidden space-y-6">
+      <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-lg">
+        <div class="text-4xl mb-2">🏆</div>
+        <h2 class="text-2xl font-black mb-1">تم رصد نتيجتك بنجاح!</h2>
+        <p id="res-student-name" class="text-slate-600 dark:text-slate-400 font-bold mb-5"></p>
+
+        <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto mb-6">
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-bold">الدرجة</div>
+            <div id="res-score" class="text-2xl font-black text-amber-600 mt-1"></div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-bold">النسبة</div>
+            <div id="res-pct" class="text-2xl font-black text-indigo-600 mt-1"></div>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-bold">مستوى نافس</div>
+            <div id="res-level" class="text-lg sm:text-xl font-black mt-1"></div>
+          </div>
+        </div>
+
+        <button onclick="backToHub()" class="min-h-[48px] px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold transition">
+          العودة لقائمة الاختبارات
+        </button>
+      </div>
+
+      <div id="res-lessons-box" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+        <h3 class="text-lg font-black mb-3">📊 ملخص الأداء حسب الدروس</h3>
+        <div id="res-lessons" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-lg font-black">🔍 مراجعة الإجابات والمهارات</h3>
+        <div id="res-review" class="space-y-3"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 text-center text-sm text-slate-600 dark:text-slate-400 px-4 mt-auto">
+    معلم المادة: <span class="font-bold text-slate-900 dark:text-slate-200">علي جبريل</span> — مجمع الثقافة التعليمي
+  </footer>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbztG6fZwneuC9H5P8kqzsUkPcSdTtmjq2yoThVvstIR9MTMD0SR3er8wjrAIHPVjb0/exec";
+
+    let state = {
+      student: null,
+      exams: [],
+      currentExam: null,
+      questions: [],
+      answers: {},
+      currentIndex: 0,
+      timerInterval: null,
+      secondsLeft: 0
+    };
+
+    function syncThemeIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+    }
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('science_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      syncThemeIcon();
+    }
+    syncThemeIcon();
+
+    function showView(id) {
+      ['view-login', 'view-hub', 'view-exam', 'view-result'].forEach(v => {
+        document.getElementById(v).classList.toggle('hidden', v !== id);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function apiGet(params) {
+      const qs = new URLSearchParams(params).toString();
+      const res = await fetch(`${API_URL}?${qs}`);
+      return res.json();
+    }
+
+    async function apiPost(payload) {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      return res.json();
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = document.getElementById('student-code').value.trim().toUpperCase();
+      const errBox = document.getElementById('login-error');
+      const btn = document.getElementById('login-btn');
+      errBox.classList.add('hidden');
+      btn.disabled = true;
+      btn.textContent = 'جاري التحقق...';
+
+      try {
+        const data = await apiGet({ action: 'login', code });
+        if (!data.ok) {
+          errBox.textContent = data.error || 'تعذر تسجيل الدخول.';
+          errBox.classList.remove('hidden');
+          return;
+        }
+        state.student = data.student;
+        state.exams = data.exams || [];
+        sessionStorage.setItem('nafis_student_code', data.student.code);
+        renderHub();
+        showView('view-hub');
+      } catch (err) {
+        errBox.textContent = 'تعذر الاتصال بقاعدة البيانات. تأكد من الإنترنت وحاول مجدداً.';
+        errBox.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>دخول للبوابة</span><span>←</span>';
+      }
+    });
+
+    function logout() {
+      sessionStorage.removeItem('nafis_student_code');
+      state.student = null;
+      document.getElementById('student-code').value = '';
+      showView('view-login');
+    }
+
+    function renderHub() {
+      document.getElementById('hub-student-name').textContent = state.student.name;
+      document.getElementById('hub-student-code').textContent = state.student.code;
+      const list = document.getElementById('exams-list');
+      if (!state.exams.length) {
+        list.innerHTML = '<div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center text-slate-500">لا توجد اختبارات مفتوحة حالياً.</div>';
+        return;
+      }
+      list.innerHTML = state.exams.map(ex => {
+        const done = ex.completed && !ex.allowRetry;
+        const badge = ex.completed
+          ? `<span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">✅ مُنجز (${ex.lastResult.score}/${ex.lastResult.total} — ${ex.lastResult.level})</span>`
+          : `<span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">🟢 متاح الآن</span>`;
+        const btnHtml = done
+          ? `<button disabled class="min-h-[46px] px-5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-500 font-bold text-sm cursor-not-allowed">تم التسليم</button>`
+          : `<button onclick="startExam('${ex.examId}')" class="min-h-[46px] px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow-sm transition active:scale-[0.98]">${ex.completed ? 'إعادة المحاولة ←' : 'ابدأ الاختبار ←'}</button>`;
+        return `
+          <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2">${badge}<span class="text-xs text-slate-500 font-bold">${ex.questionCount} سؤال • ${ex.durationMinutes} دقيقة</span></div>
+              <h4 class="text-lg font-black">${ex.title}</h4>
+              <p class="text-sm text-slate-600 dark:text-slate-400">${ex.description}</p>
+            </div>
+            <div class="shrink-0">${btnHtml}</div>
+          </div>`;
+      }).join('');
+    }
+
+    async function startExam(examId) {
+      try {
+        const data = await apiGet({ action: 'questions', code: state.student.code, examId });
+        if (!data.ok) {
+          alert(data.error || 'لا يمكن فتح هذا الاختبار.');
+          return;
+        }
+        state.currentExam = data.exam;
+        state.questions = data.questions;
+        const saved = localStorage.getItem(`nafis_ans_${state.student.code}_${examId}`);
+        state.answers = saved ? JSON.parse(saved) : {};
+        state.currentIndex = 0;
+
+        document.getElementById('exam-title').textContent = data.exam.title;
+        document.getElementById('q-total-num').textContent = data.questions.length;
+        startTimer((data.exam.durationMinutes || 35) * 60);
+        renderQuestion();
+        showView('view-exam');
+      } catch (err) {
+        alert('حدث خطأ أثناء تحميل الأسئلة.');
+      }
+    }
+
+    function startTimer(totalSec) {
+      clearInterval(state.timerInterval);
+      state.secondsLeft = totalSec;
+      const box = document.getElementById('timer-box');
+      const tick = () => {
+        const m = String(Math.floor(state.secondsLeft / 60)).padStart(2, '0');
+        const s = String(state.secondsLeft % 60).padStart(2, '0');
+        box.textContent = `${m}:${s}`;
+        if (state.secondsLeft <= 0) {
+          clearInterval(state.timerInterval);
+          submitExam();
+        }
+        state.secondsLeft--;
+      };
+      tick();
+      state.timerInterval = setInterval(tick, 1000);
+    }
+
+    function renderQuestion() {
+      const q = state.questions[state.currentIndex];
+      const total = state.questions.length;
+      document.getElementById('q-current-num').textContent = state.currentIndex + 1;
+      document.getElementById('q-lesson').textContent = q.lesson;
+      document.getElementById('q-level').textContent = `مستوى الأداء: ${q.level}`;
+      document.getElementById('q-text').textContent = `${q.num}. ${q.text}`;
+
+      const answeredCount = Object.keys(state.answers).length;
+      document.getElementById('progress-bar').style.width = `${Math.round((answeredCount / total) * 100)}%`;
+
+      document.getElementById('q-pills').innerHTML = state.questions.map((item, idx) => {
+        const isCurr = idx === state.currentIndex;
+        const isDone = !!state.answers[String(item.num)];
+        const cls = isCurr
+          ? 'bg-amber-600 text-white border-amber-600'
+          : isDone
+            ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700'
+            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700';
+        return `<button onclick="jumpQuestion(${idx})" class="w-8 h-8 rounded-lg border text-xs font-bold transition ${cls}">${item.num}</button>`;
+      }).join('');
+
+      const chosen = state.answers[String(q.num)];
+      const keys = ['أ', 'ب', 'ج', 'د'];
+      document.getElementById('q-options').innerHTML = keys.map(k => {
+        const active = chosen === k;
+        const cls = active
+          ? 'border-amber-600 bg-amber-50 dark:bg-amber-950/50 ring-2 ring-amber-500/30'
+          : 'border-slate-200 dark:border-slate-700 hover:border-amber-400 bg-slate-50/50 dark:bg-slate-800/50';
+        return `
+          <button onclick="selectOption('${q.num}', '${k}')" class="w-full text-right p-4 rounded-2xl border-2 flex items-center gap-3 transition active:scale-[0.99] ${cls}">
+            <span class="w-9 h-9 shrink-0 rounded-xl flex items-center justify-center font-black text-sm ${active ? 'bg-amber-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200'}">${k}</span>
+            <span class="font-bold text-sm sm:text-base leading-relaxed">${q.options[k]}</span>
+          </button>`;
+      }).join('');
+
+      document.getElementById('prev-btn').disabled = state.currentIndex === 0;
+      const isLast = state.currentIndex === total - 1;
+      document.getElementById('next-btn').classList.toggle('hidden', isLast);
+      document.getElementById('submit-btn').classList.toggle('hidden', !isLast && answeredCount < total);
+    }
+
+    function selectOption(qNum, key) {
+      state.answers[String(qNum)] = key;
+      localStorage.setItem(`nafis_ans_${state.student.code}_${state.currentExam.examId}`, JSON.stringify(state.answers));
+      renderQuestion();
+    }
+
+    function moveQuestion(delta) {
+      const next = state.currentIndex + delta;
+      if (next >= 0 && next < state.questions.length) {
+        state.currentIndex = next;
+        renderQuestion();
+      }
+    }
+
+    function jumpQuestion(idx) {
+      state.currentIndex = idx;
+      renderQuestion();
+    }
+
+    function confirmSubmit() {
+      const unanswered = state.questions.length - Object.keys(state.answers).length;
+      const msg = unanswered > 0
+        ? `تبقى ${unanswered} سؤالاً بدون إجابة. هل تريد تسليم الاختبار الآن؟`
+        : 'هل أنت متأكد من تسليم الاختبار ورصد النتيجة؟';
+      if (confirm(msg)) submitExam();
+    }
+
+    async function submitExam() {
+      clearInterval(state.timerInterval);
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'جاري التصحيح والرصد...';
+
+      try {
+        const res = await apiPost({
+          action: 'submit',
+          code: state.student.code,
+          examId: state.currentExam.examId,
+          answers: state.answers
+        });
+        if (!res.ok) {
+          alert(res.error || 'تعذر تسليم الاختبار.');
+          btn.disabled = false;
+          btn.textContent = '✅ تسليم الاختبار';
+          return;
+        }
+        localStorage.removeItem(`nafis_ans_${state.student.code}_${state.currentExam.examId}`);
+        renderResult(res);
+        showView('view-result');
+      } catch (err) {
+        alert('حدث خطأ في الاتصال أثناء التسليم. حاول مرة أخرى.');
+        btn.disabled = false;
+        btn.textContent = '✅ تسليم الاختبار';
+      }
+    }
+
+    function renderResult(res) {
+      document.getElementById('res-student-name').textContent = `${res.student.name} (${res.student.code})`;
+      document.getElementById('res-score').textContent = `${res.score} / ${res.total}`;
+      document.getElementById('res-pct').textContent = `${res.percentage}%`;
+      document.getElementById('res-level').textContent = res.level;
+
+      const stats = res.lessonStats || {};
+      document.getElementById('res-lessons').innerHTML = Object.keys(stats).map(lesson => {
+        const st = stats[lesson];
+        const ok = st.ok === st.total;
+        return `
+          <div class="p-3 rounded-xl border ${ok ? 'border-emerald-200 bg-emerald-50/50 dark:bg-emerald-950/30 dark:border-emerald-800' : 'border-amber-200 bg-amber-50/50 dark:bg-amber-950/30 dark:border-amber-800'} flex items-center justify-between gap-2">
+            <span class="text-sm font-bold">${lesson}</span>
+            <span class="text-sm font-black">${st.ok} / ${st.total}</span>
+          </div>`;
+      }).join('');
+
+      document.getElementById('res-review').innerHTML = (res.review || []).map(r => `
+        <div class="p-4 rounded-2xl border-2 ${r.isCorrect ? 'border-emerald-200 dark:border-emerald-800 bg-white dark:bg-slate-900' : 'border-rose-200 dark:border-rose-800 bg-white dark:bg-slate-900'} space-y-2">
+          <div class="flex items-center justify-between gap-2 text-xs font-bold">
+            <span class="text-slate-500">${r.lesson} • ${r.skill}</span>
+            <span>${r.isCorrect ? '✅ إجابة صحيحة' : '❌ تحتاج مراجعة'}</span>
+          </div>
+          <p class="font-bold text-sm sm:text-base">${r.num}. ${r.text}</p>
+          <div class="text-xs sm:text-sm flex flex-wrap gap-3">
+            <span class="${r.isCorrect ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'} font-bold">إجابتك: ${r.chosenKey ? `${r.chosenKey}) ${r.chosenText}` : 'لم يُجب'}</span>
+            ${!r.isCorrect ? `<span class="text-emerald-700 dark:text-emerald-400 font-bold">الصحيحة: ${r.correctKey}) ${r.correctText}</span>` : ''}
+          </div>
+        </div>`).join('');
+    }
+
+    async function backToHub() {
+      const data = await apiGet({ action: 'login', code: state.student.code });
+      if (data.ok) state.exams = data.exams || [];
+      renderHub();
+      showView('view-hub');
+    }
+
+    (async function init() {
+      const savedCode = sessionStorage.getItem('nafis_student_code');
+      if (savedCode && API_URL !== 'PENDING_DEPLOYMENT_URL') {
+        document.getElementById('student-code').value = savedCode;
+        document.getElementById('login-form').dispatchEvent(new Event('submit'));
+      }
+    })();
+  </script>
+</body>
+</html>
