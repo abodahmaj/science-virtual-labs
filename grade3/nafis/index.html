@@ -99,7 +99,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">السؤال <span id="q-current-num">1</span> من <span id="q-total-num">25</span></p>
           </div>
           <div id="timer-box" class="px-3.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/70 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 font-mono font-black text-base" dir="ltr">
-            35:00
+            30:00
           </div>
         </div>
         <div class="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mb-3">
@@ -114,6 +114,9 @@
           <span id="q-level" class="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"></span>
         </div>
         <h3 id="q-text" class="text-lg sm:text-xl font-black leading-relaxed"></h3>
+        <div id="q-image-wrap" class="hidden">
+          <img id="q-image" src="" alt="الشكل المرفق بالسؤال" class="max-h-72 mx-auto rounded-2xl border border-slate-200 dark:border-slate-700 bg-white p-2 shadow-sm object-contain" />
+        </div>
         <div id="q-options" class="grid grid-cols-1 gap-3"></div>
       </div>
 
@@ -301,7 +304,7 @@
 
         document.getElementById('exam-title').textContent = data.exam.title;
         document.getElementById('q-total-num').textContent = data.questions.length;
-        startTimer((data.exam.durationMinutes || 35) * 60);
+        startTimer((data.exam.durationMinutes || 30) * 60);
         renderQuestion();
         showView('view-exam');
       } catch (err) {
@@ -334,6 +337,16 @@
       document.getElementById('q-lesson').textContent = q.lesson;
       document.getElementById('q-level').textContent = `مستوى الأداء: ${q.level}`;
       document.getElementById('q-text').textContent = `${q.num}. ${q.text}`;
+
+      const imgWrap = document.getElementById('q-image-wrap');
+      const imgEl = document.getElementById('q-image');
+      if (q.imageUrl) {
+        imgEl.src = q.imageUrl;
+        imgWrap.classList.remove('hidden');
+      } else {
+        imgEl.src = '';
+        imgWrap.classList.add('hidden');
+      }
 
       const answeredCount = Object.keys(state.answers).length;
       document.getElementById('progress-bar').style.width = `${Math.round((answeredCount / total) * 100)}%`;
