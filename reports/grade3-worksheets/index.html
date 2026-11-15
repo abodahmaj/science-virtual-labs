@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التقرير التفاعلي لأوراق العمل — علوم ثالث متوسط</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+  if (localStorage.getItem('science_theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+  body { font-family: 'Tajawal', system-ui, -apple-system, sans-serif; }
+</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+
+<!-- Header -->
+<header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <a href="https://abodahmaj.github.io/science-virtual-labs/#grade3" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-lg transition" title="العودة لبوابة ثالث متوسط">🏠</a>
+      <div>
+        <h1 class="text-base sm:text-xl font-black text-emerald-700 dark:text-emerald-400">التقرير التفاعلي لأوراق العمل</h1>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">مادة العلوم • الصف الثالث المتوسط</p>
+      </div>
+    </div>
+    <button onclick="toggleTheme()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+      <span id="theme-icon">🌙</span>
+      <span class="hidden sm:inline" id="theme-label">الوضع الليلي</span>
+    </button>
+  </div>
+</header>
+
+<main class="max-w-5xl w-full mx-auto px-4 py-6 flex-1 space-y-6">
+
+  <!-- Student Selector Card -->
+  <section class="bg-white dark:bg-slate-900 border-2 border-emerald-200 dark:border-emerald-800/60 rounded-2xl p-5 shadow-sm">
+    <label for="student-select" class="block text-base sm:text-lg font-extrabold text-slate-800 dark:text-slate-100 mb-2">
+      👤 اختر اسمك لعرض نتائج أوراق العمل والتغذية الراجعة:
+    </label>
+    <select id="student-select" onchange="renderStudent(this.value)" class="w-full p-3.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-base focus:outline-none focus:border-emerald-500">
+      <option value="">— اضغط هنا لاختيار اسم الطالب —</option>
+    </select>
+
+    <!-- Student Details Container -->
+    <div id="student-result" class="hidden mt-5 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4">
+        <div>
+          <div class="text-xs font-bold text-emerald-700 dark:text-emerald-400" id="st-code"></div>
+          <h2 class="text-xl font-black text-slate-900 dark:text-white" id="st-name"></h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-center px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-700">
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-bold">المعدل التراكمي</div>
+            <div class="text-xl font-black text-emerald-700 dark:text-emerald-400" id="st-avg"></div>
+          </div>
+          <div id="st-badge" class="px-3.5 py-2 rounded-xl text-sm font-extrabold"></div>
+        </div>
+      </div>
+
+      <!-- 3 Worksheets Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="st-cards"></div>
+
+      <!-- Handwriting Diagnosis -->
+      <div class="bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
+        <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-1 flex items-center gap-1.5">
+          <span>✍️</span><span>تشخيص الخط اليدوي والتنظيم:</span>
+        </h3>
+        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed" id="st-hw"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Class Overview & Charts -->
+  <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-5">
+    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+      <div>
+        <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white">📊 التحليل الإحصائي العام للفصل</h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">ملخص أداء طلاب الصف الثالث المتوسط (22 طالباً) عبر أوراق العمل الثلاث</p>
+      </div>
+      <span class="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs font-extrabold border border-blue-200 dark:border-blue-800">محدّث ومتزامن مع كشف المتابعة</span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-center">
+        <div class="text-2xl font-black text-blue-700 dark:text-blue-400">15 / 22</div>
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5">تسليم «نماذج الذرة» (68.2%)</div>
+      </div>
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-center">
+        <div class="text-2xl font-black text-emerald-700 dark:text-emerald-400">8.05 / 10</div>
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5">متوسط «نماذج الذرة»</div>
+      </div>
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-center">
+        <div class="text-2xl font-black text-indigo-700 dark:text-indigo-400">9.24 / 10</div>
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5">متوسط «علم الوراثة» (17/22)</div>
+      </div>
+      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-center">
+        <div class="text-2xl font-black text-amber-600 dark:text-amber-400">10.0</div>
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mt-0.5">أعلى درجة (عامر زايد)</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/40">
+        <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-3">توزيع المستويات في ورقة «نماذج الذرة»</h3>
+        <svg viewBox="0 0 500 180" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+          <line x1="35" y1="145" x2="485" y2="145" stroke="#94A3B8" stroke-width="1.2"/>
+          <rect x="50" y="115" width="44" height="30" rx="4" fill="#16A34A"/>
+          <text x="72" y="108" font-size="12" font-weight="bold" fill="#16A34A" text-anchor="middle">2</text>
+          <text x="72" y="164" font-size="11" fill="currentColor" text-anchor="middle">فائق</text>
+
+          <rect x="122" y="115" width="44" height="30" rx="4" fill="#2563EB"/>
+          <text x="144" y="108" font-size="12" font-weight="bold" fill="#2563EB" text-anchor="middle">2</text>
+          <text x="144" y="164" font-size="11" fill="currentColor" text-anchor="middle">ممتاز</text>
+
+          <rect x="194" y="85" width="44" height="60" rx="4" fill="#0284C7"/>
+          <text x="216" y="78" font-size="12" font-weight="bold" fill="#0284C7" text-anchor="middle">4</text>
+          <text x="216" y="164" font-size="11" fill="currentColor" text-anchor="middle">جيد جداً</text>
+
+          <rect x="266" y="55" width="44" height="90" rx="4" fill="#D97706"/>
+          <text x="288" y="48" font-size="12" font-weight="bold" fill="#D97706" text-anchor="middle">6</text>
+          <text x="288" y="164" font-size="11" fill="currentColor" text-anchor="middle">متوسط</text>
+
+          <rect x="338" y="130" width="44" height="15" rx="4" fill="#DC2626"/>
+          <text x="360" y="123" font-size="12" font-weight="bold" fill="#DC2626" text-anchor="middle">1</text>
+          <text x="360" y="164" font-size="11" fill="currentColor" text-anchor="middle">متابعة</text>
+
+          <rect x="410" y="40" width="44" height="105" rx="4" fill="#94A3B8"/>
+          <text x="432" y="33" font-size="12" font-weight="bold" fill="#64748B" text-anchor="middle">7</text>
+          <text x="432" y="164" font-size="11" fill="currentColor" text-anchor="middle">مؤجل</text>
+        </svg>
+      </div>
+
+      <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/40">
+        <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-3">مقارنة متوسط الأداء عبر أوراق الفصل</h3>
+        <svg viewBox="0 0 380 180" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+          <line x1="35" y1="145" x2="360" y2="145" stroke="#94A3B8" stroke-width="1.2"/>
+          <rect x="65" y="25" width="56" height="120" rx="5" fill="#16A34A"/>
+          <text x="93" y="18" font-size="12" font-weight="bold" fill="#16A34A" text-anchor="middle">10.0</text>
+          <text x="93" y="164" font-size="11" fill="currentColor" text-anchor="middle">مادة DNA</text>
+
+          <rect x="162" y="34" width="56" height="111" rx="5" fill="#1E3A8A"/>
+          <text x="190" y="27" font-size="12" font-weight="bold" fill="#1E3A8A" text-anchor="middle">9.24</text>
+          <text x="190" y="164" font-size="11" fill="currentColor" text-anchor="middle">علم الوراثة</text>
+
+          <rect x="259" y="48" width="56" height="97" rx="5" fill="#0284C7"/>
+          <text x="287" y="41" font-size="12" font-weight="bold" fill="#0284C7" text-anchor="middle">8.05</text>
+          <text x="287" y="164" font-size="11" fill="currentColor" text-anchor="middle">نماذج الذرة</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+      <div class="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800">
+        <h3 class="font-extrabold text-emerald-800 dark:text-emerald-300 mb-1.5">🏆 صدارة الفصل التراكمية (3 أوراق)</h3>
+        <ul class="space-y-1 text-slate-700 dark:text-slate-300 list-disc pr-5">
+          <li><strong>عزام محمد بن أحمد النجعي:</strong> 9.92 / 10</li>
+          <li><strong>حازم محمد بن يحي عسيري:</strong> 9.75 / 10</li>
+          <li><strong>عبدالاله محمد بن ابراهيم عسيري:</strong> 9.75 / 10</li>
+          <li><strong>عامر زايد مونس ال مشوه:</strong> 9.67 / 10</li>
+        </ul>
+      </div>
+      <div class="p-4 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+        <h3 class="font-extrabold text-amber-800 dark:text-amber-300 mb-1.5">💡 توصيات تحسين الأداء للحصة القادمة</h3>
+        <ul class="space-y-1 text-slate-700 dark:text-slate-300 list-disc pr-5">
+          <li>التنبه لقراءة جميع فقرات النشاط الثاني وعدم ترك سؤال عدد الإلكترونات دون حل.</li>
+          <li>الالتزام بكتابة الأسس العلمية كاملة (10^-24) ووحدة القياس (جم).</li>
+          <li>مراجعة المعلم للطلاب الغائبين لتسليم الأوراق البديلة واستكمال الرصد.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-4 text-center text-sm text-slate-600 dark:text-slate-400">
+  معلم المادة: <span class="font-bold text-slate-900 dark:text-slate-200">علي جبريل</span> - مجمع الثقافة التعليمي
+</footer>
+
+<script>
+const STUDENTS = [{"num": 1, "code": "3M-01", "name": "أصيل عبدالله علي عسيري", "avg": 9.33, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "إجابة نموذجية استثنائية 100%، إتقان كامل للمفاهيم المندلية وبانيت."}, "atoms": {"score": 8.0, "status": "حاضر", "feedback": "إتقان تام للاختياري والتفكير الناقد؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و0.25 لإغفال وحدة جم، و0.25 لاختصار تعليل التنافر.", "handwriting": "قلم رصاص. خط منظم وواضح ومريح للعين، مع التزام جيد بحدود الجدول والمساحات."}}, {"num": 2, "code": "3M-02", "name": "احمد محمد علي عسيري", "avg": 10.0, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة."}, "atoms": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة.", "handwriting": "بانتظار تسليم الورقة للتقييم البصري."}}, {"num": 3, "code": "3M-03", "name": "اياد محمد عبدالله بن جابر راتي عسيري", "avg": 8.83, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 9.25, "status": "حاضر", "feedback": "فهم مفاهيمي ممتاز؛ حسم 0.5 لخلط رمزي ببانيت و0.25 للتعليل."}, "atoms": {"score": 7.25, "status": "حاضر", "feedback": "فهم ممتاز للمشاهدات والتعليل؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و1.0 لعدم حساب الناتج الرقمي في س2، و0.25 لاقتضاب تعليل التنافر.", "handwriting": "قلم رصاص. خط واضح ومرتب، يُنصح بإتمام العمليات الحسابية داخل الخانة المخصصة."}}, {"num": 4, "code": "3M-04", "name": "حازم محمد بن يحي عسيري", "avg": 9.75, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "حلول مفصلة بارعة وتفريق علمي متقن بين الطرز."}, "atoms": {"score": 9.25, "status": "حاضر", "feedback": "أداء متميز وشامل في جميع الأنشطة؛ حسم 0.75 لاستخدام علامة الجمع (+) بدل الضرب (×) في س2 وعدم دقة الناتج النهائي والوحدة.", "handwriting": "قلم جاف أزرق. خط جميل ومنضبط، يُنصح بالانتباه للرموز الرياضية والكتابة داخل الإطار."}}, {"num": 5, "code": "3M-05", "name": "حسام محمد يحيى عسيري", "avg": 10.0, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة."}, "atoms": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة.", "handwriting": "بانتظار تسليم الورقة للتقييم البصري."}}, {"num": 6, "code": "3M-06", "name": "حسن محمد حسن غرامه", "avg": 10.0, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة."}, "atoms": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة.", "handwriting": "بانتظار تسليم الورقة للتقييم البصري."}}, {"num": 7, "code": "3M-07", "name": "راشد احمد مفرح عسيري", "avg": 8.67, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 8.0, "status": "حاضر", "feedback": "حسم 1.0 لقلب خانات الجدول و0.5 لخلط صفة القرون."}, "atoms": {"score": 8.0, "status": "حاضر", "feedback": "إجابة جيدة جداً؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و0.25 لإغفال وحدة جم، و0.25 لاختصار تعليل التنافر.", "handwriting": "قلم رصاص. خط مقبول مع خروج بعض الكلمات عن حدود السطر في النشاط الرابع."}}, {"num": 8, "code": "3M-08", "name": "ريان علي محمد عسيري", "avg": 9.25, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "إيجاز علمي ذكي وبارع ومباشر واستنتاج سليم للنسب."}, "atoms": {"score": 7.75, "status": "حاضر", "feedback": "فهم ممتاز للمفاهيم؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و0.5 لنقص الأس والوحدة في الناتج الحسابي، و0.25 لاقتضاب تعليل التنافر.", "handwriting": "قلم رصاص. خط رشيق ومرتب؛ مع قص أو عدم إكمال كتابة الأس في الحافة السفلية."}}, {"num": 9, "code": "3M-09", "name": "عامر زايد مونس ال مشوه", "avg": 9.67, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 9.0, "status": "حاضر", "feedback": "فهم وراثي متين؛ حسمت 1.0 لعكس مفهوم ظهور الأثر."}, "atoms": {"score": 10.0, "status": "حاضر", "feedback": "إجابة نموذجية متكاملة 100%؛ إتقان تام للحساب النووي وتفسير تجربة رذرفورد والتشبيه العلمي الدقيق مع كتابة الوحدة (جم).", "handwriting": "قلم حبر أسود. خط واضح ومنظم ومتكامل الأركان؛ استغل الحواف بذكاء لإتمام الحلول التفصيلية."}}, {"num": 10, "code": "3M-10", "name": "عبدالاله محمد بن ابراهيم عسيري", "avg": 9.75, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "تفوق نوعي لافت، تعليل وراثي متماسك وحل رياضي نموذجي."}, "atoms": {"score": 9.25, "status": "حاضر", "feedback": "أداء متفوق واستيعاب علمي عميق؛ حسم 0.5 لعدم إتمام كتابة الأس والوحدة في ناتج س2، و0.25 لاختصار تعليل التنافر.", "handwriting": "قلم حبر أسود. خط قوي وواضح، مع تجاوز الحدود اليمنى للورقة عند كتابة إجابة س1."}}, {"num": 11, "code": "3M-11", "name": "عبدالله محمد بن ابراهيم عسيري", "avg": 9.25, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "دقة استثنائية ومطابقة حرفية للنموذج المعتمد."}, "atoms": {"score": 7.75, "status": "حاضر", "feedback": "إجابة جيدة جداً؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و0.5 لنقص الأس والوحدة في ناتج س2، و0.25 لاختصار تعليل التنافر.", "handwriting": "قلم رصاص. خط واضح ومنسق مع شطب خفيف مصحح في الفقرة 1 بالنشاط الأول."}}, {"num": 12, "code": "3M-12", "name": "عبدالله هادي الحسين عسيري", "avg": 9.33, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "استيعاب مفاهيمي بارع للجينات وحل نموذجي لكافة المسائل."}, "atoms": {"score": 8.0, "status": "حاضر", "feedback": "استيعاب ممتاز للمشاهدات والتفكير الناقد؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و0.25 لإغفال وحدة جم، و0.25 لاقتضاب تعليل التنافر.", "handwriting": "قلم حبر أسود. خط عريض وواضح ومتناسق داخل خانات الجدول."}}, {"num": 13, "code": "3M-13", "name": "عزام عيسى فايع عسيري", "avg": 9.88, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 9.75, "status": "حاضر", "feedback": "أداء متفوق وشامل؛ حسمت ربع درجة لاقتضاب يسير بالتعليل."}, "atoms": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة.", "handwriting": "بانتظار تسليم الورقة للتقييم البصري."}}, {"num": 14, "code": "3M-14", "name": "عزام محمد بن أحمد النجعي", "avg": 9.92, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "إتقان رياضي وعلمي متميز في حساب النسب المئوية والكسور."}, "atoms": {"score": 9.75, "status": "حاضر", "feedback": "أداء فائق التميز وإلمام دقيق بكافة المفاهيم؛ حسم 0.25 فقط لعدم إخراج الناتج النهائي بصيغة 1.67 × 10^-24 جم.", "handwriting": "قلم حبر أسود. خط منظم ومرتب وواضح جداً مع استيفاء كافة الشروحات العلمية."}}, {"num": 15, "code": "3M-15", "name": "عمار مفرح يحي عسيري", "avg": 6.83, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 5.5, "status": "حاضر", "feedback": "فجوات مفاهيمية؛ خلط بجدول الطرز ونقص بالتعليل وكتابة Td بدلاً من Tt."}, "atoms": {"score": 5.0, "status": "حاضر", "feedback": "إتقان للاختياري (2/2)؛ حسم 3.0 لترك النشاط الثاني كاملاً فارغاً، و1.5 لاختصار مخل بمصفوفة رذرفورد، و0.5 لعدم إكمال تعليل النشاط الرابع.", "handwriting": "قلم حبر أزرق. خط كبير الحجم ومقتضب جداً؛ يحتاج لمزيد من العناية بإكمال الجمل العلمية."}}, {"num": 16, "code": "3M-16", "name": "فارس جابر يحي الالمعي", "avg": 9.75, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 9.5, "status": "حاضر", "feedback": "فهم وراثي عالي؛ حسمت 0.25 للاقتضاب و0.25 لعدم ضبط المساحة."}, "atoms": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة.", "handwriting": "بانتظار تسليم الورقة للتقييم البصري."}}, {"num": 17, "code": "3M-17", "name": "فارس محمد جابر آل حسيكان", "avg": 9.17, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 9.75, "status": "حاضر", "feedback": "استيعاب علمي دقيق؛ حسمت 0.25 لتعديل الرموز داخل مربعات بانيت."}, "atoms": {"score": 7.75, "status": "حاضر", "feedback": "أداء جيد جداً؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و0.5 لإغفال الأس (10^-24) والوحدة في ناتج س2، و0.25 لاقتضاب تعليل التنافر.", "handwriting": "قلم جاف أزرق. خط جميل ومستقر على السطور مع تنسيق جيد داخل الجدول."}}, {"num": 18, "code": "3M-18", "name": "مؤيد بدر بن ابراهيم عسيري", "avg": 10.0, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة."}, "atoms": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة.", "handwriting": "بانتظار تسليم الورقة للتقييم البصري."}}, {"num": 19, "code": "3M-19", "name": "محمد موسى محمد المخلوطي", "avg": 9.33, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "حل نموذجي متكامل 100% مع وسام الخط الذهبي الأول (حبر أخضر)."}, "atoms": {"score": 8.0, "status": "حاضر", "feedback": "إجابات دقيقة ومختصرة؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و0.25 لإغفال وحدة جم، و0.25 لاقتضاب تعليل التنافر.", "handwriting": "قلم حبر أسود. خط واضح ومتزن ومريح للقراءة."}}, {"num": 20, "code": "3M-20", "name": "مشعل ابراهيم حسين المخلوطي", "avg": 9.25, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 10.0, "status": "حاضر", "feedback": "استيعاب كامل لقانون انعزال الصفات وحل المسائل المندلية ببراعة."}, "atoms": {"score": 7.75, "status": "حاضر", "feedback": "أداء جيد جداً؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و0.5 لنقص الأس والوحدة في ناتج س2، و0.25 لاختصار تعليل التنافر.", "handwriting": "قلم رصاص. خط رشيق ومرتب ومنظم داخل مربعات الإجابة."}}, {"num": 21, "code": "3M-21", "name": "نواف عبدالله هادي عسيري", "avg": 7.83, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": 6.25, "status": "حاضر", "feedback": "إجادة في س1أ وس5ب؛ حسم لغموض جدول س1ب، وترك خانات فارغة في س4، وعدم حساب نسبة 25% في س3ب، وعدم إكمال س5أ، وكتابة Td بدلاً من Tt في س6."}, "atoms": {"score": 7.25, "status": "حاضر", "feedback": "إتقان تام للاختياري والتفكير الناقد؛ حسم 1.5 لترك س1 بالنشاط الثاني فارغاً، و1.0 لعدم حساب الناتج الرقمي في س2، و0.25 لاقتضاب تعليل التنافر.", "handwriting": "قلم جاف أسود. خط واضح ومقروء ومنضبط نسبياً مع إملاء غير دقيق لكلمة (البروتون)."}}, {"num": 22, "code": "3M-22", "name": "يحيى محمد علي عسيري", "avg": 10.0, "dna": {"score": 10.0, "status": "حاضر", "feedback": "إتقان كامل لمهارات ورقة عمل مادة الوراثة DNA."}, "genetics": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة."}, "atoms": {"score": null, "status": "غائب", "feedback": "غائب؛ بانتظار أداء ورقة العمل البديلة.", "handwriting": "بانتظار تسليم الورقة للتقييم البصري."}}];
+
+const selectEl = document.getElementById('student-select');
+STUDENTS.forEach(s => {
+  const opt = document.createElement('option');
+  opt.value = s.code;
+  opt.textContent = `${s.num}. ${s.name} (${s.code})`;
+  selectEl.appendChild(opt);
+});
+
+function getBadge(avg) {
+  if (avg >= 9.5) return ['💎 فائق الامتياز', 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200'];
+  if (avg >= 9.0) return ['🌟 ممتاز', 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'];
+  if (avg >= 8.0) return ['👍 جيد جداً', 'bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200'];
+  if (avg >= 6.0) return ['📘 متوسط', 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'];
+  return ['⚠️ يحتاج متابعة', 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'];
+}
+
+function cardHTML(title, ws) {
+  const isAbsent = ws.score === null || ws.score === undefined;
+  const scoreText = isAbsent ? 'مؤجل (غائب)' : `${ws.score} / 10`;
+  const borderCls = isAbsent
+    ? 'border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-950/30'
+    : (ws.score >= 9 ? 'border-emerald-300 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-950/20' : 'border-blue-200 dark:border-blue-800 bg-blue-50/40 dark:bg-blue-950/20');
+  const scoreCls = isAbsent ? 'text-amber-700 dark:text-amber-400' : (ws.score >= 9 ? 'text-emerald-700 dark:text-emerald-400' : 'text-blue-700 dark:text-blue-400');
+
+  return `
+    <div class="rounded-xl border-2 ${borderCls} p-4 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <h4 class="font-black text-slate-900 dark:text-white text-sm">${title}</h4>
+          <span class="font-black text-base ${scoreCls}">${scoreText}</span>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${ws.feedback}</p>
+      </div>
+    </div>
+  `;
+}
+
+function renderStudent(code) {
+  const box = document.getElementById('student-result');
+  if (!code) {
+    box.classList.add('hidden');
+    return;
+  }
+  const s = STUDENTS.find(x => x.code === code);
+  if (!s) return;
+
+  document.getElementById('st-code').textContent = `الكود: ${s.code} | رقم الكشف: ${s.num}`;
+  document.getElementById('st-name').textContent = s.name;
+  document.getElementById('st-avg').textContent = `${s.avg} / 10`;
+
+  const [bText, bCls] = getBadge(s.avg);
+  const badgeEl = document.getElementById('st-badge');
+  badgeEl.textContent = bText;
+  badgeEl.className = `px-3.5 py-2 rounded-xl text-sm font-extrabold ${bCls}`;
+
+  document.getElementById('st-cards').innerHTML =
+    cardHTML('🧬 مادة الوراثة DNA', s.dna) +
+    cardHTML('🌱 علم الوراثة', s.genetics) +
+    cardHTML('⚛️ نماذج الذرة', s.atoms);
+
+  document.getElementById('st-hw').textContent = s.atoms.handwriting || 'بانتظار تسليم الورقة للتقييم البصري.';
+  box.classList.remove('hidden');
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('science_theme', isDark ? 'dark' : 'light');
+  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isDark ? 'الوضع النهاري' : 'الوضع الليلي';
+}
+</script>
+</body>
+</html>
