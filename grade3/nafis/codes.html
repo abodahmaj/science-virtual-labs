@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>استعلام كود الطالب — بوابة اختبارات نافس (ثالث متوسط)</title>
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="بوابة العلوم التفاعلية — أ. علي جبريل" />
+  <meta property="og:title" content="استعلام كود الطالب — بوابة اختبارات نافس (ثالث متوسط)" />
+  <meta property="og:description" content="اختر اسمك لمعرفة كود الدخول الخاص بك لاختبار نافس المحاكي لمادة العلوم — الصف الثالث المتوسط | أ. علي جبريل" />
+  <meta property="og:image" content="https://abodahmaj.github.io/science-virtual-labs/assets/og-science.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://abodahmaj.github.io/science-virtual-labs/grade3/nafis/codes.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="استعلام كود الطالب — بوابة اختبارات نافس (ثالث متوسط)" />
+  <meta name="twitter:description" content="اختر اسمك لمعرفة كود الدخول الخاص بك لاختبار نافس المحاكي لمادة العلوم — الصف الثالث المتوسط | أ. علي جبريل" />
+  <meta name="twitter:image" content="https://abodahmaj.github.io/science-virtual-labs/assets/og-science.jpg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+    (function () {
+      if (localStorage.getItem('science_theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200 selection:bg-amber-500 selection:text-white">
+
+  <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl font-black">🔑</div>
+        <div>
+          <h1 class="text-base sm:text-lg font-black leading-tight">استعلام كود الطالب</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">بوابة اختبارات نافس — الصف الثالث المتوسط</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="./" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-600 hover:bg-amber-700 text-white transition">
+          بوابة الاختبار ←
+        </a>
+        <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="تبديل المظهر">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-2xl w-full mx-auto px-4 py-8 space-y-6">
+    <section class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-lg space-y-5">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-xs font-bold">
+          <span>الصف الثالث المتوسط</span>
+          <span>•</span>
+          <span>مادة العلوم</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-black pt-1">ابحث عن اسمك أو اختره من القائمة</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">سيظهر لك كود الدخول الخاص بك مباشرة لنسخه واستخدامه في الاختبار</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label for="search-input" class="block text-sm font-bold mb-1.5">🔍 بحث سريع بالاسم</label>
+          <input id="search-input" type="text" placeholder="اكتب جزءاً من اسمك..."
+            class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-amber-500 focus:outline-none font-semibold text-base" />
+        </div>
+
+        <div>
+          <label for="student-select" class="block text-sm font-bold mb-1.5">👤 اختر اسمك من القائمة</label>
+          <select id="student-select"
+            class="w-full px-4 py-3.5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-amber-500 focus:outline-none font-bold text-base">
+            <option value="">— اختر اسم الطالب —</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="result-card" class="hidden rounded-2xl border-2 border-emerald-300 dark:border-emerald-700 bg-emerald-50/70 dark:bg-emerald-950/30 p-5 sm:p-6 text-center space-y-4">
+        <div>
+          <p class="text-xs font-bold text-emerald-700 dark:text-emerald-300">اسم الطالب</p>
+          <p id="res-name" class="text-lg sm:text-xl font-black mt-0.5"></p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border-2 border-emerald-200 dark:border-emerald-800 rounded-2xl py-4 px-5 inline-block min-w-[220px]">
+          <p class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">كود الدخول الخاص بك</p>
+          <p id="res-code" class="text-3xl sm:text-4xl font-black tracking-wider text-amber-600 dark:text-amber-400 select-all" dir="ltr"></p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+          <button id="copy-btn" onclick="copyCode()"
+            class="w-full sm:w-auto min-h-[48px] px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 text-white font-bold transition">
+            📋 نسخ الكود
+          </button>
+          <a href="./"
+            class="w-full sm:w-auto min-h-[48px] px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold transition flex items-center justify-center">
+            🚀 الانتقال إلى بوابة الاختبار
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 text-center text-sm text-slate-600 dark:text-slate-400 px-4 mt-auto">
+    معلم المادة: <span class="font-bold text-slate-900 dark:text-slate-200">علي جبريل</span> — مجمع الثقافة التعليمي
+  </footer>
+
+  <script>
+    const STUDENTS = [
+      { name: "أصيل عبدالله علي عسيري", code: "N3-2791" },
+      { name: "احمد محمد علي عسيري", code: "N3-5161" },
+      { name: "اياد محمد عبدالله بن جابر راتي عسيري", code: "N3-9448" },
+      { name: "حازم محمد بن يحي عسيري", code: "N3-8040" },
+      { name: "حسام محمد يحيى عسيري", code: "N3-4955" },
+      { name: "حسن محمد حسن غرامه", code: "N3-2331" },
+      { name: "راشد احمد مفرح عسيري", code: "N3-4734" },
+      { name: "ريان علي محمد عسيري", code: "N3-7733" },
+      { name: "عامر زايد مونس ال مشوه", code: "N3-7780" },
+      { name: "عبدالاله محمد بن ابراهيم عسيري", code: "N3-6375" },
+      { name: "عبدالله محمد بن ابراهيم عسيري", code: "N3-8071" },
+      { name: "عبدالله هادي الحسين عسيري", code: "N3-8598" },
+      { name: "عزام عيسى فايع عسيري", code: "N3-1836" },
+      { name: "عزام محمد بن أحمد النجعي", code: "N3-6860" },
+      { name: "عمار مفرح يحي عسيري", code: "N3-2012" },
+      { name: "فارس جابر يحي الالمعي", code: "N3-6433" },
+      { name: "فارس محمد جابر آل حسيكان", code: "N3-6941" },
+      { name: "مؤيد بدر بن ابراهيم عسيري", code: "N3-6745" },
+      { name: "محمد موسى محمد المخلوطي", code: "N3-3039" },
+      { name: "مشعل ابراهيم حسين المخلوطي", code: "N3-5672" },
+      { name: "نواف عبدالله هادي عسيري", code: "N3-8584" },
+      { name: "يحيى محمد علي عسيري", code: "N3-7507" }
+    ];
+
+    function syncThemeIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+    }
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('science_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      syncThemeIcon();
+    }
+    syncThemeIcon();
+
+    function normalizeAr(s) {
+      return (s || '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').trim();
+    }
+
+    const selectEl = document.getElementById('student-select');
+    const searchEl = document.getElementById('search-input');
+    const cardEl = document.getElementById('result-card');
+
+    function populateOptions(filter = '') {
+      const norm = normalizeAr(filter);
+      const filtered = norm
+        ? STUDENTS.filter(st => normalizeAr(st.name).includes(norm))
+        : STUDENTS;
+
+      selectEl.innerHTML = '<option value="">— اختر اسم الطالب —</option>' +
+        filtered.map(st => `<option value="${st.code}">${st.name}</option>`).join('');
+
+      if (filtered.length === 1) {
+        selectEl.value = filtered[0].code;
+        showResult(filtered[0]);
+      } else {
+        cardEl.classList.add('hidden');
+      }
+    }
+
+    function showResult(student) {
+      if (!student) {
+        cardEl.classList.add('hidden');
+        return;
+      }
+      document.getElementById('res-name').textContent = student.name;
+      document.getElementById('res-code').textContent = student.code;
+      document.getElementById('copy-btn').textContent = '📋 نسخ الكود';
+      cardEl.classList.remove('hidden');
+    }
+
+    searchEl.addEventListener('input', (e) => populateOptions(e.target.value));
+    selectEl.addEventListener('change', (e) => {
+      const st = STUDENTS.find(s => s.code === e.target.value);
+      showResult(st);
+    });
+
+    function copyCode() {
+      const code = document.getElementById('res-code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '✅ تم النسخ';
+        setTimeout(() => { btn.textContent = '📋 نسخ الكود'; }, 2000);
+      });
+    }
+
+    populateOptions();
+  </script>
+</body>
+</html>
