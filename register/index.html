@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل أرقام التواصل — بوابة العلوم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #eff6ff;
+      --accent: #0f766e;
+      --success: #166534;
+      --success-bg: #f0fdf4;
+      --danger: #b91c1c;
+      --danger-bg: #fef2f2;
+      --warn: #92400e;
+      --warn-bg: #fffbeb;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(160deg, #e0e7ff 0%, var(--bg) 45%, #ecfeff 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 14px 40px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+      color: #fff;
+      padding: 24px 22px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0 0 6px;
+      font-size: 1.45rem;
+      font-weight: 800;
+    }
+
+    .header p {
+      margin: 0;
+      font-size: 0.95rem;
+      opacity: 0.92;
+      line-height: 1.6;
+    }
+
+    .body {
+      padding: 22px;
+    }
+
+    .grade-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .grade-btn {
+      border: 2px solid var(--border);
+      background: #f8fafc;
+      color: var(--text);
+      padding: 12px 10px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .grade-btn.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.12);
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .hint {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      background: #fff;
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .ltr-input {
+      direction: ltr;
+      text-align: left;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+    }
+
+    .preview-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .preview-box.valid {
+      display: flex;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #bbf7d0;
+    }
+
+    .preview-box.invalid {
+      display: flex;
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .preview-num {
+      direction: ltr;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .row-2 { grid-template-columns: 1fr; }
+    }
+
+    .toggle-extra {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 4px 0;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .extra-box {
+      display: none;
+      background: #f8fafc;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .extra-box.open { display: block; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent) 0%, #0d9488 100%);
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.08rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.2s;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .alert {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .alert.show { display: block; }
+    .alert.success { background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
+    .alert.error { background: var(--danger-bg); color: var(--danger); border: 1px solid #fecaca; }
+    .alert.warn { background: var(--warn-bg); color: var(--warn); border: 1px solid #fde68a; }
+
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>📱 ربط أرقام التواصل بالنتائج</h1>
+      <p>اختر صفك واسمك المسجّل في الكشف، وأدخل رقم الواتساب لاستلام تقاريرك ونتائجك ومستندات المادة.</p>
+    </div>
+
+    <div class="body">
+      <div id="configWarning" class="alert warn">
+        ⚠️ وضع المعاينة: لم يتم ربط رابط Google Apps Script بعد. يمكنك تجربة تحويل الأرقام والتحقق، وللحفظ الفعلي أضف رابط النشر في متغير <code>APPS_SCRIPT_URL</code>.
+      </div>
+
+      <label>1. اختر الصف الدراسي:</label>
+      <div class="grade-tabs">
+        <button type="button" class="grade-btn active" data-grade="1m">الصف الأول المتوسط</button>
+        <button type="button" class="grade-btn" data-grade="3m">الصف الثالث المتوسط</button>
+      </div>
+
+      <form id="registerForm" novalidate>
+        <div class="field">
+          <label for="studentSearch">2. ابحث عن اسمك أو اختره من القائمة:</label>
+          <input type="text" id="studentSearch" placeholder="اكتب جزءاً من اسمك للتصفية السريعة..." autocomplete="off" style="margin-bottom:8px;" />
+          <select id="studentSelect" required>
+            <option value="">-- اختر اسمك الرباعي --</option>
+          </select>
+          <div class="hint" id="listCountHint"></div>
+        </div>
+
+        <div class="field">
+          <label for="phone1">3. رقم الجوال (واتساب):</label>
+          <div class="row-2">
+            <input type="tel" id="phone1" class="ltr-input" placeholder="05XXXXXXXX" inputmode="tel" required />
+            <select id="owner1">
+              <option value="الطالب">جوال الطالب</option>
+              <option value="ولي الأمر (الأب)">ولي الأمر (الأب)</option>
+              <option value="ولي الأمر (الأم)">ولي الأمر (الأم)</option>
+            </select>
+          </div>
+          <div class="hint">اكتب الرقم بأي صيغة (مثل <code>0551234567</code> أو <code>551234567</code>) وسيُحوّل تلقائياً إلى صيغة الواتساب الدولية.</div>
+          <div id="preview1" class="preview-box">
+            <span id="preview1Msg"></span>
+            <span id="preview1Num" class="preview-num"></span>
+          </div>
+        </div>
+
+        <button type="button" class="toggle-extra" id="toggleExtraBtn">➕ إضافة رقم ثانٍ لولي الأمر (اختياري)</button>
+        <div class="extra-box" id="extraBox">
+          <div class="field" style="margin-bottom:0;">
+            <label for="phone2">رقم الجوال الإضافي:</label>
+            <div class="row-2">
+              <input type="tel" id="phone2" class="ltr-input" placeholder="05XXXXXXXX" inputmode="tel" />
+              <select id="owner2">
+                <option value="ولي الأمر (الأب)">ولي الأمر (الأب)</option>
+                <option value="ولي الأمر (الأم)">ولي الأمر (الأم)</option>
+                <option value="الطالب">جوال الطالب</option>
+              </select>
+            </div>
+            <div id="preview2" class="preview-box">
+              <span id="preview2Msg"></span>
+              <span id="preview2Num" class="preview-num"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" id="pinField" style="display:none;">
+          <label for="pinInput">رمز الحصة (من المعلم):</label>
+          <input type="password" id="pinInput" class="ltr-input" placeholder="أدخل الرمز المكون من 4 أرقام" inputmode="numeric" />
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">حفظ واعتماد الرقم ✅</button>
+      </form>
+
+      <div id="resultAlert" class="alert"></div>
+    </div>
+  </div>
+
+  <div class="footer">معلم المادة: علي جبريل - مجمع الثقافة التعليمي</div>
+
+  <script>
+    // رابط Web App من Google Apps Script:
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF1rUiJQJa43VXI0nF2ND_jiinJHgd3uY0gA01w405sZACJ3hkqcQfDursji2IFwYiuQ/exec";
+    // اجعلها true إذا أردت تفعيل رمز الحصة (PIN) المطابق لما في Apps Script:
+    const REQUIRE_PIN = false;
+
+    const STUDENTS = {
+      "1m": [
+        "احمد علي فايع عسيري",
+        "احمد محمد احمد عسيري",
+        "احمد محمد شعبان عبود",
+        "الحسين يحي الحسين عسيري",
+        "بندر محمد يحي عسيري",
+        "حسين ابراهيم حسين المخلوطي",
+        "زياد احمد الحسين عسيري",
+        "سعود احمد سعيد الحيدي",
+        "عادل بن عبدالرحمن بن الحسين حسن عسيري",
+        "عبدالاله يحيى ملفي عسيري",
+        "عبدالله أحمد محمد العسيري",
+        "علي عبدالله محمد عسيري",
+        "محمد ابراهيم على عسيري",
+        "محمد احمد علي عسيري",
+        "محمد موسى يحي عسيري",
+        "موسى محمد بن موسى ابراهيم هادي الشريف",
+        "وليد يحي محمد عسيري",
+        "يحيى حسن يحيى عسيري",
+        "يحيى محمد حسن غرامه"
+      ],
+      "3m": [
+        "أصيل عبدالله علي عسيري",
+        "احمد محمد علي عسيري",
+        "اياد محمد عبدالله بن جابر راتي عسيري",
+        "حازم محمد بن يحي عسيري",
+        "حسام محمد يحيى عسيري",
+        "حسن محمد حسن غرامه",
+        "راشد احمد مفرح عسيري",
+        "ريان علي محمد عسيري",
+        "عامر زايد مونس ال مشوه",
+        "عبدالاله محمد بن ابراهيم عسيري",
+        "عبدالله محمد بن ابراهيم عسيري",
+        "عبدالله هادي الحسين عسيري",
+        "عزام عيسى فايع عسيري",
+        "عزام محمد بن أحمد النجعي",
+        "عمار مفرح يحي عسيري",
+        "فارس جابر يحي الالمعي",
+        "فارس محمد جابر آل حسيكان",
+        "مؤيد بدر بن ابراهيم عسيري",
+        "محمد موسى محمد المخلوطي",
+        "مشعل ابراهيم حسين المخلوطي",
+        "نواف عبدالله هادي عسيري",
+        "يحيى محمد علي عسيري"
+      ]
+    };
+
+    const GRADE_LABELS = {
+      "1m": "الصف الأول المتوسط",
+      "3m": "الصف الثالث المتوسط"
+    };
+
+    let currentGrade = "1m";
+    let registeredMap = { "1m": [], "3m": [] };
+
+    const studentSearch = document.getElementById("studentSearch");
+    const studentSelect = document.getElementById("studentSelect");
+    const listCountHint = document.getElementById("listCountHint");
+    const phone1Input = document.getElementById("phone1");
+    const phone2Input = document.getElementById("phone2");
+    const preview1 = document.getElementById("preview1");
+    const preview1Msg = document.getElementById("preview1Msg");
+    const preview1Num = document.getElementById("preview1Num");
+    const preview2 = document.getElementById("preview2");
+    const preview2Msg = document.getElementById("preview2Msg");
+    const preview2Num = document.getElementById("preview2Num");
+    const submitBtn = document.getElementById("submitBtn");
+    const resultAlert = document.getElementById("resultAlert");
+    const configWarning = document.getElementById("configWarning");
+
+    if (!APPS_SCRIPT_URL) {
+      configWarning.classList.add("show");
+    }
+    if (REQUIRE_PIN) {
+      document.getElementById("pinField").style.display = "block";
+    }
+
+    /**
+     * توحيد أي صيغة رقم جوال سعودي إلى +9665XXXXXXXX
+     */
+    function normalizeSaudiPhone(raw) {
+      if (!raw) return "";
+      const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
+      let s = String(raw).trim();
+      for (let i = 0; i < 10; i++) {
+        s = s.replace(new RegExp(arabicDigits[i], "g"), String(i));
+      }
+      s = s.replace(/[^\d+]/g, "");
+      if (s.startsWith("00966")) s = s.slice(5);
+      else if (s.startsWith("+966")) s = s.slice(4);
+      else if (s.startsWith("966")) s = s.slice(3);
+
+      if (s.startsWith("0")) s = s.slice(1);
+      if (/^5\d{8}$/.test(s)) {
+        return "+966" + s;
+      }
+      return "";
+    }
+
+    function updatePhonePreview(inputEl, boxEl, msgEl, numEl) {
+      const val = inputEl.value.trim();
+      if (!val) {
+        boxEl.className = "preview-box";
+        return "";
+      }
+      const normalized = normalizeSaudiPhone(val);
+      if (normalized) {
+        boxEl.className = "preview-box valid";
+        msgEl.textContent = "✅ صيغة الواتساب المعتمدة:";
+        numEl.textContent = normalized;
+        return normalized;
+      } else {
+        boxEl.className = "preview-box invalid";
+        msgEl.textContent = "⚠️ يجب أن يكون رقم جوال سعودي يبدأ بـ 05 أو 5 (9 أرقام بعد الصفر).";
+        numEl.textContent = "";
+        return "";
+      }
+    }
+
+    function renderStudentOptions() {
+      const query = studentSearch.value.trim();
+      const list = STUDENTS[currentGrade] || [];
+      const regList = registeredMap[currentGrade] || [];
+
+      studentSelect.innerHTML = '<option value="">-- اختر اسمك الرباعي --</option>';
+      let visibleCount = 0;
+
+      list.forEach(name => {
+        if (query && !name.includes(query)) return;
+        const opt = document.createElement("option");
+        const isReg = regList.includes(name);
+        opt.value = name;
+        opt.textContent = isReg ? `${name} (تم التسجيل ✅)` : name;
+        if (isReg) opt.disabled = true;
+        studentSelect.appendChild(opt);
+        visibleCount++;
+      });
+
+      listCountHint.textContent = `إجمالي طلاب ${GRADE_LABELS[currentGrade]}: ${list.length} طالباً (المعروض: ${visibleCount})`;
+    }
+
+    async function fetchRegisteredStudents() {
+      if (!APPS_SCRIPT_URL) return;
+      try {
+        const res = await fetch(APPS_SCRIPT_URL);
+        const data = await res.json();
+        if (data && data.ok && data.registered) {
+          registeredMap = data.registered;
+          renderStudentOptions();
+        }
+      } catch (err) {
+        console.warn("تعذر جلب قائمة المسجلين:", err);
+      }
+    }
+
+    document.querySelectorAll(".grade-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".grade-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentGrade = btn.dataset.grade;
+        studentSearch.value = "";
+        renderStudentOptions();
+      });
+    });
+
+    studentSearch.addEventListener("input", renderStudentOptions);
+    phone1Input.addEventListener("input", () => updatePhonePreview(phone1Input, preview1, preview1Msg, preview1Num));
+    phone2Input.addEventListener("input", () => updatePhonePreview(phone2Input, preview2, preview2Msg, preview2Num));
+
+    document.getElementById("toggleExtraBtn").addEventListener("click", () => {
+      document.getElementById("extraBox").classList.toggle("open");
+    });
+
+    function showAlert(type, htmlMsg) {
+      resultAlert.className = `alert show ${type}`;
+      resultAlert.innerHTML = htmlMsg;
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      resultAlert.className = "alert";
+
+      const name = studentSelect.value;
+      const phone1 = normalizeSaudiPhone(phone1Input.value);
+      const owner1 = document.getElementById("owner1").value;
+      const phone2Raw = phone2Input.value.trim();
+      const phone2 = phone2Raw ? normalizeSaudiPhone(phone2Raw) : "";
+      const owner2 = document.getElementById("owner2").value;
+      const pin = document.getElementById("pinInput").value.trim();
+
+      if (!name) {
+        showAlert("error", "⚠️ يرجى اختيار اسمك من القائمة أولاً.");
+        return;
+      }
+      if (!phone1) {
+        showAlert("error", "⚠️ يرجى إدخال رقم جوال سعودي صحيح (مثال: 0551234567).");
+        return;
+      }
+      if (phone2Raw && !phone2) {
+        showAlert("error", "⚠️ الرقم الإضافي غير مكتمل أو غير صحيح.");
+        return;
+      }
+      if (REQUIRE_PIN && !pin) {
+        showAlert("error", "⚠️ يرجى إدخال رمز الحصة.");
+        return;
+      }
+
+      if (!APPS_SCRIPT_URL) {
+        showAlert(
+          "warn",
+          `✅ تمت محاكاة التحويل بنجاح (وضع المعاينة):<br>
+          • الطالب: <strong>${name}</strong> (${GRADE_LABELS[currentGrade]})<br>
+          • الرقم الموحد: <strong dir="ltr">${phone1}</strong> (${owner1})
+          ${phone2 ? `<br>• الرقم الإضافي: <strong dir="ltr">${phone2}</strong> (${owner2})` : ""}`
+        );
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "جاري الحفظ...";
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            grade: GRADE_LABELS[currentGrade],
+            name,
+            phone1,
+            owner1,
+            phone2,
+            owner2,
+            pin
+          })
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          showAlert(
+            "success",
+            `🎉 تم تسجيل رقمك بنجاح يا <strong>${name}</strong>!<br>
+            الرقم المحفوظ للواتساب: <strong dir="ltr">${data.phone1}</strong>`
+          );
+          registeredMap[currentGrade].push(name);
+          renderStudentOptions();
+          document.getElementById("registerForm").reset();
+          preview1.className = "preview-box";
+          preview2.className = "preview-box";
+        } else {
+          showAlert("error", `❌ ${data.error || "تعذر الحفظ، حاول مرة أخرى."}`);
+        }
+      } catch (err) {
+        showAlert("error", "❌ حدث خطأ في الاتصال بالخادم. تأكد من الإنترنت وحاول مجدداً.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "حفظ واعتماد الرقم ✅";
+      }
+    });
+
+    renderStudentOptions();
+    fetchRegisteredStudents();
+  </script>
+</body>
+</html>
