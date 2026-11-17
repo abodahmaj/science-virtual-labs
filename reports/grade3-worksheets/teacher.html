@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رادار المعلم وملخص ما قبل الحصة — علوم ثالث متوسط</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+  if (localStorage.getItem('science_theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+  body { font-family: 'Tajawal', system-ui, -apple-system, sans-serif; }
+</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+
+<header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <a href="./index.html" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-lg transition" title="العودة لبوابة الطلاب">📊</a>
+      <div>
+        <h1 class="text-base sm:text-xl font-black text-indigo-700 dark:text-indigo-400">رادار المعلم وملخص ما قبل الحصة</h1>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">لوحة متابعة خاصة بالمعلم • الصف الثالث المتوسط</p>
+      </div>
+    </div>
+    <button onclick="toggleTheme()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+      <span id="theme-icon">🌙</span>
+      <span class="hidden sm:inline" id="theme-label">الوضع الليلي</span>
+    </button>
+  </div>
+</header>
+
+<main class="max-w-5xl w-full mx-auto px-4 py-6 flex-1 space-y-6">
+
+  <!-- 1. بطاقة ملخص ما قبل الحصة (30 ثانية) -->
+  <section class="bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-indigo-800/60 rounded-2xl p-5 shadow-sm space-y-4">
+    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+      <div>
+        <h2 class="text-lg sm:text-xl font-black text-indigo-800 dark:text-indigo-300">⚡ بطاقة ملخص ما قبل الحصة (30 ثانية)</h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">أهم 3 نقاط تبدأ بها حصتك الآن قبل الشرح</p>
+      </div>
+      <span class="px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-extrabold border border-indigo-200 dark:border-indigo-800">جاهز للجوال والآيباد</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="preclass-grid"></div>
+  </section>
+
+  <!-- 2. رادار التدخل المبكر -->
+  <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-5">
+    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+      <div>
+        <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white">📡 رادار التدخل المبكر</h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">تصنيف آلي للطلاب حسب تراكم المؤجلات وتغيّر الأداء مع رسائل متابعة جاهزة</p>
+      </div>
+    </div>
+
+    <div class="space-y-4" id="radar-sections"></div>
+  </section>
+
+</main>
+
+<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-lg hidden z-50">
+  ✅ تم نسخ رسالة المتابعة للحافظة
+</div>
+
+<footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-4 text-center text-sm text-slate-600 dark:text-slate-400">
+  معلم المادة: <span class="font-bold text-slate-900 dark:text-slate-200">علي جبريل</span> - مجمع الثقافة التعليمي
+</footer>
+
+<script>
+const DASH = {"top3_gaps": [{"title": "النشاط الثاني (س1): عدد الإلكترونات في ذرة الصوديوم ولماذا؟", "avg_pct": 25.0, "missed_cnt": 12, "total_present": 16}, {"title": "النشاط الثاني (س2): حساب كتلة البروتون بالجرام", "avg_pct": 60.4, "missed_cnt": 15, "total_present": 16}, {"title": "النشاط الثالث (2): تفسير انحراف نسبة ضئيلة من جسيمات ألفا", "avg_pct": 79.7, "missed_cnt": 12, "total_present": 16}], "pending_rollcall": [{"name": "احمد محمد علي عسيري", "code": "3M-02", "missing": ["علم الوراثة"]}, {"name": "حسام محمد يحيى عسيري", "code": "3M-05", "missing": ["علم الوراثة", "نماذج الذرة"]}, {"name": "حسن محمد حسن غرامه", "code": "3M-06", "missing": ["علم الوراثة", "نماذج الذرة"]}, {"name": "عزام عيسى فايع عسيري", "code": "3M-13", "missing": ["نماذج الذرة"]}, {"name": "فارس جابر يحي الالمعي", "code": "3M-16", "missing": ["نماذج الذرة"]}, {"name": "مؤيد بدر بن ابراهيم عسيري", "code": "3M-18", "missing": ["علم الوراثة", "نماذج الذرة"]}, {"name": "يحيى محمد علي عسيري", "code": "3M-22", "missing": ["علم الوراثة", "نماذج الذرة"]}], "praise_list": [{"name": "أصيل عبدالله علي عسيري", "avg": 9.33, "gold_hw": true}, {"name": "حازم محمد بن يحي عسيري", "avg": 9.75, "gold_hw": false}, {"name": "حسام محمد يحيى عسيري", "avg": 10.0, "gold_hw": false}, {"name": "حسن محمد حسن غرامه", "avg": 10.0, "gold_hw": false}, {"name": "عامر زايد مونس ال مشوه", "avg": 9.67, "gold_hw": true}, {"name": "عبدالاله محمد بن ابراهيم عسيري", "avg": 9.75, "gold_hw": false}, {"name": "عزام عيسى فايع عسيري", "avg": 9.88, "gold_hw": false}, {"name": "عزام محمد بن أحمد النجعي", "avg": 9.92, "gold_hw": true}, {"name": "فارس جابر يحي الالمعي", "avg": 9.75, "gold_hw": false}, {"name": "فارس محمد جابر آل حسيكان", "avg": 9.17, "gold_hw": true}, {"name": "مؤيد بدر بن ابراهيم عسيري", "avg": 10.0, "gold_hw": false}, {"name": "مشعل ابراهيم حسين المخلوطي", "avg": 9.25, "gold_hw": true}, {"name": "يحيى محمد علي عسيري", "avg": 10.0, "gold_hw": false}], "red": [{"name": "حسام محمد يحيى عسيري", "code": "3M-05", "avg": 10.0, "missing": ["علم الوراثة", "نماذج الذرة"], "reason": "تراكم 2 مؤجلات (علم الوراثة، نماذج الذرة)"}, {"name": "حسن محمد حسن غرامه", "code": "3M-06", "avg": 10.0, "missing": ["علم الوراثة", "نماذج الذرة"], "reason": "تراكم 2 مؤجلات (علم الوراثة، نماذج الذرة)"}, {"name": "مؤيد بدر بن ابراهيم عسيري", "code": "3M-18", "avg": 10.0, "missing": ["علم الوراثة", "نماذج الذرة"], "reason": "تراكم 2 مؤجلات (علم الوراثة، نماذج الذرة)"}, {"name": "يحيى محمد علي عسيري", "code": "3M-22", "avg": 10.0, "missing": ["علم الوراثة", "نماذج الذرة"], "reason": "تراكم 2 مؤجلات (علم الوراثة، نماذج الذرة)"}], "yellow": [{"name": "أصيل عبدالله علي عسيري", "code": "3M-01", "avg": 9.33, "missing": [], "reason": "تراجع بمقدار 2.0 درجة في نماذج الذرة"}, {"name": "احمد محمد علي عسيري", "code": "3M-02", "avg": 8.5, "missing": ["علم الوراثة"], "reason": "مؤجل واحد (علم الوراثة)"}, {"name": "اياد محمد عبدالله بن جابر راتي عسيري", "code": "3M-03", "avg": 8.83, "missing": [], "reason": "تراجع بمقدار 2.0 درجة في نماذج الذرة"}, {"name": "ريان علي محمد عسيري", "code": "3M-08", "avg": 9.25, "missing": [], "reason": "تراجع بمقدار 2.25 درجة في نماذج الذرة"}, {"name": "عبدالله محمد بن ابراهيم عسيري", "code": "3M-11", "avg": 9.25, "missing": [], "reason": "تراجع بمقدار 2.25 درجة في نماذج الذرة"}, {"name": "عبدالله هادي الحسين عسيري", "code": "3M-12", "avg": 9.33, "missing": [], "reason": "تراجع بمقدار 2.0 درجة في نماذج الذرة"}, {"name": "عزام عيسى فايع عسيري", "code": "3M-13", "avg": 9.88, "missing": ["نماذج الذرة"], "reason": "مؤجل واحد (نماذج الذرة)"}, {"name": "فارس جابر يحي الالمعي", "code": "3M-16", "avg": 9.75, "missing": ["نماذج الذرة"], "reason": "مؤجل واحد (نماذج الذرة)"}, {"name": "فارس محمد جابر آل حسيكان", "code": "3M-17", "avg": 9.17, "missing": [], "reason": "تراجع بمقدار 2.0 درجة في نماذج الذرة"}, {"name": "محمد موسى محمد المخلوطي", "code": "3M-19", "avg": 9.33, "missing": [], "reason": "تراجع بمقدار 2.0 درجة في نماذج الذرة"}, {"name": "مشعل ابراهيم حسين المخلوطي", "code": "3M-20", "avg": 9.25, "missing": [], "reason": "تراجع بمقدار 2.25 درجة في نماذج الذرة"}], "green": [{"name": "حازم محمد بن يحي عسيري", "code": "3M-04", "avg": 9.75}, {"name": "عامر زايد مونس ال مشوه", "code": "3M-09", "avg": 9.67}, {"name": "عبدالاله محمد بن ابراهيم عسيري", "code": "3M-10", "avg": 9.75}, {"name": "عزام محمد بن أحمد النجعي", "code": "3M-14", "avg": 9.92}]};
+const PORTAL_URL = 'https://abodahmaj.github.io/science-virtual-labs/reports/grade3-worksheets/';
+
+function renderPreClass() {
+  const gapsHtml = DASH.top3_gaps.map((g, i) => `
+    <li class="text-xs sm:text-sm bg-white dark:bg-slate-900 rounded-lg p-2.5 border border-rose-200 dark:border-rose-800/60">
+      <div class="font-extrabold text-slate-900 dark:text-white">${i + 1}. ${g.title}</div>
+      <div class="text-xs text-rose-700 dark:text-rose-400 font-bold mt-0.5">نسبة الإتقان: ${g.avg_pct}% (أخفق فيها ${g.missed_cnt} من ${g.total_present})</div>
+    </li>
+  `).join('');
+
+  const rollHtml = DASH.pending_rollcall.length
+    ? DASH.pending_rollcall.map(p => `
+        <li class="text-xs sm:text-sm flex items-center justify-between gap-2 bg-white dark:bg-slate-900 rounded-lg px-2.5 py-2 border border-amber-200 dark:border-amber-800/60">
+          <span class="font-bold text-slate-900 dark:text-white">${p.name}</span>
+          <span class="text-xs font-extrabold text-amber-700 dark:text-amber-400">${p.missing.join(' + ')}</span>
+        </li>
+      `).join('')
+    : '<li class="text-sm font-bold text-emerald-700">لا يوجد طلاب متغيبون!</li>';
+
+  const praiseHtml = DASH.praise_list.map(p => `
+    <li class="text-xs sm:text-sm flex items-center justify-between gap-2 bg-white dark:bg-slate-900 rounded-lg px-2.5 py-2 border border-emerald-200 dark:border-emerald-800/60">
+      <span class="font-bold text-slate-900 dark:text-white">${p.name}</span>
+      <span class="text-xs font-extrabold text-emerald-700 dark:text-emerald-400">${p.gold_hw ? '🏅 خط ذهبي' : ''} (${p.avg})</span>
+    </li>
+  `).join('');
+
+  document.getElementById('preclass-grid').innerHTML = `
+    <div class="rounded-xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800 p-4 space-y-2.5">
+      <h3 class="font-black text-sm text-rose-800 dark:text-rose-300">🎯 أكثر 3 فقرات تحتاج إعادة شرح</h3>
+      <ul class="space-y-2">${gapsHtml}</ul>
+    </div>
+    <div class="rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 p-4 space-y-2.5">
+      <h3 class="font-black text-sm text-amber-800 dark:text-amber-300">📣 النداء السريع للمؤجلات (${DASH.pending_rollcall.length})</h3>
+      <ul class="space-y-1.5 max-h-64 overflow-y-auto">${rollHtml}</ul>
+    </div>
+    <div class="rounded-xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800 p-4 space-y-2.5">
+      <h3 class="font-black text-sm text-emerald-800 dark:text-emerald-300">🌟 نجوم التكريم اليوم (${DASH.praise_list.length})</h3>
+      <ul class="space-y-1.5 max-h-64 overflow-y-auto">${praiseHtml}</ul>
+    </div>
+  `;
+}
+
+function copyMsg(name, missingArr) {
+  const missingTxt = missingArr.length
+    ? `لديه أعمال مؤجلة لم تُسلّم بعد (${missingArr.join('، ')})`
+    : 'يحتاج إلى مراجعة وتحسين مستواه في أوراق العمل الأخيرة';
+  const msg = `السلام عليكم ورحمة الله وبركاته\nولي أمر الطالب الموقر: ${name}\nنفيدكم بأن الطالب ${missingTxt}.\nيمكنكم الاطلاع على تفاصيل التصحيح والحلول النموذجية عبر بوابة العلوم:\n${PORTAL_URL}\nمعلم المادة: علي جبريل`;
+  navigator.clipboard.writeText(msg).then(() => {
+    const t = document.getElementById('toast');
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 2400);
+  });
+}
+
+function renderRadar() {
+  const card = (tier, title, desc, borderCls, bgCls, badgeCls, items, allowCopy) => {
+    const rows = items.length ? items.map(st => `
+      <div class="flex flex-wrap items-center justify-between gap-2 bg-white dark:bg-slate-900 rounded-xl p-3 border ${borderCls}">
+        <div>
+          <div class="font-black text-sm text-slate-900 dark:text-white">${st.name} <span class="text-xs font-bold text-slate-500">(${st.code})</span></div>
+          <div class="text-xs font-bold mt-0.5 text-slate-600 dark:text-slate-300">${st.reason || ('معدل: ' + st.avg + ' / 10')}</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-lg text-xs font-black ${badgeCls}">${st.avg} / 10</span>
+          ${allowCopy ? `<button type="button" onclick='copyMsg(${JSON.stringify(st.name)}, ${JSON.stringify(st.missing || [])})' class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-extrabold transition">📋 نسخ رسالة ولي الأمر</button>` : ''}
+        </div>
+      </div>
+    `).join('') : '<div class="text-sm font-bold text-slate-500">لا يوجد طلاب في هذه الفئة حالياً.</div>';
+
+    return `
+      <div class="rounded-2xl border-2 ${borderCls} ${bgCls} p-4 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="font-black text-base text-slate-900 dark:text-white">${tier} ${title} (${items.length})</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400">${desc}</p>
+          </div>
+        </div>
+        <div class="space-y-2">${rows}</div>
+      </div>
+    `;
+  };
+
+  document.getElementById('radar-sections').innerHTML =
+    card('🔴', 'أولوية قصوى: خطر تراكم المؤجلات أو التعثر', 'طلاب لديهم ورقتان مؤجلتان فأكثر أو معدل أقل من 6.5', 'border-red-300 dark:border-red-800', 'bg-red-50/60 dark:bg-red-950/20', 'bg-red-100 text-red-800 dark:bg-red-900/60 dark:text-red-200', DASH.red, true) +
+    card('🟡', 'تنبيه ومتابعة: غياب مفرد أو تراجع ملحوظ', 'طلاب تغيبوا عن ورقة واحدة أو تراجع أداؤهم بمقدار 1.5 درجة فأكثر', 'border-amber-300 dark:border-amber-800', 'bg-amber-50/60 dark:bg-amber-950/20', 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200', DASH.yellow, true) +
+    card('🟢', 'متقدمون للتمكين والقيادة', 'معدل تراكمي 9.5 فأعلى مع انضباط كامل دون أي مؤجلات', 'border-emerald-300 dark:border-emerald-800', 'bg-emerald-50/60 dark:bg-emerald-950/20', 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200', DASH.green, false);
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('science_theme', isDark ? 'dark' : 'light');
+  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isDark ? 'الوضع النهاري' : 'الوضع الليلي';
+}
+
+renderPreClass();
+renderRadar();
+</script>
+</body>
+</html>

@@ -13,18 +13,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>التقرير التفاعلي لأوراق العمل — علوم ثالث متوسط</title>
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="بوابة العلوم التفاعلية — أ. علي جبريل" />
-  <meta property="og:title" content="التقرير التفاعلي لأوراق العمل — علوم ثالث متوسط" />
-  <meta property="og:description" content="بوابة العلوم التفاعلية — مختبرات افتراضية، اختبارات محاكية لنافس، مراجعات وتقارير | أ. علي جبريل" />
-  <meta property="og:image" content="https://abodahmaj.github.io/science-virtual-labs/assets/og-science.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:url" content="https://abodahmaj.github.io/science-virtual-labs/reports/grade3-worksheets/" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="التقرير التفاعلي لأوراق العمل — علوم ثالث متوسط" />
-  <meta name="twitter:description" content="بوابة العلوم التفاعلية — مختبرات افتراضية، اختبارات محاكية لنافس، مراجعات وتقارير | أ. علي جبريل" />
-  <meta name="twitter:image" content="https://abodahmaj.github.io/science-virtual-labs/assets/og-science.jpg" />
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = { darkMode: 'class' };
@@ -73,6 +61,7 @@
         <div>
           <div class="text-xs font-bold text-emerald-700 dark:text-emerald-400" id="st-code"></div>
           <h2 class="text-xl font-black text-slate-900 dark:text-white" id="st-name"></h2>
+          <div id="st-badges-row" class="flex flex-wrap gap-1.5 mt-2"></div>
         </div>
         <div class="flex items-center gap-3">
           <div class="text-center px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-700">
@@ -82,6 +71,9 @@
           <div id="st-badge" class="px-3.5 py-2 rounded-xl text-sm font-extrabold"></div>
         </div>
       </div>
+
+      <!-- Missing Tasks Checklist -->
+      <div id="st-missing-tasks"></div>
 
       <!-- 3 Worksheets Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="st-cards"></div>
@@ -96,6 +88,7 @@
             <button type="button" onclick="selectWorksheet('atoms')" id="tab-atoms" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition">⚛️ نماذج الذرة</button>
             <button type="button" onclick="selectWorksheet('genetics')" id="tab-genetics" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition">🌱 علم الوراثة</button>
             <button type="button" onclick="selectWorksheet('dna')" id="tab-dna" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition">🧬 مادة الوراثة DNA</button>
+            <button type="button" onclick="selectWorksheet('mistakes')" id="tab-mistakes" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition">🎯 راجع أخطاءك</button>
           </div>
         </div>
         <div id="st-items" class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900"></div>
@@ -279,13 +272,121 @@ function renderRubricList(rubric, wsData, wsTitle) {
   return headerBanner + listHtml;
 }
 
+function getStudentBadges(s) {
+  const badges = [];
+  const dnaOk = s.dna.score !== null && s.dna.score !== undefined;
+  const genOk = s.genetics.score !== null && s.genetics.score !== undefined;
+  const atmOk = s.atoms.score !== null && s.atoms.score !== undefined;
+
+  if (dnaOk && genOk && atmOk) {
+    badges.push(['✅ وسام الانضباط الكامل', 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700']);
+  }
+  const hw = s.atoms.handwriting || '';
+  if (['الذهبي', 'متكامل الأركان', 'واضح جداً', 'جميل ومستقر', 'رشيق ومرتب ومنظم', 'منظم وواضح ومريح'].some(k => hw.includes(k))) {
+    badges.push(['🏅 وسام الخط الذهبي', 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200 border border-amber-300 dark:border-amber-700']);
+  }
+  if (s.avg >= 9.5 && dnaOk && genOk && atmOk) {
+    badges.push(['💎 وسام التميز العلمي', 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-200 border border-indigo-300 dark:border-indigo-700']);
+  }
+  if (atmOk && genOk && s.atoms.score > s.genetics.score) {
+    badges.push(['📈 وسام القفزة النوعية', 'bg-sky-100 text-sky-800 dark:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-700']);
+  }
+  if ((atmOk && s.atoms.score >= 10) || (genOk && s.genetics.score >= 10)) {
+    badges.push(['⚡ وسام الدرجة الكاملة', 'bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200 border border-purple-300 dark:border-purple-700']);
+  }
+  return badges;
+}
+
+function renderMissingTasks(s) {
+  const wsMeta = [
+    { key: 'dna', title: '🧬 ورقة عمل: مادة الوراثة DNA', data: s.dna, lessonUrl: 'https://abodahmaj.github.io/science-virtual-labs/#grade3' },
+    { key: 'genetics', title: '🌱 ورقة عمل: علم الوراثة', data: s.genetics, lessonUrl: 'https://abodahmaj.github.io/science-virtual-labs/#grade3' },
+    { key: 'atoms', title: '⚛️ ورقة عمل: نماذج الذرة', data: s.atoms, lessonUrl: 'https://abodahmaj.github.io/science-virtual-labs/grade3/atomic-models/' }
+  ];
+  const missing = wsMeta.filter(w => w.data.score === null || w.data.score === undefined);
+  if (missing.length === 0) {
+    return `
+      <div class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50/70 dark:bg-emerald-950/30 px-4 py-3 flex items-center gap-2.5 text-sm font-extrabold text-emerald-800 dark:text-emerald-300">
+        <span>🎉</span><span>سجلّك مكتمل! لا توجد لديك أي أوراق عمل ناقصة.</span>
+      </div>`;
+  }
+  const rows = missing.map(w => `
+    <div class="flex flex-wrap items-center justify-between gap-2 bg-white dark:bg-slate-900 rounded-xl px-3.5 py-2.5 border border-amber-200 dark:border-amber-800">
+      <div class="font-extrabold text-sm text-slate-800 dark:text-slate-100">${w.title} <span class="text-xs font-bold text-amber-700 dark:text-amber-400">(مؤجل — لم يُسلّم)</span></div>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" onclick="jumpToWorksheet('${w.key}')" class="px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/60 dark:hover:bg-amber-900 text-amber-900 dark:text-amber-200 text-xs font-extrabold transition">📝 الحلول النموذجية</button>
+        <a href="${w.lessonUrl}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition">🔬 افتح الدرس والمختبر</a>
+      </div>
+    </div>
+  `).join('');
+  return `
+    <div class="rounded-xl border-2 border-amber-300 dark:border-amber-700 bg-amber-50/80 dark:bg-amber-950/30 p-4 space-y-2.5">
+      <div class="flex items-center justify-between gap-2">
+        <h3 class="font-black text-sm sm:text-base text-amber-900 dark:text-amber-200 flex items-center gap-2">
+          <span>📌</span><span>قائمة المهام الناقصة (${missing.length})</span>
+        </h3>
+        <span class="text-xs font-bold text-amber-800 dark:text-amber-300">راجع الحلول النموذجية وسلّم الورقة البديلة للمعلم</span>
+      </div>
+      <div class="space-y-2">${rows}</div>
+    </div>`;
+}
+
+function jumpToWorksheet(wsKey) {
+  selectWorksheet(wsKey);
+  document.getElementById('ws-tabs').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function getMistakesList(s) {
+  if (!s.atoms.items || s.atoms.items.length === 0) return [];
+  return s.atoms.items
+    .filter(it => it.got < it.max)
+    .map(it => ({ ...it, wsTitle: '⚛️ نماذج الذرة', loss: +(it.max - it.got).toFixed(2), lessonUrl: 'https://abodahmaj.github.io/science-virtual-labs/grade3/atomic-models/' }))
+    .sort((a, b) => b.loss - a.loss);
+}
+
+function renderMistakes(s) {
+  const mistakes = getMistakesList(s);
+  if (s.atoms.score === null || s.atoms.score === undefined) {
+    return `<div class="p-4 text-sm text-amber-700 dark:text-amber-300 bg-amber-50/60 dark:bg-amber-950/30 font-bold">⚪ لم تُسجّل إجابات مصححة لورقة «نماذج الذرة» بعد؛ راجع تبويب الورقة للاطلاع على الحلول النموذجية.</div>`;
+  }
+  if (mistakes.length === 0) {
+    return `<div class="p-5 text-center space-y-1.5 bg-emerald-50/50 dark:bg-emerald-950/20">
+      <div class="text-2xl">🏆</div>
+      <div class="font-black text-emerald-800 dark:text-emerald-300">أداء متقن! لا توجد أخطاء مسجلة في الفقرات المصححة.</div>
+    </div>`;
+  }
+  const header = `<div class="p-3.5 text-xs sm:text-sm font-bold text-rose-800 dark:text-rose-300 bg-rose-50/70 dark:bg-rose-950/30">🎯 ركّز على هذه النقاط (${mistakes.length}) قبل الاختبار القادم لاستعادة الدرجات المفقودة:</div>`;
+  const list = mistakes.map(it => `
+    <div class="p-3.5 sm:p-4 space-y-2">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="font-extrabold text-sm text-slate-900 dark:text-white">❗ ${it.title}</div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200">الدرجة: ${it.got} / ${it.max}</span>
+          <a href="${it.lessonUrl}" target="_blank" rel="noopener" class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition">🔬 راجع الدرس</a>
+        </div>
+      </div>
+      <div class="text-xs sm:text-sm text-slate-700 dark:text-slate-300"><strong>سبب الحسم:</strong> ${it.note}</div>
+      <div class="text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-50/70 dark:bg-emerald-950/30 rounded-lg px-3 py-1.5 border border-emerald-200/70 dark:border-emerald-800/50">
+        <strong>الإجابة النموذجية:</strong> ${it.model}
+      </div>
+    </div>
+  `).join('');
+  return header + list;
+}
+
 function selectWorksheet(wsKey) {
   currentWs = wsKey;
   if (!currentStudent) return;
-  ['atoms', 'genetics', 'dna'].forEach(k => {
+  const mCount = getMistakesList(currentStudent).length;
+  const mTab = document.getElementById('tab-mistakes');
+  mTab.textContent = mCount > 0 ? `🎯 راجع أخطاءك (${mCount})` : '🎯 راجع أخطاءك';
+
+  ['atoms', 'genetics', 'dna', 'mistakes'].forEach(k => {
     const btn = document.getElementById('tab-' + k);
     if (k === wsKey) {
-      btn.className = 'px-3 py-1.5 rounded-lg text-xs font-extrabold bg-emerald-600 text-white shadow-sm transition';
+      btn.className = k === 'mistakes'
+        ? 'px-3 py-1.5 rounded-lg text-xs font-extrabold bg-rose-600 text-white shadow-sm transition'
+        : 'px-3 py-1.5 rounded-lg text-xs font-extrabold bg-emerald-600 text-white shadow-sm transition';
     } else {
       btn.className = 'px-3 py-1.5 rounded-lg text-xs font-extrabold bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition';
     }
@@ -301,8 +402,10 @@ function selectWorksheet(wsKey) {
     itemsEl.innerHTML = renderItems(currentStudent.atoms.items);
   } else if (wsKey === 'genetics') {
     itemsEl.innerHTML = renderRubricList(GENETICS_RUBRIC, currentStudent.genetics, 'علم الوراثة');
-  } else {
+  } else if (wsKey === 'dna') {
     itemsEl.innerHTML = renderRubricList(DNA_RUBRIC, currentStudent.dna, 'مادة الوراثة DNA');
+  } else {
+    itemsEl.innerHTML = renderMistakes(currentStudent);
   }
 }
 
@@ -351,6 +454,13 @@ function renderStudent(code) {
   const badgeEl = document.getElementById('st-badge');
   badgeEl.textContent = bText;
   badgeEl.className = `px-3.5 py-2 rounded-xl text-sm font-extrabold ${bCls}`;
+
+  const earnedBadges = getStudentBadges(s);
+  document.getElementById('st-badges-row').innerHTML = earnedBadges.map(([t, c]) =>
+    `<span class="px-2.5 py-1 rounded-lg text-xs font-extrabold ${c}">${t}</span>`
+  ).join('');
+
+  document.getElementById('st-missing-tasks').innerHTML = renderMissingTasks(s);
 
   selectWorksheet('atoms');
   document.getElementById('st-hw').textContent = s.atoms.handwriting || 'بانتظار تسليم الورقة للتقييم البصري.';
