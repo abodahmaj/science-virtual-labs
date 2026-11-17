@@ -27,14 +27,36 @@
         <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">لوحة متابعة خاصة بالمعلم • الصف الثالث المتوسط</p>
       </div>
     </div>
-    <button onclick="toggleTheme()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
-      <span id="theme-icon">🌙</span>
-      <span class="hidden sm:inline" id="theme-label">الوضع الليلي</span>
-    </button>
+    <div class="flex items-center gap-2">
+      <button id="lock-btn" onclick="lockDashboard()" class="hidden px-3 py-2 rounded-xl bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 transition" title="قفل لوحة المعلم">
+        <span>🔒</span>
+        <span class="hidden sm:inline">قفل</span>
+      </button>
+      <button onclick="toggleTheme()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+        <span id="theme-icon">🌙</span>
+        <span class="hidden sm:inline" id="theme-label">الوضع الليلي</span>
+      </button>
+    </div>
   </div>
 </header>
 
-<main class="max-w-5xl w-full mx-auto px-4 py-6 flex-1 space-y-6">
+<!-- Password Gate -->
+<div id="auth-gate" class="flex-1 flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-indigo-800 rounded-2xl p-6 shadow-lg space-y-4 text-center">
+    <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center text-3xl border border-indigo-200 dark:border-indigo-800">🔐</div>
+    <div>
+      <h2 class="text-xl font-black text-slate-900 dark:text-white">دخول المعلم</h2>
+      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">أدخل رمز المرور لعرض رادار التدخل المبكر وملخص ما قبل الحصة</p>
+    </div>
+    <form onsubmit="verifyPin(event)" class="space-y-3">
+      <input id="pin-input" type="password" inputmode="numeric" autocomplete="off" placeholder="أدخل رمز المرور" class="w-full text-center tracking-widest text-lg font-black p-3.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500" autofocus>
+      <div id="pin-error" class="hidden text-xs font-extrabold text-rose-600 dark:text-rose-400">❌ رمز المرور غير صحيح، حاول مرة أخرى.</div>
+      <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm transition">دخول اللوحة</button>
+    </form>
+  </div>
+</div>
+
+<main id="teacher-main" class="hidden max-w-5xl w-full mx-auto px-4 py-6 flex-1 space-y-6">
 
   <!-- 1. بطاقة ملخص ما قبل الحصة (30 ثانية) -->
   <section class="bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-indigo-800/60 rounded-2xl p-5 shadow-sm space-y-4">
@@ -168,8 +190,99 @@ function toggleTheme() {
   document.getElementById('theme-label').textContent = isDark ? 'الوضع النهاري' : 'الوضع الليلي';
 }
 
-renderPreClass();
-renderRadar();
+const EXPECTED_HASH = 'c70c37a61333ca975304175f9fa41014d85f2a4e726eee6ce9022fd4cf2b83a9';
+
+function sha256Fallback(ascii) {
+  function rightRotate(v, a) { return (v >>> a) | (v << (32 - a)); }
+  const mathPow = Math.pow, maxWord = mathPow(2, 32), lengthProperty = 'length';
+  let i, j, result = '';
+  const words = [], asciiBitLength = ascii[lengthProperty] * 8;
+  let hash = sha256Fallback.h = sha256Fallback.h || [];
+  const k = sha256Fallback.k = sha256Fallback.k || [];
+  let primeCounter = k[lengthProperty], isComposite = {};
+  for (let candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+      k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+    }
+  }
+  ascii += '\x80';
+  while (ascii[lengthProperty] % 64 - 56) ascii += '\x00';
+  for (i = 0; i < ascii[lengthProperty]; i++) {
+    j = ascii.charCodeAt(i);
+    if (j >> 8) return '';
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+  words[words[lengthProperty]] = (asciiBitLength);
+  for (j = 0; j < words[lengthProperty];) {
+    const w = words.slice(j, j += 16), oldHash = hash;
+    hash = hash.slice(0, 8);
+    for (i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2];
+      const a = hash[0], e = hash[4];
+      const temp1 = hash[7] + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i] + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | 0);
+      const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(temp1 + temp2) | 0].concat(hash);
+      hash[4] = (hash[4] + temp1) | 0;
+    }
+    for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+  }
+  for (i = 0; i < 8; i++) {
+    for (j = 3; j + 1; j--) {
+      const b = (hash[i] >> (j * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+async function hashPin(pin) {
+  if (window.crypto && window.crypto.subtle) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  return sha256Fallback(pin);
+}
+
+function unlockDashboard() {
+  document.getElementById('auth-gate').classList.add('hidden');
+  document.getElementById('teacher-main').classList.remove('hidden');
+  document.getElementById('lock-btn').classList.remove('hidden');
+  renderPreClass();
+  renderRadar();
+}
+
+function lockDashboard() {
+  sessionStorage.removeItem('teacher_radar_unlocked');
+  document.getElementById('teacher-main').classList.add('hidden');
+  document.getElementById('lock-btn').classList.add('hidden');
+  document.getElementById('auth-gate').classList.remove('hidden');
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').classList.add('hidden');
+}
+
+async function verifyPin(e) {
+  e.preventDefault();
+  const pin = (document.getElementById('pin-input').value || '').trim();
+  const hashed = await hashPin(pin);
+  if (hashed === EXPECTED_HASH) {
+    sessionStorage.setItem('teacher_radar_unlocked', '1');
+    document.getElementById('pin-error').classList.add('hidden');
+    unlockDashboard();
+  } else {
+    document.getElementById('pin-error').classList.remove('hidden');
+    document.getElementById('pin-input').select();
+  }
+}
+
+if (sessionStorage.getItem('teacher_radar_unlocked') === '1') {
+  unlockDashboard();
+}
 </script>
+<a href="https://abodahmaj.github.io/science-virtual-labs/" class="fixed bottom-5 left-5 z-40 px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-xl text-xs sm:text-sm font-black flex items-center gap-1.5 transition" title="العودة للصفحة الرئيسية">
+  <span>🏠</span><span>الرئيسية</span>
+</a>
 </body>
 </html>

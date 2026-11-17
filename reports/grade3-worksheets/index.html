@@ -37,10 +37,16 @@
         <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">مادة العلوم • الصف الثالث المتوسط</p>
       </div>
     </div>
-    <button onclick="toggleTheme()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
-      <span id="theme-icon">🌙</span>
-      <span class="hidden sm:inline" id="theme-label">الوضع الليلي</span>
-    </button>
+    <div class="flex items-center gap-2">
+      <a href="./teacher.html" class="px-3 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 transition" title="لوحة المعلم (محمية بكلمة مرور)">
+        <span>👨‍🏫</span>
+        <span class="hidden sm:inline">لوحة المعلم</span>
+      </a>
+      <button onclick="toggleTheme()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+        <span id="theme-icon">🌙</span>
+        <span class="hidden sm:inline" id="theme-label">الوضع الليلي</span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -474,5 +480,8 @@ function toggleTheme() {
   document.getElementById('theme-label').textContent = isDark ? 'الوضع النهاري' : 'الوضع الليلي';
 }
 </script>
+<a href="https://abodahmaj.github.io/science-virtual-labs/" class="fixed bottom-5 left-5 z-40 px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-xl text-xs sm:text-sm font-black flex items-center gap-1.5 transition" title="العودة للصفحة الرئيسية">
+  <span>🏠</span><span>الرئيسية</span>
+</a>
 </body>
 </html>
