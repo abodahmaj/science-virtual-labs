@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>منهج نافس المبرمج — العلوم (ثالث متوسط)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20261117" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-badge">نافس</div>
+        <div>
+          <h1>منهج نافس المبرمج — العلوم (٣م)</h1>
+          <p class="subtitle">مسار تعلم متدرج بمستويات الأداء مع التتبع والرصد الفوري</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-switch-teacher" class="btn btn-outline" type="button">لوحة المعلم والرصد</button>
+        <button id="btn-logout" class="btn btn-ghost hidden" type="button">تبديل المستخدم</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- شاشة تسجيل الدخول -->
+    <section id="view-login" class="card login-card">
+      <div class="login-hero">
+        <span class="pill pill-info">منصة التدريب المبرمج — الصف الثالث المتوسط</span>
+        <h2>مرحباً بك في منصة التعلم المبرمج لمهارات نافس</h2>
+        <p>أدخل كود الطالب المعتمد لبدء مسارك التعليمي وحفظ تقدمك.</p>
+      </div>
+      <form id="login-form" class="login-form">
+        <label for="student-code-input">كود الطالب الخاص</label>
+        <div class="input-row">
+          <input id="student-code-input" type="text" placeholder="مثال: N3-4821" autocomplete="off" required />
+          <button type="submit" class="btn btn-primary">دخول للمنهج</button>
+        </div>
+        <p id="login-error" class="error-text hidden"></p>
+      </form>
+    </section>
+
+    <!-- شاشة خريطة الوحدات -->
+    <section id="view-units" class="hidden">
+      <div class="student-banner card">
+        <div class="student-info">
+          <h2 id="student-name-display">الطالب: —</h2>
+          <p id="student-meta-display">الكود: — | المستوى الحالي: —</p>
+        </div>
+        <div class="overall-progress">
+          <div class="progress-label">
+            <span>التقدم الكلي في المنهج</span>
+            <strong id="overall-progress-pct">0%</strong>
+          </div>
+          <div class="progress-track">
+            <div id="overall-progress-fill" class="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h3>خريطة وحدات نافس المبرمجة</h3>
+        <span class="hint">يُفتح المسار التالي تلقائياً عند إتقان الوحدة الحالية بنسبة 80% فأعلى</span>
+      </div>
+
+      <div id="units-grid" class="units-grid"></div>
+    </section>
+
+    <!-- شاشة التعلم المبرمج داخل الوحدة -->
+    <section id="view-lesson" class="hidden">
+      <div class="lesson-topbar">
+        <button id="btn-back-units" class="btn btn-ghost" type="button">← العودة لخريطة الوحدات</button>
+        <div class="lesson-step-info">
+          <span id="lesson-unit-title" class="pill pill-info">الوحدة</span>
+          <span id="lesson-level-badge" class="pill pill-level">المستوى</span>
+        </div>
+      </div>
+
+      <div class="card frame-progress-card">
+        <div class="progress-label">
+          <span id="frame-step-label">الإطار 1 من 4</span>
+          <strong id="frame-score-label">النقاط: 0</strong>
+        </div>
+        <div class="progress-track">
+          <div id="frame-progress-fill" class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- محتوى الإطار الحالي (تشخيص / شرح + تحقق / علاجي / بوابة إتقان / ملخص) -->
+      <div id="frame-container" class="card frame-card"></div>
+    </section>
+
+    <!-- شاشة لوحة المعلم والرصد -->
+    <section id="view-teacher" class="hidden">
+      <div class="lesson-topbar">
+        <button id="btn-back-from-teacher" class="btn btn-ghost" type="button">← العودة لواجهة الطالب</button>
+        <div class="teacher-actions">
+          <button id="btn-export-csv" class="btn btn-primary btn-sm" type="button">تصدير سجل الرصد (CSV لـ Sheets)</button>
+          <button id="btn-reset-all" class="btn btn-danger btn-sm" type="button">تصفير السجلات</button>
+        </div>
+      </div>
+
+      <div class="stats-grid" id="teacher-stats-grid"></div>
+
+      <div class="card">
+        <div class="section-head">
+          <h3>سجل تتبع الطلاب ومستويات الأداء</h3>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <label for="teacher-unit-select" style="font-weight:700; font-size:0.9rem;">عرض الوحدة:</label>
+            <select id="teacher-unit-select" style="font-family:inherit; padding:6px 10px; border-radius:8px; border:1px solid var(--border); font-weight:700;"></select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>الكود</th>
+                <th>اسم الطالب</th>
+                <th>حالة الوحدة</th>
+                <th>التقدم</th>
+                <th>الدرجة</th>
+                <th>إطارات علاجية</th>
+                <th>مستوى الأداء</th>
+                <th>نقاط تحتاج دعماً</th>
+              </tr>
+            </thead>
+            <tbody id="teacher-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>معلم المادة: علي جبريل - مجمع الثقافة التعليمي</p>
+  </footer>
+
+  <script src="data.js?v=20261117"></script>
+  <script src="app.js?v=20261117"></script>
+</body>
+</html>

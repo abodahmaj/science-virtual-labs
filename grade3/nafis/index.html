@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>بوابة اختبارات نافس المحاكية — الصف الثالث المتوسط</title>
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="بوابة العلوم التفاعلية — أ. علي جبريل" />
@@ -81,6 +84,14 @@
           </button>
         </form>
 
+        <div class="mt-3">
+          <a id="btn-programmed-login" href="./programmed/index.html?v=20261117"
+            onclick="const c=(document.getElementById('student-code')?.value||'').trim().toUpperCase(); const r=encodeURIComponent(window.location.href); this.href=c?`./programmed/index.html?v=20261117&code=${encodeURIComponent(c)}&returnUrl=${r}`:`./programmed/index.html?v=20261117&returnUrl=${r}`;"
+            class="w-full min-h-[48px] rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-black text-sm shadow-md shadow-teal-700/20 transition flex items-center justify-center gap-2 active:scale-[0.98]">
+            <span>🧭</span><span>منهج نافس المبرمج (العلوم)</span><span>←</span>
+          </a>
+        </div>
+
         <div class="mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2.5">
           <a href="codes.html" class="min-h-[44px] px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition">
             <span>🔑</span><span>معرفة كود الطالب</span>
@@ -100,9 +111,16 @@
           <h2 class="text-xl sm:text-2xl font-black mt-2">مرحباً، <span id="hub-student-name" class="text-amber-600 dark:text-amber-400"></span></h2>
           <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">الكود: <span id="hub-student-code" class="font-mono font-bold"></span></p>
         </div>
-        <button onclick="logout()" class="min-h-[44px] px-4 py-2 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-slate-800 dark:hover:bg-rose-950/60 text-slate-700 dark:text-slate-200 hover:text-rose-700 font-bold text-sm transition">
-          تسجيل الخروج
-        </button>
+        <div class="flex flex-wrap items-center gap-2">
+          <a id="btn-programmed-hub" href="./programmed/index.html?v=20261117"
+            onclick="const c=(document.getElementById('hub-student-code')?.textContent||'').trim().toUpperCase(); const r=encodeURIComponent(window.location.href); this.href=c?`./programmed/index.html?v=20261117&code=${encodeURIComponent(c)}&returnUrl=${r}`:`./programmed/index.html?v=20261117&returnUrl=${r}`;"
+            class="min-h-[44px] px-4 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm transition flex items-center gap-1.5">
+            <span>🧭</span><span>منهج نافس المبرمج</span>
+          </a>
+          <button onclick="logout()" class="min-h-[44px] px-4 py-2 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-slate-800 dark:hover:bg-rose-950/60 text-slate-700 dark:text-slate-200 hover:text-rose-700 font-bold text-sm transition">
+            تسجيل الخروج
+          </button>
+        </div>
       </div>
 
       <div>
