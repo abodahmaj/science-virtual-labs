@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نتائج أوراق العمل التفاعلية — علوم أول متوسط</title>
+<script defer src="https://abodahmaj.github.io/science-virtual-labs/assets/visitor-counter.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+  if (localStorage.getItem('science_theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+  body { font-family: 'Tajawal', system-ui, -apple-system, sans-serif; }
+</style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+
+<header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <a href="https://abodahmaj.github.io/science-virtual-labs/#grade1" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-lg transition" title="العودة لبوابة أول متوسط">🏠</a>
+      <div>
+        <h1 class="text-base sm:text-xl font-black text-emerald-700 dark:text-emerald-400">تقرير أوراق العمل التفاعلي — الصف الأول المتوسط</h1>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">مادة العلوم • التغذية الراجعة، تشخيص الخط اليدوي، والإجابات النموذجية</p>
+      </div>
+    </div>
+    <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-lg transition" title="تبديل المظهر">
+      <span id="themeIcon">🌙</span>
+    </button>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto w-full px-4 py-6 space-y-6 flex-1">
+
+  <!-- Overview Cards -->
+  <section class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
+      <div class="text-xs font-bold text-slate-500 dark:text-slate-400">عدد الطلاب</div>
+      <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">19</div>
+      <div class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">الحضور: 15 | الغياب: 4</div>
+    </div>
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
+      <div class="text-xs font-bold text-slate-500 dark:text-slate-400">المتوسط العام</div>
+      <div class="text-2xl font-black text-blue-700 dark:text-blue-400 mt-1">7.92 <span class="text-sm font-bold text-slate-400">/ 10</span></div>
+      <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">نسبة الإتقان: 79.22%</div>
+    </div>
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
+      <div class="text-xs font-bold text-slate-500 dark:text-slate-400">أعلى درجة</div>
+      <div class="text-2xl font-black text-emerald-700 dark:text-emerald-400 mt-1">10 <span class="text-sm font-bold text-slate-400">/ 10</span></div>
+      <div class="text-xs text-amber-600 dark:text-amber-400 font-bold mt-1">🏅 سعود أحمد سعيد الحيدي</div>
+    </div>
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
+      <div class="text-xs font-bold text-slate-500 dark:text-slate-400">الورقة المعتمدة</div>
+      <div class="text-base font-black text-indigo-700 dark:text-indigo-400 mt-1">تركيب المادة</div>
+      <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">6 أسئلة تقويمية شاملة</div>
+    </div>
+  </section>
+
+  <!-- Student Selector -->
+  <section class="bg-white dark:bg-slate-900 border-2 border-emerald-200 dark:border-emerald-800/60 rounded-2xl p-5 shadow-sm space-y-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div>
+        <h2 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <span>🎓</span><span>اختر اسمك لعرض نتيجتك وتقريرك الفردي</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">يعرض الدرجة، التغذية الراجعة، ملاحظات الخط اليدوي، والتوجيه الصريح</p>
+      </div>
+      <select id="studentSelect" onchange="selectStudent(this.value)" class="w-full sm:w-80 px-4 py-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-sm focus:border-emerald-500 outline-none">
+        <option value="">-- اختر اسم الطالب --</option>
+      </select>
+    </div>
+
+    <!-- Quick student pills -->
+    <div id="studentPills" class="flex flex-wrap gap-1.5 pt-1"></div>
+  </section>
+
+  <!-- Selected Student Detail Card -->
+  <section id="studentDetail" class="hidden space-y-4"></section>
+
+  <!-- Class Distribution & Analytics -->
+  <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+    <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+      <span>📊</span><span>توزيع مستويات طلاب الصف الأول المتوسط (ورقة عمل تركيب المادة)</span>
+    </h3>
+    <div class="grid grid-cols-2 sm:grid-cols-6 gap-2.5 text-center">
+      <div class="rounded-xl p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800">
+        <div class="text-xl font-black text-emerald-700 dark:text-emerald-400">4</div>
+        <div class="text-xs font-bold text-emerald-800 dark:text-emerald-300 mt-0.5">فائق (9.5+)</div>
+      </div>
+      <div class="rounded-xl p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
+        <div class="text-xl font-black text-blue-700 dark:text-blue-400">2</div>
+        <div class="text-xs font-bold text-blue-800 dark:text-blue-300 mt-0.5">ممتاز (8.5–9.4)</div>
+      </div>
+      <div class="rounded-xl p-3 bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800">
+        <div class="text-xl font-black text-sky-700 dark:text-sky-400">5</div>
+        <div class="text-xs font-bold text-sky-800 dark:text-sky-300 mt-0.5">جيد جداً (7–8.4)</div>
+      </div>
+      <div class="rounded-xl p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800">
+        <div class="text-xl font-black text-amber-700 dark:text-amber-400">3</div>
+        <div class="text-xs font-bold text-amber-800 dark:text-amber-300 mt-0.5">متوسط (6–6.9)</div>
+      </div>
+      <div class="rounded-xl p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800">
+        <div class="text-xl font-black text-rose-700 dark:text-rose-400">1</div>
+        <div class="text-xs font-bold text-rose-800 dark:text-rose-300 mt-0.5">متابعة (&lt;6)</div>
+      </div>
+      <div class="rounded-xl p-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <div class="text-xl font-black text-slate-600 dark:text-slate-300">4</div>
+        <div class="text-xs font-bold text-slate-600 dark:text-slate-400 mt-0.5">غائب / مؤجل</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Model Answers Section -->
+  <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-3">
+    <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+      <span>✅</span><span>الإجابات النموذجية المعتمدة — ورقة عمل «تركيب المادة»</span>
+    </h3>
+    <div id="rubricList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+  </section>
+
+</main>
+
+<footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 text-center text-sm text-slate-600 dark:text-slate-400 px-4 mt-auto">
+  معلم المادة: <span class="font-bold text-slate-900 dark:text-slate-200">علي جبريل</span> - مجمع الثقافة التعليمي
+</footer>
+
+<script>
+const DATA = {"worksheet": {"id": "matter_comp", "title": "ورقة عمل: تركيب المادة", "present_count": 15, "absent_count": 4, "total_students": 19, "average_10": 7.92, "mastery_rate": 79.22, "rubric": [{"title": "س1 | خصائص المادة وتصنيفها (تعريف المادة وتصنيف الهواء والضوء)", "model": "المادة: كل ما له كتلة ويشغل حيزاً من الفراغ. الهواء مادة لأنه يشغل حيزاً وله كتلة؛ أما الضوء فليس مادة لأنه لا كتلة له ولا يشغل حيزاً."}, {"title": "س2 | بنية المادة والرد على ديموقريطس وتعليل عدم رؤية الذرات", "model": "يمكن تجزئة الذرة إلى جسيمات أصغر هي: البروتونات والنيوترونات والإلكترونات. ولا تُرى الذرات بالعين المجردة لصغر حجمها المتناهي."}, {"title": "س3 | جدول مكونات الذرة (الجسيم، الشحنة، الموقع)", "model": "البروتون: موجب الشحنة (+) داخل النواة | النيوترون: متعادل الشحنة (0) داخل النواة | الإلكترون: سالب الشحنة (-) يدور حول النواة في السحابة الإلكترونية."}, {"title": "س4 | رسم النموذج الذري الحديث وتفسير السحابة الإلكترونية", "model": "رسم نواة مركزية تحوي البروتونات والنيوترونات محاطة بسحابة إلكترونية (منطقة احتمالية لوجود الإلكترونات وليس مدارات مسطحة مغلقة)."}, {"title": "س5 | تطور النماذج الذرية (دالتون • طومسون • رذرفورد • بور • الحديث)", "model": "دالتون: كرة مصمتة متجانسة | طومسون: كرة موجبة تتوزع فيها إلكترونات سالبة | رذرفورد: نواة موجبة صغيرة في المركز ومعظم الذرة فراغ | بور: مستويات طاقة محددة | الحديث: سحابة إلكترونية احتمالية."}, {"title": "س6 | تطبيق قانون حفظ المادة (الحساب الرياضي ونص القانون)", "model": "الحساب: 24 جم - 4 جم = 20 جم. نص القانون: المادة لا تفنى ولا تُستحدث بل تتحول من شكل إلى آخر (مجموع كتل المواد المتفاعلة يساوي مجموع كتل المواد الناتجة)."}], "dist": {"gem": 4, "exc": 2, "vgood": 5, "good": 3, "warn": 1, "absent": 4}}, "students": [{"id": 1, "code": "1M-01", "name": "احمد علي فايع عسيري", "status": "حاضر", "score_10": 7.33, "score_str": "7.33", "grade_tag": "جيد جداً", "badge_class": "tag-mid", "feedback": "استيعاب جيد لمفاهيم الذرة وتطور النماذج الذرية، لكنه أهمل الإجابة عن جدول تصنيف المادة (س1 ب) بالكامل وخانة نموذج بور مما أفقده درجتين كاملتين.", "handwriting": "قلم خطاط/فلوماستر أسود عريض مع قلم أزرق وشطب متبادل. خط ضخم يفيض خارج حدود الجداول والمربعات.", "candor": "توجيه إلزامي: يُمنع منعاً باتاً استخدام أقلام الفلوماستر العريضة في تعبئة أوراق العمل المطبوعة لأنها تشوه الجداول وتطمس الفراغات؛ والالتزام بقلم حبر جاف دقيق."}, {"id": 2, "code": "1M-02", "name": "احمد محمد احمد عسيري", "status": "حاضر", "score_10": 6.5, "score_str": "6.50", "grade_tag": "متوسط / جيد", "badge_class": "tag-mid", "feedback": "يعاني من تشتت وارتباك عند تعبئة الجداول؛ وضع أسماء العلماء في خانة موقع الجسيمات ومواقعها في خانة الشحنات بس3، مع نقص في تعليل عدم رؤية الذرات بس2.", "handwriting": "قلم حبر جاف أزرق. خط نسخ سريع ومضطرب، ميلان وتباعد غير متوازن بين الكلمات، مع شطب حبري في س4 وس6.", "candor": "ملاحظة صريحة: اقرأ رؤوس الأعمدة بتمهل قبل البدء بالكتابة لتجنب ترحيل الإجابات إلى غير مواضعها."}, {"id": 3, "code": "1M-03", "name": "احمد محمد شعبان عبود", "status": "غائب", "score_10": null, "score_str": "غائب", "grade_tag": "مؤجل (غائب)", "badge_class": "tag-pending", "feedback": "تغيب عن موعد تطبيق ورقة العمل؛ يُستدعى للاختبار التعويضي لإدراج درجاته في نظام نور.", "handwriting": "—", "candor": "—"}, {"id": 4, "code": "1M-04", "name": "الحسين يحي الحسين عسيري", "status": "حاضر", "score_10": 9.0, "score_str": "9.00", "grade_tag": "ممتاز مرتفع", "badge_class": "tag-high", "feedback": "فهم ممتاز وعميق لبنية الذرة وتطور النماذج الذرية، صياغات لغوية علمية سليمة، ومهارة في المقارنة بين نموذج بور والنموذج الحديث.", "handwriting": "قلم حبر أسود سائل/جاف مع تصحيحات بالأزرق. خط نسخ كبير ومقروء، استقامة جيدة على السطر.", "candor": "ملاحظة صريحة: وجود شطب باللون الأزرق على كتابة سوداء وسهم إحالة طويل لذيل الصفحة؛ احرص على تركيز كتابتك داخل الحقول المخصصة."}, {"id": 5, "code": "1M-05", "name": "بندر محمد يحي عسيري", "status": "غائب", "score_10": null, "score_str": "غائب", "grade_tag": "مؤجل (غائب)", "badge_class": "tag-pending", "feedback": "غياب بعذر؛ يُدرج في خطة الاختبارات البديلة لورقة تركيب المادة.", "handwriting": "—", "candor": "—"}, {"id": 6, "code": "1M-06", "name": "حسين ابراهيم حسين المخلوطي", "status": "غائب", "score_10": null, "score_str": "غائب", "grade_tag": "مؤجل (غائب)", "badge_class": "tag-pending", "feedback": "غياب بعذر؛ يُدرج في جدول أوراق العمل التعويضية.", "handwriting": "—", "candor": "—"}, {"id": 7, "code": "1M-07", "name": "زياد احمد الحسين عسيري", "status": "حاضر", "score_10": 7.33, "score_str": "7.33", "grade_tag": "جيد جداً", "badge_class": "tag-mid", "feedback": "إدراك ممتاز لتطور النماذج وقانون حفظ المادة، لكنه تعثر في تصنيف الضوء (صنفه مادة)، وخلط في شحنات س3، واستعاض عن الرسم التخطيطي بالشرح النصي.", "handwriting": "قلم حبر أزرق سائل عريض. خط متناثر وضخم جداً، تلطخات حبرية واضحة وبقع حبر كبيرة تشوه الصفحة.", "candor": "توجيه علاجي: كتابتك مفرطة في الضخامة والتلطيخ؛ يُلزم الطالب بتدريب خطي منظم، وتجنب أقلام الحبر السائل الرديئة التي تسرب الحبر، والتزام الرسم الهندسي."}, {"id": 8, "code": "1M-08", "name": "سعود احمد سعيد الحيدي", "status": "حاضر", "score_10": 10.0, "score_str": "10", "grade_tag": "🏆 فائق الامتياز (الدرجة الكاملة)", "badge_class": "tag-gem", "feedback": "إجابة نموذجية باهرة واحترافية؛ إحاطة علمية تامة بكافة أهداف الدرس، تفريق متقن بين النماذج، رسم تخطيطي دقيق مكتمل الأسهم والبيانات، وحساب رياضي دقيق لقانون الحفظ.", "handwriting": "قلم حبر جاف أسود وأزرق أنيق. خط نسخ ورقعة هندسي فائق الجمال والدقة، تشكيل كامل لبعض المفردات (كتلةٌ، حَيْزاً)، استقامة استثنائية ونظافة مطلقة.", "candor": "⭐ تكريم استحقاق: منح الطالب «وسام الخط الذهبي» تقديراً لجمال خطه ودقة تشكيله ونظافة ورقته الاستثنائية."}, {"id": 9, "code": "1M-09", "name": "عادل بن عبدالرحمن بن الحسين حسن عسيري", "status": "حاضر", "score_10": 9.5, "score_str": "9.50", "grade_tag": "💎 فائق الامتياز", "badge_class": "tag-gem", "feedback": "إتقان مفاهيمي راقٍ جداً، إجابات علمية موسعة ومدعمة بالأمثلة (ذكر النيتروجين في الهواء المحبوس، وتفاصيل تجربة رذرفورد)، وتطبيق سليم لقانون حفظ المادة.", "handwriting": "قلم حبر جاف أزرق داكن. خط نسخ رصين، منظم، ومستقيم، كتابة هادئة ومتزنة تحترم حقول الجداول، ونظافة ورقة شبه مطلقة.", "candor": "ملاحظة تشجيعية: خط ممتاز ومتناسق، واستثمار ذكي لهوامش الصفحة في استكمال الشروحات العلمية."}, {"id": 10, "code": "1M-10", "name": "عبدالاله يحيى ملفي عسيري", "status": "حاضر", "score_10": 9.67, "score_str": "9.67", "grade_tag": "💎 فائق الامتياز", "badge_class": "tag-gem", "feedback": "تفوق نوعي شامل؛ شمولية في شرح النماذج وتطورها، تمييز دقيق بين الشحنات والمواقع، صياغة نصية مكتملة لقانون حفظ المادة بدقة واقتدار.", "handwriting": "قلم حبر جاف أسود عريض. خط نسخ فخم وثابت، مسافات مثالية بين الكلمات، تشكيل بالحركات، ونظافة بصرية عالية.", "candor": "ملاحظة إشادة: خط رصين ومريح للعين ينم عن هدوء وثقة علمية؛ حافظ على هذا المستوى الرفيع."}, {"id": 11, "code": "1M-11", "name": "عبدالله أحمد محمد العسيري", "status": "غائب", "score_10": null, "score_str": "غائب", "grade_tag": "مؤجل (غائب)", "badge_class": "tag-pending", "feedback": "غياب بعذر؛ يُدرج في كشف الاختبارات التعويضية.", "handwriting": "—", "candor": "—"}, {"id": 12, "code": "1M-12", "name": "علي عبدالله محمد عسيري", "status": "حاضر", "score_10": 7.83, "score_str": "7.83", "grade_tag": "جيد جداً", "badge_class": "tag-high", "feedback": "إلمام جيد بمكونات المادة وشحنات الذرة وقانون حفظ المادة، لكنه وقع في تداخل مفاهيمي في س5 حيث كتب فكرة طومسون في فقرة المقارنة بين بور والحديث.", "handwriting": "قلم حبر جاف أزرق مع ألوان خشبية بنقاط خضراء وزرقاء في الرسم. خط نسخ مائل مع استطالة في بعض الكلمات.", "candor": "ملاحظة صريحة: تجنب التسرع عند كتابة المقارنات، واحرص على تمييز ما يطلبه كل فرع في السؤال الخامس."}, {"id": 13, "code": "1M-13", "name": "محمد ابراهيم على عسيري", "status": "حاضر", "score_10": 9.0, "score_str": "9.00", "grade_tag": "ممتاز مرتفع", "badge_class": "tag-high", "feedback": "استيعاب علمي راسخ، إجابات نموذجية في س1 وس2 وس3 وس6 وتفسير قانون حفظ المادة بدقة، وحساب رياضي متقن.", "handwriting": "قلم حبر جاف أزرق. خط نسخ سريع ومنسق، التزام ممتاز بالسطر، وخلو كامل من أي شطب أو تلطيخ.", "candor": "ملاحظة صريحة: نموذج الذرة الحديث لا يعتمد المدارات البيضاوية المغلقة كالكواكب، بل سحابة إلكترونية احتمالية؛ انتبه لهذا الفرق الجوهري."}, {"id": 14, "code": "1M-14", "name": "محمد احمد علي عسيري", "status": "حاضر", "score_10": 6.17, "score_str": "6.17", "grade_tag": "متوسط", "badge_class": "tag-mid", "feedback": "تشوش مفاهيمي جوهري؛ رسم نموذج طومسون بدلاً من الحديث، وأخطأ في شحنة وموقع الإلكترون والنيوترون، ولم يستوعب معنى تفنيد فكرة ديموقريطس.", "handwriting": "قلم حبر أزرق. خط متقطع وغير متجانس، تباين حاد في أحجام الحروف، وشطب حبري ثقيل ومتكرر.", "candor": "توجيه علاجي: الطالب يحتاج لجلسة تمكين فردية لإعادة بناء المفاهيم الذرية، مع تدريبه على التهدئة في الكتابة وتجنب الشطب المكثف."}, {"id": 15, "code": "1M-15", "name": "محمد موسى يحي عسيري", "status": "حاضر", "score_10": 6.33, "score_str": "6.33", "grade_tag": "متوسط (إهمال الوجه 2)", "badge_class": "tag-mid", "feedback": "أداء علمي باهر ومكتمل بنسبة 100% في الصفحة الأولى (حصد الدرجة الكاملة فيها)، لكنه ترك الصفحة الثانية بالكامل بيضاء دون أي إجابة (فقد 3.33 درجات!).", "handwriting": "قلم حبر جاف أزرق. خط نسخ رائع ومنضبط، ترتيب ناصع ونظافة فائقة، وتحديد دقيق للجسيمات دون الذرية.", "candor": "تنبيه حاسم: نبه الطالب بصرامة لضرورة قلب ورقة العمل والتأكد من حل الوجهين، فإهمال الصفحة الثانية حرمه من صدارة الصف ظلماً لقدراته العالية."}, {"id": 16, "code": "1M-16", "name": "موسى محمد بن موسى ابراهيم هادي الشريف", "status": "حاضر", "score_10": 9.67, "score_str": "9.67", "grade_tag": "💎 فائق الامتياز", "badge_class": "tag-gem", "feedback": "مستوى علمي رفيع وإحاطة تامة بكافة النماذج والجسيمات، حلول مكتملة ومفصلة تدل على استيعاب ومتابعة صفية استثنائية.", "handwriting": "قلم حبر أخضر وأسود مع ألوان خشبية. خط نسخ جميل ومنسق، ذوق فني رفيع في رسم النموذج الذري وتلوين الجسيمات، وترتيب رائع للمساحات.", "candor": "ملاحظة إشادة: إبداع فني وعلمي باهر في الرسم التخطيطي للذرة يستحق كل الثناء."}, {"id": 17, "code": "1M-17", "name": "وليد يحي محمد عسيري", "status": "حاضر", "score_10": 4.5, "score_str": "4.50", "grade_tag": "ضعيف (غير مجتاز)", "badge_class": "tag-low", "feedback": "بدأ بداية مقبولة في السؤالين الأول والثاني، ثم توقف تماماً وترك النصف الثاني من الورقة (س4 وس5 وس6) فارغاً؛ مما يعكس بطئاً شديداً وضعفاً مفاهيمياً.", "handwriting": "قلم حبر أزرق مع تسويد وطمس حبري داكن على صندوق الاسم، شطب متكرر في س1 وس2 وس3.", "candor": "توجيه إلزامي: إلحاق الطالب فورياً ببرنامج تمكين علاجي لمفاهيم الذرة، وتدريبه على إدارة الوقت، ومحاسبته على طمس خانة الاسم بالحبر."}, {"id": 18, "code": "1M-18", "name": "يحيى حسن يحيى عسيري", "status": "حاضر", "score_10": 8.0, "score_str": "8.00", "grade_tag": "جيد جداً", "badge_class": "tag-high", "feedback": "استيعاب جيد للمادة وحفظها وتركيب الذرة، لكنه ارتبك في س5 أ وكتب عبارة (الأنسجة العضلية) في جدول النماذج الذرية، وأخطأ في حساب ناتج س6.", "handwriting": "قلم حبر جاف أزرق مع تلوين خفيف. خط نسخ مائل وغير مستقر، تداخل بين السطور، وكتابة كلمات في هوامش الصفحة.", "candor": "ملاحظة صريحة: التركيز الذهني أثناء الاختبار لمنع الخلط بين فصول العلوم ومفاهيم الخلايا والذرات."}, {"id": 19, "code": "1M-19", "name": "يحيى محمد حسن غرامه", "status": "حاضر", "score_10": 8.0, "score_str": "8.00", "grade_tag": "جيد جداً", "badge_class": "tag-high", "feedback": "حفظ جيد للمفاهيم الأساسية، إتقان شحنات الذرة وتطور النماذج، لكنه يعاني من تسرع يؤدي لبتر الإجابات قبل اكتمالها (كما في س2 ب).", "handwriting": "قلم حبر أزرق داكن. خط عشوائي مائل، شطب متكرر، وتلطخات حبرية واضحة في منتصف الورقة.", "candor": "توجيه علاجي: التمهل في الكتابة والتنظيم، واستخدام قلم الرصاص لتفادي الشطب والتلطخ الحبري."}]};
+
+function syncThemeIcon() {
+  const isDark = document.documentElement.classList.contains('dark');
+  document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('science_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  syncThemeIcon();
+}
+
+function badgeStyle(s) {
+  if (s.status !== 'حاضر' || s.score_10 === null) return 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
+  if (s.score_10 >= 9.5) return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300';
+  if (s.score_10 >= 8.5) return 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300';
+  if (s.score_10 >= 7.0) return 'bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-300';
+  if (s.score_10 >= 6.0) return 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300';
+  return 'bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-300';
+}
+
+function init() {
+  syncThemeIcon();
+  const sel = document.getElementById('studentSelect');
+  const pills = document.getElementById('studentPills');
+  DATA.students.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.code;
+    opt.textContent = `${s.code} — ${s.name} (${s.score_10 !== null ? s.score_10 + '/10' : 'غائب'})`;
+    sel.appendChild(opt);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.code = s.code;
+    btn.className = 'student-pill px-2.5 py-1.5 rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:border-emerald-500 transition';
+    btn.textContent = s.name.split(' ').slice(0, 2).join(' ');
+    btn.onclick = () => selectStudent(s.code);
+    pills.appendChild(btn);
+  });
+
+  const rubricList = document.getElementById('rubricList');
+  DATA.worksheet.rubric.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/50 p-3.5 space-y-1.5';
+    card.innerHTML = `
+      <div class="text-sm font-black text-blue-900 dark:text-blue-300">${item.title}</div>
+      <div class="text-xs sm:text-sm text-emerald-800 dark:text-emerald-300 leading-relaxed bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-800/50 rounded-lg p-2.5">${item.model}</div>
+    `;
+    rubricList.appendChild(card);
+  });
+}
+
+function selectStudent(code) {
+  const box = document.getElementById('studentDetail');
+  document.getElementById('studentSelect').value = code;
+  document.querySelectorAll('.student-pill').forEach(p => {
+    const active = p.dataset.code === code;
+    p.className = active
+      ? 'student-pill px-2.5 py-1.5 rounded-lg text-xs font-black border-2 border-emerald-600 bg-emerald-600 text-white transition'
+      : 'student-pill px-2.5 py-1.5 rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:border-emerald-500 transition';
+  });
+
+  const s = DATA.students.find(x => x.code === code);
+  if (!s) {
+    box.classList.add('hidden');
+    box.innerHTML = '';
+    return;
+  }
+
+  const scoreText = s.score_10 !== null ? `${s.score_10} / 10` : 'غائب (مؤجل)';
+  const isGold = (s.candor || '').includes('الخط الذهبي') || (s.grade_tag || '').includes('فائق');
+  box.classList.remove('hidden');
+  box.innerHTML = `
+    <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-md space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <div class="text-xs font-bold text-slate-400">${s.code} • الصف الأول المتوسط</div>
+          <h3 class="text-xl font-black text-slate-900 dark:text-white mt-0.5">${s.name}</h3>
+          <span class="inline-block mt-1.5 px-3 py-1 rounded-full text-xs font-black ${badgeStyle(s)}">${s.grade_tag}</span>
+        </div>
+        <div class="text-center bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-6 py-3">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">درجة ورقة العمل</div>
+          <div class="text-2xl font-black ${s.score_10 !== null ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-500'} mt-0.5">${scoreText}</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/70 dark:bg-blue-950/25 p-3.5 space-y-1">
+          <div class="text-xs font-black text-blue-800 dark:text-blue-300">🔬 التغذية الراجعة العلمية</div>
+          <p class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed">${s.feedback}</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 p-3.5 space-y-1">
+          <div class="text-xs font-black text-slate-700 dark:text-slate-300">✍️ تشخيص الخط اليدوي</div>
+          <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">${s.handwriting || '—'}</p>
+        </div>
+        <div class="rounded-xl border ${isGold ? 'border-amber-300 bg-amber-50/80 dark:border-amber-700 dark:bg-amber-950/30' : 'border-rose-200 bg-rose-50/70 dark:border-rose-900/60 dark:bg-rose-950/25'} p-3.5 space-y-1">
+          <div class="text-xs font-black ${isGold ? 'text-amber-800 dark:text-amber-300' : 'text-rose-800 dark:text-rose-300'}">📌 التوجيه الصريح</div>
+          <p class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed">${s.candor || '—'}</p>
+        </div>
+      </div>
+    </div>
+  `;
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+init();
+</script>
+</body>
+</html>
